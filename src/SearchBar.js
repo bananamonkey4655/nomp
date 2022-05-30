@@ -1,6 +1,10 @@
+import './searchbar.css';
+
 function SearchBar(props) {
     return (
-        <div>Search places</div>
+        <div className='search-box'>
+            <div className='text-in-search'> Search places </div>
+        </div>
     );
 }
 

@@ -1,12 +1,11 @@
 import defaultProfilePicture from './defaultProfilePicture.png';
+import './header.css';
 
 function UserHeader(props) {
     return (
-        <header>
-            <div>
-                <button>Login</button>
-                <img src={defaultProfilePicture} alt="Profile Picture" />
-            </div>
+        <header className='nav-bar'>
+                <button className='login'>Login</button>
+                <img className='img' src={defaultProfilePicture} alt="Profile Picture" />
         </header>
     );
 }
