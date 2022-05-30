@@ -1,0 +1,31 @@
+.find-group-box {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    background-color: white;
+    height: 260px;
+    width: 800px;
+    border: 20px solid rgba(247, 231, 206, 1);
+    text-align: center;
+    margin-top: 73px;
+    align-self: center;
+}
+
+.slogan {
+    height: 80px;
+    width: 378px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    align-self: center;
+}
+
+.create-group {
+    background-color: rgba(255, 191, 0, 1);
+    width: 295px;
+    height: 88px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    align-self: center;
+    font-weight: bolder;
+    margin-top: 10px;
+}

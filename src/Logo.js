@@ -1,6 +1,12 @@
+import './logo.css';
+
 function Logo(props) {
     return (
-        <h3>Nomp</h3>
+        <h3>
+            <div className='logo'>
+                Nomp
+            </div>
+        </h3>
     );
 }
 
