@@ -1,13 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import Main from './Main';
 import Header from './Header';
+import Login from "./components/Login";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <div>
-      <Header isLoggedIn={false}/>
-      <Main />
+      <h1>Hello World</h1>
+      <Login />
     </div>
   );
 }
