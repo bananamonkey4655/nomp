@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("./config/database");
 const cors = require("cors");
 
-// const session = require("express-session");
+const session = require("express-session");
 const passport = require("passport");
 // const MongoStore = require("connect-mongo");
 const auth = require("./routes/auth");
@@ -12,25 +12,25 @@ require("./config/passport");
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: true,
-//     store: MongoStore.create({
-//       mongoUrl: process.env.MONGODB_URI,
-//       collectionName: "sessions",
-//     }),
-//     // cookie: {
-//     //   maxAge: 1000 * 10,
-//     // },
-//   })
-// );
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    // store: MongoStore.create({
+    //   mongoUrl: process.env.MONGODB_URI,
+    //   collectionName: "sessions",
+    // }),
+    // cookie: {
+    //   maxAge: 1000 * 10,
+    // },
+  })
+);
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 app.use("/auth", auth);
 
 app.get("/", (req, res) => {
