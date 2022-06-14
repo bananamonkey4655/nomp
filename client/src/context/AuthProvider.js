@@ -8,7 +8,7 @@ const useAuth = () => {
 };
 
 const authenticateUser = async (username, password) => {
-  const response = await fetch("http://localhost:8000/auth/login", {
+  const response = await fetch("https://orbital-nomp.netlify.app/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
