@@ -12,7 +12,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      "https://orbital-nomp.herokuapp.com/auth/register",
+      "https://backend-nomp.herokuapp.com/auth/register",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
