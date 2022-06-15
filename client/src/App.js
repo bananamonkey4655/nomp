@@ -1,14 +1,21 @@
 import './App.css';
-import Main from './Main';
-import Header from './Header';
 import Login from "./components/Login";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Home from './pages/Home';
+import CreateGroup from './pages/CreateGroup'
+import NavBar from './components/NavBar/NavBar';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
-      <Login />
+      <BrowserRouter>
+        <NavBar/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/creategroup" element={<CreateGroup />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
