@@ -1,6 +1,7 @@
 import SearchBar from "../components/SearchBar/SearchBar";
 import Logo from "../components/Logo/Logo";
 import CreateGroupButton from "../components/CreateGroupButton/CreateGroupButton";
+import Login from "../components/Login";
 
 function Home(props) {
     return (
@@ -10,7 +11,8 @@ function Home(props) {
                 <CreateGroupButton />
             </div>
             <div className="searchbar d-flex justify-content-center"> 
-                <SearchBar /> 
+                <SearchBar />
+                <Login />
             </div>
         </div>  
     );

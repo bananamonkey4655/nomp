@@ -1,28 +1,34 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "./Login.css";
 
-import ErrorMessage from "./ErrorMessage";
-import { useAuth } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { error, attemptLogin } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    attemptLogin(username, password);
+    const response = await fetch(
+      "https://backend-nomp.herokuapp.com/auth/register",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      }
+    );
 
+    console.log(response.body);
     setUsername("");
     setPassword("");
+    navigate("/home");
   };
 
   return (
     <div style={{ backgroundColor: "antiquewhite" }}>
-      {error && <ErrorMessage />}
-      <h1>Login</h1>
+      <h1>Register</h1>
       <Form className="form" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="username">
           <Form.Label>Username</Form.Label>
@@ -35,7 +41,6 @@ function Login() {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-          <Form.Text className="text-muted">Welcome to Nomp</Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="password">
@@ -50,11 +55,11 @@ function Login() {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Continue
+          Sign Up
         </Button>
       </Form>
     </div>
   );
 }
 
-export default Login;
+export default Register;
