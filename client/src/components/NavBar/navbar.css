@@ -1,0 +1,25 @@
+.nav-bar {
+    display: flex;
+    background-color: rgba(255, 153, 0, 1);
+    height: 100px;
+    justify-content: flex-end;
+}
+
+.img {
+    height: 60px;
+    width: 59px;
+    align-self: center;
+    margin-right: 20px;
+}
+
+.login {
+    background-color: rgba(0, 178, 255, 1);
+    height: 42px;
+    width: 120px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24;
+    font-weight: bolder;
+    border: 0px;
+    margin-right: 20px;
+    align-self: center;
+}

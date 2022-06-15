@@ -1,6 +1,10 @@
+
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import './App.css';
+import CreateGroup from './pages/CreateGroup'
+import NavBar from './components/NavBar/NavBar';
 import { AuthProvider } from "./context/AuthProvider";
 import ProtectedRoute from "./router/ProtectedRoute";
 import Navigation from "./pages/Navigation";
@@ -23,6 +27,7 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
+          <Route path="/creategroup" element={<CreateGroup />} />
           <Route path="register" element={<Register />} />
           <Route
             path="dashboard"
