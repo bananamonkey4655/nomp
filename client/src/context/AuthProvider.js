@@ -1,6 +1,8 @@
 import { useState, useContext, createContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import BACKEND_URL from "../config";
+
 const AuthContext = createContext(null);
 
 const useAuth = () => {
@@ -8,10 +10,10 @@ const useAuth = () => {
 };
 
 const authenticateUser = async (username, password) => {
-  const response = await fetch("https://backend-nomp.herokuapp.com/auth/login", {
+  const response = await fetch(BACKEND_URL + "/auth/login", {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json"
+    headers: {
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ username, password }),
   });
@@ -27,28 +29,32 @@ const AuthProvider = ({ children }) => {
   const location = useLocation();
 
   const [token, setToken] = useState(null);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const attemptLogin = async (username, password) => {
     try {
       const token = await authenticateUser(username, password);
       if (token === null) {
-        setError("Wrong username or password!");
+        setErrorMessage("Wrong username or password!");
+        navigate("/login");
+      } else {
+        setToken(token);
+        navigate("/home");
       }
-      setToken(token);
     } catch (err) {
-      setError("Network connection failure");
+      setErrorMessage("Network connection failure :(");
     }
 
-    const origin = location.state?.from?.pathname || "/dashboard";
-    navigate(origin);
+    // Work in progress: feature: navigate user back to page where they came from after login
+    // const origin = location.state?.from?.pathname || "/login";
+    // navigate(origin);
   };
 
   const handleLogout = () => {
     setToken(null);
   };
 
-  const value = { token, error, attemptLogin, handleLogout };
+  const value = { token, errorMessage, attemptLogin, handleLogout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

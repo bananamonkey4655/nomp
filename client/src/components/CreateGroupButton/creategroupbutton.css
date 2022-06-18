@@ -1,18 +1,18 @@
 .create-group-box {
-    height: 260px;
-    width: 800px;
-    border: 20px solid rgba(247, 231, 206, 1);
-    align-self: center;
-    margin-top: 73px;
+  height: 260px;
+  width: 800px;
+  border: 20px solid rgba(247, 231, 206, 1);
+  align-self: center;
+  margin-top: 73px;
 }
 
 .slogan {
-    height: 80px;
-    width: 378px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    align-self: center;
-    margin-top: 10px;
+  height: 80px;
+  width: 378px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  align-self: center;
+  margin-top: 10px;
 }
 
 /* .create-group {
@@ -27,9 +27,9 @@
 } */
 
 .btn-primary {
-    width:295px;
-    height: 88px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    align-self: center;
+  width: 295px;
+  height: 88px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  align-self: center;
 }

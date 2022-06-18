@@ -1,14 +1,14 @@
 import { useAuth } from "../context/AuthProvider";
 
-function ErrorMessage() {
-  const { error } = useAuth();
+const ErrorMessage = () => {
+  const { errorMessage } = useAuth();
 
   return (
     <>
       <h1 style={{ color: "red" }}>Error</h1>
-      <p>{error}</p>
+      <p>{errorMessage}</p>
     </>
   );
-}
+};
 
 export default ErrorMessage;

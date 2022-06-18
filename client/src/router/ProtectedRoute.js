@@ -1,4 +1,6 @@
-import { Navigate, useLocation } from "react-router-dom";
+// Nest all authentication protected routes under this component
+
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 
 const ProtectedRoute = ({ children }) => {
@@ -6,9 +8,9 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   if (!token) {
-    return <Navigate to="/home" replace state={{ from: location }} />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
-  return children;
+  return children ? children : <Outlet />;
 };
 
 export default ProtectedRoute;

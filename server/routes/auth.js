@@ -3,6 +3,7 @@ const router = express.Router();
 
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
+const UserModel = require("../models/user");
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
   res.send(req.user);
