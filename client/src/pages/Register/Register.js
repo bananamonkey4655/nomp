@@ -4,25 +4,22 @@ import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
 
-import BACKEND_URL from "../../config";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { isLoading, attemptRegister } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(BACKEND_URL + "/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    attemptRegister(username, password);
 
     setUsername("");
     setPassword("");
-    navigate("/login");
   };
 
   return (
@@ -35,7 +32,7 @@ const Register = () => {
             <Form.Control
               type="username"
               placeholder="Enter username"
-              maxLength="12"
+              maxLength="18"
               autoComplete="off"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -48,13 +45,18 @@ const Register = () => {
             <Form.Control
               type="password"
               placeholder="Password"
-              maxLength="12"
+              maxLength="18"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit" className="register-button">
+          <Button
+            disabled={isLoading}
+            variant="primary"
+            type="submit"
+            className="register-button"
+          >
             Sign Up
           </Button>
         </Form>
