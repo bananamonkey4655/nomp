@@ -9,9 +9,18 @@ const FindEatery = () => {
   const [eateries, setEateries] = useState([]);
   const [displayedEatery, setDisplayedEatery] = useState(null);
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
+  const [desiredEateries, setDesiredEateries] = useState([]);
 
   // Fetch the list of eateries from API using given filters when component first mounts
   useEffect(() => {
+    // Knuth shuffle algorithm
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
     async function fetchData() {
       // Note: Seems to be the case that if location string is gibberish, then Yelp API searches for location=Singapore by default (because "Singapore" string appended to URL in our backend)
       // First result would be 'Gardens by the Bay'
@@ -23,11 +32,12 @@ const FindEatery = () => {
       const data = await response.json();
       if (data.error) {
         console.log("Error here");
-        // console.log(`${data.error.code}: ${data.error.description}`);
+        console.log(`${data.error.code}: ${data.error.description}`);
         setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
       } else {
+        shuffle(data.businesses);
+        setEateries(data.businesses); //note that setting state is asynchronous
         console.log(data.businesses);
-        setEateries(data.businesses);
       }
     }
     fetchData();
