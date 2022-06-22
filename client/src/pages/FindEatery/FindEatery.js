@@ -2,7 +2,9 @@ import "./FindEatery.css";
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import BACKEND_URL from "../../config";
+import { useSocket } from "../../context/SocketProvider";
 
 const FindEatery = () => {
   let { location, term } = useParams(); // location is required, term is optional
@@ -40,6 +42,7 @@ const FindEatery = () => {
         console.log(data.businesses);
       }
     }
+
     fetchData();
   }, []);
 
@@ -53,10 +56,12 @@ const FindEatery = () => {
 
   // temporary names
   const want = () => {
-    getRandomNewEatery(); //implement
+    setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
+    getRandomNewEatery();
+    console.log(desiredEateries);
   };
   const skip = () => {
-    getRandomNewEatery(); //implement
+    getRandomNewEatery();
   };
   const getRandomNewEatery = () => {
     setEateries((prevEateries) =>
@@ -67,6 +72,8 @@ const FindEatery = () => {
   // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
   if (!displayedEatery) {
     return <h1>Loading...</h1>;
+  } else if (fetchErrorMessage) {
+    return <h1>Error fetching eateries!</h1>;
   } else {
     const {
       name,
