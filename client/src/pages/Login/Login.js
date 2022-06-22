@@ -10,7 +10,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { errorMessage, attemptLogin } = useAuth();
+  const { isLoading, errorMessage, attemptLogin } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ const Login = () => {
             <Form.Control
               type="username"
               placeholder="Enter username"
-              maxLength="12"
+              maxLength="18"
               autoComplete="off"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -45,13 +45,18 @@ const Login = () => {
             <Form.Control
               type="password"
               placeholder="Password"
-              maxLength="12"
+              maxLength="18"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit" className="login-button">
+          <Button
+            disabled={isLoading}
+            variant="primary"
+            type="submit"
+            className="login-button"
+          >
             Continue
           </Button>
         </Form>
