@@ -1,10 +1,10 @@
 import "./FindEatery.css";
+import { MapPin, Heart, X } from "phosphor-react";
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import BACKEND_URL from "../../config";
-import { useSocket } from "../../context/SocketProvider";
 
 const FindEatery = () => {
   let { location, term } = useParams(); // location is required, term is optional
@@ -15,7 +15,7 @@ const FindEatery = () => {
 
   // Fetch the list of eateries from API using given filters when component first mounts
   useEffect(() => {
-    // Knuth shuffle algorithm
+    // Knuth shuffle
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -37,7 +37,7 @@ const FindEatery = () => {
         console.log(`${data.error.code}: ${data.error.description}`);
         setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
       } else {
-        shuffle(data.businesses);
+        // shuffle(data.businesses);
         setEateries(data.businesses); //note that setting state is asynchronous
         console.log(data.businesses);
       }
@@ -77,6 +77,8 @@ const FindEatery = () => {
   } else {
     const {
       name,
+      rating,
+      review_count,
       categories,
       image_url,
       location: place,
@@ -84,30 +86,40 @@ const FindEatery = () => {
       price,
     } = displayedEatery;
 
-    // temporary styles
     return (
       <div className="wrapper">
-        <div className="card-container">
-          <div className="card-imagebox">
-            <img className="imagebox-image" src={image_url} />
-            <div className="imagebox-text">
-              <h1>{name}</h1>
-              <h3>{categories[0]?.title}</h3>
-            </div>
+        <div className="container">
+          <img src={image_url} />
+          <div className="imagebox-text">
+            <h1>{name}</h1>
+            <p>
+              <div>
+                <span>Rating: {rating}</span>
+              </div>
+              <div>{price}</div>
+              <div className="address">
+                <MapPin size={20} />
+                <span>{place.address1}</span>
+              </div>
+              <div></div>
+            </p>
           </div>
-          <div className="card-description">
-            <p>{`${place.address1} ${place.address2} ${place.address3}`}</p>
-            <p>{display_phone ? display_phone : null}</p>
-            <span className="price">{price}</span>
-            <div className="buttons">
-              <button onClick={want} style={{ color: "green" }}>
-                Eat here!
-              </button>
-              <button onClick={skip} style={{ color: "red" }}>
-                Skip!
-              </button>
-            </div>
-          </div>
+        </div>
+        <div className="buttons">
+          <Heart
+            className="want-button hover-effect"
+            onClick={want}
+            size={50}
+            color="#f14a59"
+            weight="fill"
+          />
+          <X
+            className="skip-button hover-effect"
+            onClick={skip}
+            size={50}
+            color="#5e5e5e"
+            weight="bold"
+          />{" "}
         </div>
       </div>
     );

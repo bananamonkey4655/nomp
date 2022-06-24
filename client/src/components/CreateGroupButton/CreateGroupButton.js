@@ -9,9 +9,9 @@ const CreateGroupButton = () => {
       <h3 className="slogan fw-bold">
         An efficient way to find where to eat with others
       </h3>
-      <Link to="/creategroup">
+      <Link to="/group">
         <Button variant="primary" size="lg" className="fw-bold shadow">
-          Create Group
+          Get Started
         </Button>
       </Link>
     </div>

@@ -52,34 +52,69 @@ app.get("/", (req, res) => {
   // res.json({ hello: "world" }); //TEST
 });
 
-const rooms = new Map();
-
+/*************************************************************************************************************************************************************************** */
 // Create two-way WebSocket connection
-io.on("connection", (socket) => {
-  console.log(`Server: User socket connected with id : ${socket.id}`);
-  socket.on("hello", (string) => {
-    console.log(string);
-  });
+const groups = new Map(); // TODO: maybe use Redis
+// const colors = ["red", "orange", "yellow", "green", "blue"];
 
-  socket.on("join-group", (groupId) => {
+io.on("connection", (socket) => {
+  console.log(`Connection: User socket id: ${socket.id}`);
+
+  socket.on("join-group", ({ nickname, groupId, isHost }) => {
+    groupId = groupId.toLowerCase(); // Sanitize input, TODO: merge into a function
     socket.join(groupId);
 
-    console.log(`join-room event: ${socket.id} joined group: ${groupId}`);
-    //add this user to database or inmemory store
-    const clients = io.sockets.adapter.rooms.get(groupId);
-    console.log(clients);
+    // console.log(`Join-Group: ${socket.id} joined group: ${groupId}`);
+    // const groupSize = io.sockets.adapter.rooms.get(groupId).size;
+    // console.log(`Room Size: ${groupSize}`);
 
-    io.to(groupId).emit("new-member", [...clients]);
-  });
+    // Add to groupId:[names]->key:value Map
+    if (groups.has(groupId)) {
+      const roomMembers = groups.get(groupId);
+      if (isHost) {
+        for (let i = 0; i < roomMembers.length; i++) {
+          if (roomMembers[i].isHost) {
+            groups.set(groupId, [...roomMembers, { nickname, isHost: false }]);
+            break;
+          }
+        }
+      } else {
+        groups.set(groupId, [...roomMembers, { nickname, isHost }]);
+      }
+    } else {
+      groups.set(groupId, [{ nickname, isHost }]);
+    }
 
-  socket.on("hello-event", (data) => {
-    socket.to(data.room).emit("receive-message", data.message);
-  });
+    io.to(groupId).emit("update-members", groups.get(groupId)); //TODO: change to a function
+    io.to(groupId).emit("new-member", nickname); //TODO: change to a function
 
-  socket.on("disconnect", () => {
-    console.log(`User disconnected from socket: ${socket.id}`);
+    socket.on("send-message", (payload) => {
+      console.log("Message sent to server");
+      io.in(groupId).emit("new-message", payload);
+    });
+
+    socket.on("disconnect", () => {
+      console.log(`Disconnected: ${socket.id}`);
+
+      // Update Map
+      if (groups.has(groupId)) {
+        const groupSize = io.sockets.adapter.rooms.get(groupId)?.size;
+
+        const groupMembers = groups.get(groupId);
+        groupMembers.splice(groupMembers.indexOf(nickname), 1); // Retrieve the array and remove disconnected user's nickname
+        io.to(groupId).emit("update-members", groups.get(groupId));
+        if (!groupSize) {
+          groups.delete(groupId);
+        }
+      }
+    });
   });
 });
+
+// What's next? =>
+// Allow users to set location (only one location), either only allow host to choose the location or let all users change
+// Move fetch API logic from client to server (websocket)
+// What is hosting a group? => Joining a group and you are the only member. So our logic => If yo uare the only member, you are the host. (can set location)
 
 server.listen(process.env.PORT || 5000, () => {
   console.log(`Server is running`);
