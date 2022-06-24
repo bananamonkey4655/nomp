@@ -1,0 +1,31 @@
+.chatbox-wrapper {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chatbox-wrapper h1 {
+  border-bottom: 5px solid red;
+}
+
+input {
+  margin-left: 0.5rem;
+}
+
+.chat-container {
+  border: 2px solid black;
+  height: 70%;
+  width: 70%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.chat-message-box {
+  padding: 10px;
+  border: 2px solid black;
+  /* display: flex;
+  flex-direction: column; */
+}

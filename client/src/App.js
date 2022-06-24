@@ -12,17 +12,19 @@ import Home from "./pages/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Dashboard from "./pages/Dashboard";
-import CreateGroup from "./pages/CreateGroup";
+import Group from "./pages/Group/Group";
 import FindEatery from "./pages/FindEatery/FindEatery";
 import GroupSettings from "./components/GroupSettings/GroupSettings";
-import Lobby from "./pages/Lobby";
+import Lobby from "./pages/Lobby/Lobby";
+
+import "./App.css";
 
 const App = () => {
   return (
     <AuthProvider>
       <SocketProvider>
-        <div>
-          <Navigation />
+        <Navigation />
+        <main className="app-body">
           <Routes>
             <Route index element={<Home />} />
             <Route path="/home" element={<Home />} />
@@ -30,7 +32,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/creategroup" element={<CreateGroup />} />
+              <Route path="/group" element={<Group />} />
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/searchsettings" element={<GroupSettings />} />
               <Route path="/findeatery/:location/" element={<FindEatery />} />
@@ -41,7 +43,8 @@ const App = () => {
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>
-        </div>
+        </main>
+        {/* <footer>Hello</footer> */}
       </SocketProvider>
     </AuthProvider>
   );

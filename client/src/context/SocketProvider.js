@@ -14,7 +14,13 @@ const SocketProvider = ({ children }) => {
     setSocket(socket);
   };
 
-  const value = { socket, initSocket };
+  const isHost = false;
+
+  const setHost = () => {
+    isHost = !isHost;
+  };
+
+  const value = { socket, initSocket, isHost, setHost };
   return (
     <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );

@@ -34,7 +34,7 @@ const Navigation = () => {
         </li>
         <li>
           <NavLink
-            to="/creategroup"
+            to="/group"
             className={({ isActive }) => (isActive ? "activenav" : "navlink")}
           >
             I'm Hungry
