@@ -7,6 +7,7 @@ const passport = require("passport");
 // const MongoStore = require("connect-mongo"); //OBSOLETE REMOVE LATER, replace authentication method of sessions with JWT
 const auth = require("./routes/auth");
 const eatery = require("./routes/eatery");
+const FRONTEND_URL = require("./config/config");
 
 require("dotenv").config();
 require("./config/passport");
@@ -14,7 +15,7 @@ require("./config/passport");
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
-  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] }, //change url for production
+  cors: { origin: FRONTEND_URL, methods: ["GET", "POST"] }, //change url for production
 });
 
 // Middleware

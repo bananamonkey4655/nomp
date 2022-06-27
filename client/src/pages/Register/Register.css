@@ -1,9 +1,10 @@
 .form {
   width: 25vw;
-  background-color: lightgrey;
+  background-color: #f87171;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  border-radius: 20px;
 }
 
 .register-wrapper {
@@ -24,4 +25,5 @@
 .register-button {
   width: 80%;
   height: 70%;
+  font-weight: bold;
 }

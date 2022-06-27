@@ -1,0 +1,38 @@
+.group-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-container h1 {
+  margin-bottom: 1rem;
+  border-bottom: 0.3rem solid red;
+}
+
+.group-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+button {
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.create-button {
+  background-color: lightcoral;
+}
+
+button:hover {
+  opacity: 0.6;
+}

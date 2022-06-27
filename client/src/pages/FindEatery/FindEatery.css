@@ -63,3 +63,7 @@
   opacity: 0.6;
   cursor: pointer;
 }
+
+.empty-space {
+  height: 50px;
+}

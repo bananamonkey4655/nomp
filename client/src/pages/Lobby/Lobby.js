@@ -17,7 +17,6 @@ const Lobby = () => {
   useEffect(() => {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
-      console.log(newMembers);
     });
   }, [socket]);
 

@@ -23,34 +23,37 @@ const Group = () => {
   };
 
   return (
-    <div>
-      <h1>Lets get started!</h1>
-      <form>
-        <label>
-          Nickname:
-          <input
-            type="text"
-            placeholder="Your name"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            required
-          ></input>
-        </label>
+    <div className="group-wrapper">
+      <div className="group-container">
+        <h1>Create or join a group</h1>
+        <form>
+          <label>
+            Nickname:
+            <input
+              type="text"
+              placeholder="Your name"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              required
+            ></input>
+          </label>
 
-        <label>
-          Room:
-          <input
-            type="text"
-            placeholder="Join room ID"
-            value={groupId}
-            onChange={(e) => setGroupId(e.target.value)}
-            required
-          ></input>
-        </label>
-
-        <button onClick={(e) => joinGroup(e, true)}>Create a group</button>
-        <button onClick={(e) => joinGroup(e, false)}>Join Group</button>
-      </form>
+          <label>
+            Room:
+            <input
+              type="text"
+              placeholder="Join room ID"
+              value={groupId}
+              onChange={(e) => setGroupId(e.target.value)}
+              required
+            ></input>
+          </label>
+          <button onClick={(e) => joinGroup(e, true)} className="create-button">
+            Create a group
+          </button>
+          <button onClick={(e) => joinGroup(e, false)}>Join Group</button>
+        </form>
+      </div>
     </div>
   );
 };

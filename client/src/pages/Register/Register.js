@@ -51,7 +51,7 @@ const Register = () => {
             disabled={isLoading}
             variant="primary"
             type="submit"
-            className="register-button"
+            className="register-button btn-dark"
           >
             Sign Up
           </Button>

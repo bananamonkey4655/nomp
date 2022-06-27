@@ -37,7 +37,7 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <Form.Text className="text-muted">Welcome to Nomp!</Form.Text>
+            <Form.Text className="text-dark ">Welcome to Nomp!</Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="password">
@@ -55,7 +55,7 @@ const Login = () => {
             disabled={isLoading}
             variant="primary"
             type="submit"
-            className="login-button"
+            className="login-button btn-dark"
           >
             Continue
           </Button>

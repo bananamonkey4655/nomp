@@ -14,6 +14,8 @@ const SocketProvider = ({ children }) => {
     setSocket(socket);
   };
 
+  const room = "";
+
   const isHost = false;
 
   const setHost = () => {
@@ -27,10 +29,3 @@ const SocketProvider = ({ children }) => {
 };
 
 export { SocketProvider, useSocket };
-
-// socket.on("connect", () => {
-//   console.log(`Client: connected with ${socket.id}`);
-// });
-
-// socket.emit("custom-event", "Hello server");
-// //create socket rooms => allow user to input room they want to enter.

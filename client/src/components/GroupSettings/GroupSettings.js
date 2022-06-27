@@ -21,8 +21,7 @@ const GroupSettings = ({ isHost }) => {
     <div className="group-settings-box">
       {isHost ? (
         <form onSubmit={findEateries}>
-          <h2>Settings</h2>
-          <div>Number of people</div>
+          <h2>Group Settings</h2>
           <div>
             <label>Location</label>
             <input
@@ -40,9 +39,13 @@ const GroupSettings = ({ isHost }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div>Filters</div>
           <div>Get Link</div>
-          <Button type="submit" variant="primary" size="lg">
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            className="btn-dark"
+          >
             Start Deciding
           </Button>
         </form>

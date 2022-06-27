@@ -6,7 +6,7 @@ const Dashboard = () => {
   return (
     <>
       <h2>Dashboard (Protected Page)</h2>
-      <div>Authenticated as {token}</div>
+      <div>Authenticated</div>
       <div>Placeholder for dashboard</div>
     </>
   );
