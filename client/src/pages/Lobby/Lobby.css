@@ -45,11 +45,13 @@ ul {
   border-radius: 12px;
   margin-bottom: 1rem;
   width: 60px;
+  border: 2px solid black;
 }
 
 .members-count span {
   padding-left: 0.5rem;
   font-size: large;
+  font-weight: 600;
 }
 
 .members-count-wrapper {

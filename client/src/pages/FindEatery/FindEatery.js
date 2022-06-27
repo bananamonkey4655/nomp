@@ -1,8 +1,8 @@
-import "./FindEatery.css";
-import { MapPin, Heart, X } from "phosphor-react";
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
+import "./FindEatery.css";
+import { MapPin, Heart, X } from "phosphor-react";
 
 import BACKEND_URL from "../../config";
 
@@ -13,9 +13,7 @@ const FindEatery = () => {
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
   const [desiredEateries, setDesiredEateries] = useState([]);
 
-  // Fetch the list of eateries from API using given filters when component first mounts
   useEffect(() => {
-    // Knuth shuffle
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -24,11 +22,9 @@ const FindEatery = () => {
     }
 
     async function fetchData() {
-      // Note: Seems to be the case that if location string is gibberish, then Yelp API searches for location=Singapore by default (because "Singapore" string appended to URL in our backend)
-      // First result would be 'Gardens by the Bay'
       const response = await fetch(
         `${BACKEND_URL}/eatery/search?location=${location}&term=${
-          term ? term : "" //check if term is falsy, otherwise URL in fetch would be ...&term=undefined
+          term ? term : ""
         }`
       );
       const data = await response.json();
@@ -38,8 +34,7 @@ const FindEatery = () => {
         setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
       } else {
         // shuffle(data.businesses);
-        setEateries(data.businesses); //note that setting state is asynchronous
-        console.log(data.businesses);
+        setEateries(data.businesses);
       }
     }
 
@@ -50,20 +45,18 @@ const FindEatery = () => {
   useEffect(() => {
     if (eateries) {
       const nextEatery = eateries[0];
-      setDisplayedEatery(nextEatery); //currently sets eatery to 1st one
+      setDisplayedEatery(nextEatery);
     }
   }, [eateries]);
 
-  // temporary names
-  const want = () => {
+  const addToList = () => {
     setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
-    getRandomNewEatery();
-    console.log(desiredEateries);
+    getNextEatery();
   };
   const skip = () => {
-    getRandomNewEatery();
+    getNextEatery();
   };
-  const getRandomNewEatery = () => {
+  const getNextEatery = () => {
     setEateries((prevEateries) =>
       prevEateries.filter((et) => et !== displayedEatery)
     );
@@ -91,8 +84,14 @@ const FindEatery = () => {
         <div className="container">
           <img src={image_url} />
           <div className="imagebox-text">
+            <div className="empty-space"></div>
             <h1>{name}</h1>
-            <p>
+            <h5>
+              {categories
+                .reduce((acc, curr) => acc + ", " + curr.title, "")
+                .substring(1)}
+            </h5>
+            <section>
               <div>
                 <span>Rating: {rating}</span>
               </div>
@@ -102,13 +101,13 @@ const FindEatery = () => {
                 <span>{place.address1}</span>
               </div>
               <div></div>
-            </p>
+            </section>
           </div>
         </div>
         <div className="buttons">
           <Heart
             className="want-button hover-effect"
-            onClick={want}
+            onClick={addToList}
             size={50}
             color="#f14a59"
             weight="fill"
