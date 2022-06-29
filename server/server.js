@@ -7,6 +7,7 @@ const passport = require("passport");
 // const MongoStore = require("connect-mongo"); //OBSOLETE REMOVE LATER, replace authentication method of sessions with JWT
 const auth = require("./routes/auth");
 const eatery = require("./routes/eatery");
+const geolocation = require("./routes/geolocation");
 const FRONTEND_URL = require("./config/config");
 
 require("dotenv").config();
@@ -44,6 +45,7 @@ app.use(passport.session());
 // Routes
 app.use("/auth", auth);
 app.use("/eatery", eatery);
+app.use("/geolocation", geolocation);
 
 app.get("/", (req, res) => {
   res.send(
