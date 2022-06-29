@@ -9,7 +9,6 @@ require("dotenv").config();
 router.get("/get", async (req, res) => {
   const { lat, lng } = req.query;
   try {
-    //const googleMapsResponse = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDuSONcwph1O_HdU-iQ_giJcdUBrlKk31M`)
     const googleMapsResponse = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=` + `${process.env.GOOGLEMAPS_APIKEY}`);
     return res.status(200).json(googleMapsResponse.data);
   } catch (error) {
