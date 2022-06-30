@@ -3,15 +3,18 @@ import Button from "react-bootstrap/Button";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../context/SocketProvider";
 
 const GroupSettings = ({ isHost }) => {
   const [location, setLocation] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const { socket, groupId } = useSocket();
 
   const findEateries = (e) => {
     e.preventDefault();
 
+    socket.emit("host-start-search", { location, searchTerm, groupId });
     navigate(`/findeatery/${location}/${searchTerm}`);
     setLocation("");
     setSearchTerm("");

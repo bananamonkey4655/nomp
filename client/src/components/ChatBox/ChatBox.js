@@ -20,7 +20,7 @@ const ChatBox = ({ name }) => {
   };
 
   useEffect(() => {
-    socket.on("new-member", (name) => {
+    socket.on("chat:new-member", (name) => {
       updateChat({ name: "NOMP", message: `${name} has joined the lobby` });
     });
     socket.on("new-message", (payload) => {

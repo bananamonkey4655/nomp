@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { io } from "socket.io-client";
 import BACKEND_URL from "../config";
 
@@ -8,21 +8,29 @@ const useSocket = () => useContext(SocketContext);
 
 const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
+  const [name, setName] = useState("");
+  const [groupId, setGroupId] = useState(null);
+  // const [membersCompleted, setMembersCompleted] = useState(0);
 
   const initSocket = () => {
     const socket = io(BACKEND_URL);
     setSocket(socket);
+    // socket.on("members-c");
   };
 
-  const room = "";
+  let isHost = false;
 
-  const isHost = false;
-
-  const setHost = () => {
-    isHost = !isHost;
+  const value = {
+    socket,
+    initSocket,
+    name,
+    setName,
+    groupId,
+    setGroupId,
+    isHost,
+    // membersCompleted
   };
 
-  const value = { socket, initSocket, isHost, setHost };
   return (
     <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );

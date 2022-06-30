@@ -28,19 +28,15 @@ router.get("/search", async (req, res) => {
   }
 });
 
-module.exports = router;
+router.get("/match", async (req, res) => {
+  const { id } = req.query;
+  try {
+    const yelpResponse = await yelpAPI.get(`businesses/${id}`);
+    return res.status(200).json(yelpResponse.data);
+  } catch (error) {
+    console.log("Error");
+    return res.json(error.message);
+  }
+});
 
-/** 1. user input their location,
- *
- * 2. frontend sends their location. e.g. user inputs simei, future addition: automatically find nearest location? (geolocation API)
- * for now maybe just stick with user sends their location(in a string? or longitude+latitude), put into query string of URL
- *
- * 3. send to backend, using 2 endpoints: get from frontend to backend , get from backend to yelp's API
- *  e.g.
- * app.get("backend-nomp.herokuapp.com/eatery/search?term=...&location=...", (req, res) => {
- *  //then we fetch using axios
- *  fetch("yelp.api.com/...) using query parameters
- * })
- *
- *
- */
+module.exports = router;

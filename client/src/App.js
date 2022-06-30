@@ -16,6 +16,7 @@ import Group from "./pages/Group/Group";
 import FindEatery from "./pages/FindEatery/FindEatery";
 import GroupSettings from "./components/GroupSettings/GroupSettings";
 import Lobby from "./pages/Lobby/Lobby";
+import ResultsPage from "./pages/ResultsPage/ResultsPage";
 
 import "./App.css";
 
@@ -40,6 +41,7 @@ const App = () => {
                 path="/findeatery/:location/:term"
                 element={<FindEatery />}
               />
+              <Route path="/gameover" element={<ResultsPage />} />
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>

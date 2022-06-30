@@ -6,8 +6,8 @@ import "./Group.css";
 
 const Group = () => {
   const [nickname, setNickname] = useState("");
-  const [groupId, setGroupId] = useState("");
-  const { socket, initSocket } = useSocket();
+  const [roomName, setRoomName] = useState("");
+  const { socket, initSocket, setName, setGroupId } = useSocket();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,9 +16,12 @@ const Group = () => {
 
   const joinGroup = (e, isHost) => {
     e.preventDefault();
-    if (groupId === "") return;
+    if (roomName === "") return;
 
-    socket.emit("join-group", { nickname, groupId, isHost });
+    socket.emit("user:join-group", { nickname, groupId: roomName, isHost });
+    setName(nickname);
+    setGroupId(roomName);
+
     navigate("/lobby", { state: { name: nickname } });
   };
 
@@ -43,8 +46,8 @@ const Group = () => {
             <input
               type="text"
               placeholder="Join room ID"
-              value={groupId}
-              onChange={(e) => setGroupId(e.target.value)}
+              value={roomName}
+              onChange={(e) => setRoomName(e.target.value)}
               required
             ></input>
           </label>
