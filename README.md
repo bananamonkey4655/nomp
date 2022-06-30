@@ -1,4 +1,4 @@
 # nomp
 
 # Link to webpage:
-https://orbital-nomp.netlify.app/
+https://orbital-nomp.netlify.app
