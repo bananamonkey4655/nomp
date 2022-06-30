@@ -14,7 +14,7 @@ const yelpAPI = axios.create({
   // let app handle error by sending JSON of { "error": ... } instead
 });
 
-router.get("/search", async (req, res) => {
+router.get("/get", async (req, res) => {
   const { term, location } = req.query;
   const LIMIT = 50; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
   try {
