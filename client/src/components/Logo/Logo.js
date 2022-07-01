@@ -1,4 +1,4 @@
-import "./Logo.css";
+import "./logo.css";
 import logo from "../../assets/Nomp_placeholder_icon.png";
 
 const Logo = () => {

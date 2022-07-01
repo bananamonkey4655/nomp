@@ -6,6 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const auth = require("./routes/auth");
 const eatery = require("./routes/eatery");
+const geolocation = require("./routes/geolocation");
 const FRONTEND_URL = require("./config/config");
 
 require("dotenv").config();
@@ -34,6 +35,7 @@ app.use(passport.session());
 // Routes
 app.use("/auth", auth);
 app.use("/eatery", eatery);
+app.use("/geolocation", geolocation);
 
 app.get("/", (req, res) => {
   res.send(
