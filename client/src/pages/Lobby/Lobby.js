@@ -1,29 +1,31 @@
 import { useSocket } from "../../context/SocketProvider";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ChatBox from "../../components/ChatBox/ChatBox";
-import { useLocation } from "react-router-dom";
-import "./Lobby.css";
 import GroupSettings from "../../components/GroupSettings/GroupSettings";
 
 import { Users } from "phosphor-react";
+import "./Lobby.css";
 
 const Lobby = () => {
-  const { socket } = useSocket();
+  const { socket, name, groupId } = useSocket();
   const [groupMembers, setGroupMembers] = useState([]);
   const [isHost, setIsHost] = useState(false);
-  const location = useLocation();
-  const myName = location.state.name;
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
+    });
+    socket.on("members-start-search", ({ location, searchTerm }) => {
+      navigate(`/findeatery/${location}/${searchTerm}`); //TODO: call yelp api once only and store eateries
     });
   }, [socket]);
 
   useEffect(() => {
     setIsHost(
       !!groupMembers.filter(
-        (member) => member.nickname === myName && member.isHost
+        (member) => member.nickname === name && member.isHost
       ).length
     );
   }, [groupMembers]);
@@ -50,7 +52,7 @@ const Lobby = () => {
         <GroupSettings isHost={isHost} />
       </section>
 
-      <ChatBox name={myName} />
+      <ChatBox name={name} />
     </div>
   ) : (
     <h1>Loading...</h1>

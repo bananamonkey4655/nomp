@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./FindEatery.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
 import BACKEND_URL from "../../config";
+import { useSocket } from "../../context/SocketProvider";
 
 const FindEatery = () => {
   let { location, term } = useParams(); // location is required, term is optional
-  const [eateries, setEateries] = useState([]);
+  const navigate = useNavigate();
+
+  const { socket, groupId, name } = useSocket();
+  const [eateries, setEateries] = useState(null);
   const [displayedEatery, setDisplayedEatery] = useState(null);
+  const [eateryIndex, setEateryIndex] = useState(0);
+  // const [desiredEateries, setDesiredEateries] = useState([]);
+  const [isSearchComplete, setIsSearchComplete] = useState(false);
+
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
-  const [desiredEateries, setDesiredEateries] = useState([]);
 
   useEffect(() => {
     function shuffle(array) {
@@ -39,27 +46,38 @@ const FindEatery = () => {
     }
 
     fetchData();
+    socket.on("show-results", ({ eateryId, count }) => {
+      navigate("/gameover", { state: { eateryId, count } });
+    });
   }, []);
 
   // Update currently displayed eatery whenever user decides to keep or skip the eatery
   useEffect(() => {
     if (eateries) {
-      const nextEatery = eateries[0];
-      setDisplayedEatery(nextEatery);
+      getNextEatery();
     }
   }, [eateries]);
 
   const addToList = () => {
-    setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
+    // setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
+    socket.emit("add-desired-eatery", {
+      eateryId: displayedEatery.id,
+      roomId: groupId,
+    });
     getNextEatery();
   };
   const skip = () => {
     getNextEatery();
   };
   const getNextEatery = () => {
-    setEateries((prevEateries) =>
-      prevEateries.filter((et) => et !== displayedEatery)
-    );
+    if (eateryIndex >= eateries.length) {
+      setIsSearchComplete(true);
+      socket.emit("member-completed-game", name);
+    } else {
+      setEateryIndex((prev) => (prev += 1));
+      const nextEatery = eateries[eateryIndex];
+      setDisplayedEatery(nextEatery);
+    }
   };
 
   // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
@@ -67,6 +85,8 @@ const FindEatery = () => {
     return <h1>Loading...</h1>;
   } else if (fetchErrorMessage) {
     return <h1>Error fetching eateries!</h1>;
+  } else if (isSearchComplete) {
+    return <h1>Waiting for other members to complete search...</h1>;
   } else {
     const {
       name,
@@ -81,6 +101,7 @@ const FindEatery = () => {
 
     return (
       <div className="wrapper">
+        <h1>{`${eateryIndex}/${eateries.length} restaurants viewed`}</h1>
         <div className="container">
           <img src={image_url} />
           <div className="imagebox-text">
