@@ -10,12 +10,10 @@ const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [name, setName] = useState("");
   const [groupId, setGroupId] = useState(null);
-  // const [membersCompleted, setMembersCompleted] = useState(0);
 
   const initSocket = () => {
     const socket = io(BACKEND_URL);
     setSocket(socket);
-    // socket.on("members-c");
   };
 
   let isHost = false;
@@ -28,7 +26,6 @@ const SocketProvider = ({ children }) => {
     groupId,
     setGroupId,
     isHost,
-    // membersCompleted
   };
 
   return (

@@ -1,0 +1,10 @@
+.external-redirect-button {
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  font-size: 2.5rem;
+  background-color: lightsalmon;
+  border: 0.5rem solid red;
+  border-radius: 1rem;
+  padding: 10px;
+}

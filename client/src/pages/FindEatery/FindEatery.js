@@ -73,7 +73,6 @@ const FindEatery = () => {
     if (eateryIndex >= eateries.length) {
       setIsSearchComplete(true);
       socket.emit("member-completed-game", name);
-      console.log("Emitting member-completed-game event!");
     } else {
       setEateryIndex((prev) => (prev += 1));
       const nextEatery = eateries[eateryIndex];
@@ -103,7 +102,6 @@ const FindEatery = () => {
     return (
       <div className="wrapper">
         <h1>{`${eateryIndex}/${eateries.length} restaurants viewed`}</h1>
-        <h1>0/6 group members finished</h1>
         <div className="container">
           <img src={image_url} />
           <div className="imagebox-text">

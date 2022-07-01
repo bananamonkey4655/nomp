@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+import "./ResultsPage.css";
+import { MapPin } from "phosphor-react";
 import BACKEND_URL from "../../config";
 
 const ResultsPage = () => {
@@ -26,16 +28,51 @@ const ResultsPage = () => {
   }, []);
 
   if (resultEatery) {
-    const { name } = resultEatery;
+    const {
+      name,
+      image_url,
+      display_phone,
+      location,
+      rating,
+      review_count,
+      categories,
+      price,
+      url,
+    } = resultEatery;
 
     return (
       <div>
-        <h1>Results</h1>
-        <h3>
-          Winner is {name}/{eateryId}
-        </h3>
-        <h3>With a count of {count}</h3>
-        <h3>Test</h3>
+        <div className="container">
+          <img src={image_url} />
+          <div className="imagebox-text">
+            <div className="empty-space"></div>
+            <h1>{name}</h1>
+            <h5>
+              {categories
+                .reduce((acc, curr) => acc + ", " + curr.title, "")
+                .substring(1)}
+            </h5>
+            <section>
+              <div>
+                <span>Rating: {rating}/5</span>
+              </div>
+              <div>{price}</div>
+              <div className="address">
+                <MapPin size={20} />
+                <span>{location.address1}</span>
+              </div>
+              <div>{display_phone}</div>
+            </section>
+          </div>
+        </div>
+        <a
+          className="external-redirect-button"
+          href={url}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Eat here!
+        </a>
       </div>
     );
   }

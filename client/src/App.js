@@ -46,7 +46,6 @@ const App = () => {
             <Route path="*" element={<NoMatch />} />
           </Routes>
         </main>
-        {/* <footer>Hello</footer> */}
       </SocketProvider>
     </AuthProvider>
   );
