@@ -1,7 +1,7 @@
-const TEST_URL = "http://localhost:8000";
-const ACTUAL_URL = "https://backend-nomp.herokuapp.com";
+const production = "https://backend-nomp.herokuapp.com";
+const development = "http://localhost:8000";
 
-// Change URL here
-const BACKEND_URL = ACTUAL_URL;
+const BACKEND_URL =
+  process.env.NODE_ENV === "development" ? development : production;
 
 export default BACKEND_URL;

@@ -14,9 +14,9 @@ const yelpAPI = axios.create({
   // let app handle error by sending JSON of { "error": ... } instead
 });
 
-router.get("/get", async (req, res) => {
+router.get("/search", async (req, res) => {
   const { term, location } = req.query;
-  const LIMIT = 50; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
+  const LIMIT = 20; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
   try {
     const yelpResponse = await yelpAPI.get(
       `/businesses/search?term=${term}&location=${location}_singapore&limit=${LIMIT}` //"singapore" added to URL to filter for SG only

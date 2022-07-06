@@ -7,11 +7,11 @@ import { SocketProvider } from "./context/SocketProvider";
 
 import ProtectedRoute from "./router/ProtectedRoute";
 import Navigation from "./pages/Navigation/Navigation";
-import NoMatch from "./pages/NoMatch";
-import Home from "./pages/Home";
+import NoMatch from "./pages/NoMatch/NoMatch";
+import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Group from "./pages/Group/Group";
 import FindEatery from "./pages/FindEatery/FindEatery";
 import GroupSettings from "./components/GroupSettings/GroupSettings";

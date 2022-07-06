@@ -13,7 +13,7 @@ const Navigation = () => {
         <Logo />
         <h1>NOMP</h1>
       </div>
-      <ul>
+      <ul className="navbar">
         <li>
           <NavLink
             to="/home"

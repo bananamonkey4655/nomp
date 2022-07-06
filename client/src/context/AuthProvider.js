@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
         navigate("/home");
       }
     } catch (err) {
-      setErrorMessage("Network connection failure :(");
+      setErrorMessage("Failure to connect to server :(");
       setIsLoading(false);
     }
 
