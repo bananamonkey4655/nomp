@@ -1,5 +1,5 @@
 import { useState, createContext, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import BACKEND_URL from "../config";
 
@@ -9,6 +9,7 @@ const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [token, setToken] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,10 +32,9 @@ const AuthProvider = ({ children }) => {
       setIsLoading(false);
     }
 
-    // Work in progress: feature: navigate user back to page where they came from after login
-
-    // const origin = location.state?.from?.pathname || "/login";
-    // navigate(origin);
+    // Send user back to page where they were after logging in
+    const origin = location.state?.from?.pathname || "/login";
+    navigate(origin);
   };
 
   const authenticateUser = async (username, password) => {
