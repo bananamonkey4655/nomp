@@ -1,0 +1,94 @@
+.container {
+  flex: 1;
+  margin-left: 10%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.header {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 3rem;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.user h3 {
+  font-size: 1rem;
+  margin-bottom: 0.15rem;
+}
+
+.online {
+  height: 0.65rem;
+  width: 0.65rem;
+  background-color: #32cd32;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+}
+
+.messages {
+  background-color: #dedede;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.messages h5 {
+  font-size: 0.7rem;
+  padding-left: 0.3rem;
+}
+
+.messages p {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 0.4rem 1rem;
+}
+
+.myMessage {
+  align-self: flex-end;
+}
+
+.myMessage h5 {
+  display: none;
+}
+
+.myMessage p {
+  background-color: #088ffa;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.nomp h5::after {
+  content: " 🥡 🍱";
+}
+
+.input {
+  background-color: gainsboro;
+  flex: 1;
+  border: none;
+  padding: 1rem;
+}
+
+.chatButton {
+  display: none;
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+}

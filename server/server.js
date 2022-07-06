@@ -43,9 +43,6 @@ app.get("/", (req, res) => {
   );
 });
 
-/*************************************************************************************************************************************************************************** */
-// Create two-way WebSocket connection
-
 const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {
@@ -59,9 +56,11 @@ const {
 
 const members = new Map();
 
+// Run when client connects
 io.on("connection", (socket) => {
   console.log(`Connection: User socket id: ${socket.id}`);
 
+  // Add user to group
   socket.on("user:join-group", ({ nickname, groupId, isHost }) => {
     sanitizeInput(groupId);
     socket.join(groupId);
@@ -70,16 +69,20 @@ io.on("connection", (socket) => {
     updateMembersOnClient(groupId, members);
     io.to(groupId).emit("chat:new-member", nickname);
 
+    // Broadcast message to chat room
     socket.on("send-message", (message) => {
       emitMessageToClients(groupId, message);
     });
 
+    // Begin voting game when host starts
     socket.on("host-start-search", ({ location, searchTerm, groupId }) => {
       io.in(groupId).emit("members-start-search", { location, searchTerm });
     });
 
+    // Increment vote count for a restaurant
     socket.on("add-desired-eatery", addEateryVote);
 
+    // End voting game when completed
     socket.on("member-completed-game", (name) => {
       console.log("Received member-completed-game event");
       changeMemberDoneStatus(name, members, groupId);
@@ -89,6 +92,7 @@ io.on("connection", (socket) => {
       }
     });
 
+    // Disconnect from server
     socket.on("disconnect", () => {
       console.log(`Disconnected: ${socket.id}`);
       removeMemberFromMap(nickname, groupId, members);
