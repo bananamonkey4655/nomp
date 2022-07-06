@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
     }
 
     // Send user back to page where they were after logging in
-    const origin = location.state?.from?.pathname || "/login";
+    const origin = location.state?.from?.pathname || "/group";
     navigate(origin);
   };
 
@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
       navigate("/login");
       // TODO: logic on if username already taken etc, response is a failure
     } catch (err) {
-      setErrorMessage("Network connection failure :(");
+      setErrorMessage("Failure to connect to server :(");
       setIsLoading(false);
     }
   };

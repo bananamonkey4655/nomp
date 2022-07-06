@@ -8,12 +8,11 @@ import { useSocket } from "../../context/SocketProvider";
 
 import useGeoLocation from "../../hooks/useGeoLocation";
 
-
 const GroupSettings = ({ isHost }) => {
   const [location, setLocation] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [fetchErrorMessage, setFetchErrorMessage] = useState(""); 
-  
+  const [fetchErrorMessage, setFetchErrorMessage] = useState("");
+
   const { socket, groupId } = useSocket();
   const navigate = useNavigate();
   const geoLocation = useGeoLocation();
@@ -22,7 +21,7 @@ const GroupSettings = ({ isHost }) => {
     if (geoLocation.loaded) {
       fetchDataAndPaste();
     } else {
-      console.log("Location data not available yet")
+      console.log("Location data not available yet");
     }
   }
 
@@ -44,7 +43,7 @@ const GroupSettings = ({ isHost }) => {
     e.preventDefault();
 
     socket.emit("host-start-search", { location, searchTerm, groupId });
-    navigate(`/findeatery/${location}/${searchTerm}`);
+    navigate(`/Voting/${location}/${searchTerm}`);
     setLocation("");
     setSearchTerm("");
   };
@@ -62,7 +61,14 @@ const GroupSettings = ({ isHost }) => {
               onChange={(e) => setLocation(e.target.value)}
               required
             />
-            <Button variant="primary" onClick={() => pasteAddress(geoLocation)} className="fw-bold shadow mx-3 w-25 h-25"> Get Location </Button>
+            <Button
+              variant="primary"
+              onClick={() => pasteAddress(geoLocation)}
+              className="fw-bold shadow mx-3 w-25 h-25"
+            >
+              {" "}
+              Get Location{" "}
+            </Button>
           </div>
           <div>
             <label>Search</label>

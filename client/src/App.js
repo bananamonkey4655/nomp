@@ -13,7 +13,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Group from "./pages/Group/Group";
-import FindEatery from "./pages/FindEatery/FindEatery";
+import Voting from "./pages/Voting/Voting";
 import GroupSettings from "./components/GroupSettings/GroupSettings";
 import Lobby from "./pages/Lobby/Lobby";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
@@ -36,11 +36,8 @@ const App = () => {
               <Route path="/group" element={<Group />} />
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/searchsettings" element={<GroupSettings />} />
-              <Route path="/findeatery/:location/" element={<FindEatery />} />
-              <Route
-                path="/findeatery/:location/:term"
-                element={<FindEatery />}
-              />
+              <Route path="/voting/:location/" element={<Voting />} />
+              <Route path="/voting/:location/:term" element={<Voting />} />
               <Route path="/gameover" element={<ResultsPage />} />
             </Route>
             <Route path="*" element={<NoMatch />} />

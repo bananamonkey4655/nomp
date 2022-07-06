@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import "./FindEatery.css";
+import "./Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
 import BACKEND_URL from "../../config";
 import { useSocket } from "../../context/SocketProvider";
 
-const FindEatery = () => {
+const Voting = () => {
   let { location, term } = useParams(); // location is required, term is optional
   const navigate = useNavigate();
-
   const { socket, groupId, name } = useSocket();
+
   const [eateries, setEateries] = useState(null);
   const [displayedEatery, setDisplayedEatery] = useState(null);
   const [eateryIndex, setEateryIndex] = useState(0);
-  // const [desiredEateries, setDesiredEateries] = useState([]);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
 
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
@@ -146,4 +145,4 @@ const FindEatery = () => {
   }
 };
 
-export default FindEatery;
+export default Voting;

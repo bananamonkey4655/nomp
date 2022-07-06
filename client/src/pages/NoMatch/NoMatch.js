@@ -1,10 +1,11 @@
-// Update in future
+import styles from "./NoMatch.module.css";
 
 const NoMatch = () => {
   return (
-    <>
-      <h2>404 Page Not Found</h2>
-    </>
+    <div className={styles.container}>
+      <h1 className={styles.heading}>404</h1>
+      <h2 className={styles.text}>Page not found</h2>
+    </div>
   );
 };
 
