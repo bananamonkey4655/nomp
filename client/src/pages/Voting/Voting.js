@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
@@ -8,7 +8,7 @@ import BACKEND_URL from "../../config";
 import { useSocket } from "../../context/SocketProvider";
 
 const Voting = () => {
-  let { location, term } = useParams(); // location is required, term is optional
+  const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional
   const navigate = useNavigate();
   const { socket, groupId, name } = useSocket();
 
@@ -28,10 +28,9 @@ const Voting = () => {
     }
 
     async function fetchData() {
+      console.log(location, term, budget);
       const response = await fetch(
-        `${BACKEND_URL}/eatery/search?location=${location}&term=${
-          term ? term : ""
-        }`
+        `${BACKEND_URL}/eatery/search?location=${location}&term=${term}&budget=${budget}`
       );
       const data = await response.json();
       if (data.error) {

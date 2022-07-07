@@ -36,8 +36,7 @@ const App = () => {
               <Route path="/group" element={<Group />} />
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/searchsettings" element={<GroupSettings />} />
-              <Route path="/voting/:location/" element={<Voting />} />
-              <Route path="/voting/:location/:term" element={<Voting />} />
+              <Route path="/voting" element={<Voting />} />
               <Route path="/gameover" element={<ResultsPage />} />
             </Route>
             <Route path="*" element={<NoMatch />} />

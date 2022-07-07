@@ -75,9 +75,16 @@ io.on("connection", (socket) => {
     });
 
     // Begin voting game when host starts
-    socket.on("host-start-search", ({ location, searchTerm, groupId }) => {
-      io.in(groupId).emit("members-start-search", { location, searchTerm });
-    });
+    socket.on(
+      "host-start-search",
+      ({ location, searchTerm, budget, groupId }) => {
+        io.in(groupId).emit("members-start-search", {
+          location,
+          searchTerm,
+          budget,
+        });
+      }
+    );
 
     // Increment vote count for a restaurant
     socket.on("add-desired-eatery", addEateryVote);

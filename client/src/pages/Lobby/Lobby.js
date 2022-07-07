@@ -17,8 +17,8 @@ const Lobby = () => {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
     });
-    socket.on("members-start-search", ({ location, searchTerm }) => {
-      navigate(`/Voting/${location}/${searchTerm}`); //TODO: call yelp api once only and store eateries
+    socket.on("members-start-search", ({ location, searchTerm, budget }) => {
+      navigate(`/voting`, { state: { location, searchTerm, budget } }); //TODO: call yelp api once only and store eateries
     });
   }, [socket]);
 

@@ -9,13 +9,20 @@ import { useSocket } from "../../context/SocketProvider";
 import useGeoLocation from "../../hooks/useGeoLocation";
 
 const GroupSettings = ({ isHost }) => {
-  const [location, setLocation] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [fetchErrorMessage, setFetchErrorMessage] = useState("");
-
   const { socket, groupId } = useSocket();
   const navigate = useNavigate();
   const geoLocation = useGeoLocation();
+
+  const [location, setLocation] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [budget, setBudget] = useState("0");
+  // const [radius, setRadius] = useState(0);
+
+  const [fetchErrorMessage, setFetchErrorMessage] = useState("");
+
+  // const handleRadiusChange = (e) => setRadius(e.target.value);
+  const handleRadioClick = (e) => setBudget(e.currentTarget.value);
+  const isBudgetSelected = (selectedBudget) => budget === selectedBudget;
 
   function pasteAddress(geoLocation) {
     if (geoLocation.loaded) {
@@ -42,8 +49,9 @@ const GroupSettings = ({ isHost }) => {
   const findEateries = (e) => {
     e.preventDefault();
 
-    socket.emit("host-start-search", { location, searchTerm, groupId });
-    navigate(`/Voting/${location}/${searchTerm}`);
+    socket.emit("host-start-search", { location, searchTerm, budget, groupId });
+    navigate("/voting", { state: { location, searchTerm, budget } });
+
     setLocation("");
     setSearchTerm("");
   };
@@ -53,6 +61,7 @@ const GroupSettings = ({ isHost }) => {
       {isHost ? (
         <form onSubmit={findEateries}>
           <h2>Group Settings</h2>
+
           <div>
             <label>Location</label>
             <input
@@ -70,6 +79,7 @@ const GroupSettings = ({ isHost }) => {
               Get Location{" "}
             </Button>
           </div>
+
           <div>
             <label>Search</label>
             <input
@@ -78,7 +88,66 @@ const GroupSettings = ({ isHost }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
+          <div>
+            <label>Budget</label>
+            <label>
+              <input
+                type="radio"
+                value="0"
+                name="budget"
+                checked={isBudgetSelected("0")}
+                onChange={handleRadioClick}
+              />
+              No preference
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="1"
+                name="budget"
+                checked={isBudgetSelected("1")}
+                onChange={handleRadioClick}
+              />
+              $
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="1, 2"
+                name="budget"
+                checked={isBudgetSelected("1, 2")}
+                onChange={handleRadioClick}
+              />
+              $$
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="1, 2, 3"
+                name="budget"
+                checked={isBudgetSelected("1, 2, 3")}
+                onChange={handleRadioClick}
+              />
+              $$$
+            </label>
+          </div>
+
+          {/* <div>
+            <label>
+              Radius
+              <input
+                type="range"
+                value={radius}
+                onChange={handleRadiusChange}
+                min="100"
+                max="40000"
+              />
+            </label>
+          </div> */}
+
           <div>Get Link</div>
+
           <Button
             type="submit"
             variant="primary"
