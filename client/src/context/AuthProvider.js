@@ -5,6 +5,7 @@ import BACKEND_URL from "../config";
 
 const AuthContext = createContext(null);
 
+// Create custom authentication hook
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
@@ -15,18 +16,22 @@ const AuthProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const attemptRegister = async (username, password) => {
+    try {
+      const token = await authenticateUser("register", username, password);
+      setToken(token);
+    } catch (err) {
+      setErrorMessage("Failure to connect to server :(");
+      setIsLoading(false);
+    }
+
+    navigate("/dashboard");
+  };
+
   const attemptLogin = async (username, password) => {
     try {
-      setIsLoading(true);
-      const token = await authenticateUser(username, password);
-      setIsLoading(false);
-      if (token === null) {
-        setErrorMessage("Wrong username or password!");
-        navigate("/login");
-      } else {
-        setToken(token);
-        navigate("/home");
-      }
+      const token = await authenticateUser("login", username, password);
+      setToken(token);
     } catch (err) {
       setErrorMessage("Failure to connect to server :(");
       setIsLoading(false);
@@ -37,36 +42,25 @@ const AuthProvider = ({ children }) => {
     navigate(origin);
   };
 
-  const authenticateUser = async (username, password) => {
-    const response = await fetch(BACKEND_URL + "/auth/login", {
+  const authenticateUser = async (method, username, password) => {
+    setIsLoading(true);
+
+    const response = await fetch(`${BACKEND_URL}/auth/${method}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
     });
+    const data = await response.json();
+    setIsLoading(false);
 
     if (!response.ok) {
+      setErrorMessage(data.message);
       return null;
     }
-    return "sample-token"; //edit this
-  };
 
-  const attemptRegister = async (username, password) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(BACKEND_URL + "/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      setIsLoading(false);
-      navigate("/login");
-      // TODO: logic on if username already taken etc, response is a failure
-    } catch (err) {
-      setErrorMessage("Failure to connect to server :(");
-      setIsLoading(false);
-    }
+    return data.token;
   };
 
   const handleLogout = () => {

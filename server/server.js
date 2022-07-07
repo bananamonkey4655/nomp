@@ -1,16 +1,12 @@
 const express = require("express");
 const db = require("./config/database");
 const cors = require("cors");
-const axios = require("axios");
-const session = require("express-session");
-const passport = require("passport");
 const auth = require("./routes/auth");
 const eatery = require("./routes/eatery");
 const geolocation = require("./routes/geolocation");
 const FRONTEND_URL = require("./config/config");
 
 require("dotenv").config();
-require("./config/passport");
 
 const app = express();
 const server = require("http").createServer(app);
@@ -22,15 +18,6 @@ const io = require("socket.io")(server, {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use("/auth", auth);
@@ -43,6 +30,7 @@ app.get("/", (req, res) => {
   );
 });
 
+// Websocket
 const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {

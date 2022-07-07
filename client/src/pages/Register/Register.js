@@ -2,13 +2,14 @@ import "./Register.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, attemptRegister } = useAuth();
+  const { isLoading, errorMessage, attemptRegister } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ const Register = () => {
   return (
     <div className="register-wrapper">
       <div className="register-form">
+        {errorMessage && <ErrorMessage />}
         <h1>Register</h1>
         <Form className="form" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">

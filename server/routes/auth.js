@@ -1,31 +1,85 @@
 const express = require("express");
 const router = express.Router();
-
-const passport = require("passport");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const UserModel = require("../models/user");
 
-router.post("/login", passport.authenticate("local"), (req, res) => {
-  res.send(req.user);
+router.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    let user = await UserModel.findOne({ username });
+    if (user) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    user = new UserModel({
+      username,
+      password,
+    });
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    await user.save();
+
+    const payload = { user: { id: user.id } };
+
+    // Generate JWT
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: "7 days" },
+      (err, token) => {
+        if (err) {
+          throw err;
+        }
+        console.log(token);
+        res.json({ token });
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
-router.post("/register", (req, res, next) => {
-  const saltLength = 10;
-  bcrypt.hash(req.body.password, saltLength, (err, hashedPassword) => {
-    if (err) {
-      return next(err);
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    let user = await UserModel.findOne({ username });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Username or password incorrect " });
     }
-    const user = new UserModel({
-      username: req.body.username,
-      password: hashedPassword,
-    });
-    user.save((err) => {
-      if (err) {
-        res.json({ success: false });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ message: "Username or password incorrect" });
+    }
+
+    const payload = { user: { id: user.id } };
+
+    // Generate JWT
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: "7 days" },
+      (err, token) => {
+        if (err) {
+          throw err;
+        }
+        console.log(token);
+        res.json({ token });
       }
-      res.json({ success: true });
-    });
-  });
+    );
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 module.exports = router;

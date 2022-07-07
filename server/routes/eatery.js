@@ -19,11 +19,14 @@ router.get("/search", async (req, res) => {
   const searchParams = { location, term, price };
   const LIMIT = 20; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
   let URL = `businesses/search?limit=${LIMIT}`;
+
+  // Check whether each parameter has a value, skip if empty
   for (const property in searchParams) {
     if (searchParams[property]) {
       URL += `&${property}=${searchParams[property]}`;
     }
   }
+
   try {
     console.log(URL);
     const yelpResponse = await yelpAPI.get(URL);
