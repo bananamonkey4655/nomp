@@ -33,7 +33,6 @@ router.post("/register", async (req, res) => {
         if (err) {
           throw err;
         }
-        console.log(token);
         res.json({ token });
       }
     );
@@ -72,7 +71,6 @@ router.post("/login", async (req, res) => {
         if (err) {
           throw err;
         }
-        console.log(token);
         res.json({ token });
       }
     );

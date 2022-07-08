@@ -1,13 +1,14 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user");
 
-// TODO
+// Middleware for protected API routes (ensure request from client has valid JWT)
 const protect = async (req, res, next) => {
   // Get token from request header
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
+    console.log("Authorization header is included");
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
@@ -20,7 +21,7 @@ const protect = async (req, res, next) => {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      console.log(decoded);
+      req.user = decoded.user;
 
       next();
     } catch (err) {
