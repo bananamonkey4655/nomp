@@ -4,6 +4,7 @@ const cors = require("cors");
 const auth = require("./routes/auth");
 const eatery = require("./routes/eatery");
 const geolocation = require("./routes/geolocation");
+const user = require("./routes/user");
 const FRONTEND_URL = require("./config/config");
 
 require("dotenv").config();
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", auth);
 app.use("/eatery", eatery);
 app.use("/geolocation", geolocation);
+app.use("/user", user);
 
 app.get("/", (req, res) => {
   res.send(

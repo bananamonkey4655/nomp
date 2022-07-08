@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
 import "./Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
-import BACKEND_URL from "../../config";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
+import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
+import BACKEND_URL from "../../config";
 
 const Voting = () => {
   const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional
@@ -28,7 +28,7 @@ const Voting = () => {
     }
 
     async function fetchData() {
-      console.log(location, term, budget);
+      // console.log(location, term, budget);
       const response = await fetch(
         `${BACKEND_URL}/eatery/search?location=${location}&term=${term}&budget=${budget}`
       );
@@ -79,10 +79,10 @@ const Voting = () => {
   };
 
   // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
-  if (!displayedEatery) {
-    return <h1>Loading...</h1>;
-  } else if (fetchErrorMessage) {
+  if (fetchErrorMessage) {
     return <h1>Error fetching eateries!</h1>;
+  } else if (!displayedEatery) {
+    return <LoadingDisplay />;
   } else if (isSearchComplete) {
     return <h1>Waiting for other members to complete search...</h1>;
   } else {

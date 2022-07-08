@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatBox from "../../components/ChatBox/ChatBox";
 import GroupSettings from "../../components/GroupSettings/GroupSettings";
+import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
 
 import { Users } from "phosphor-react";
 import "./Lobby.css";
@@ -55,7 +56,7 @@ const Lobby = () => {
       <ChatBox name={name} />
     </div>
   ) : (
-    <h1>Loading...</h1>
+    <LoadingDisplay />
   );
 };
 
