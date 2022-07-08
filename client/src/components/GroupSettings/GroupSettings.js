@@ -1,6 +1,6 @@
 import "./groupsettings.css";
 import Button from "react-bootstrap/Button";
-import BACKEND_URL from "../../config";
+import { BACKEND_URL } from "../../config";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -75,8 +75,7 @@ const GroupSettings = ({ isHost }) => {
               onClick={() => pasteAddress(geoLocation)}
               className="fw-bold shadow mx-3 w-25 h-25"
             >
-              {" "}
-              Get Location{" "}
+              Get Location
             </Button>
           </div>
 

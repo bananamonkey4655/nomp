@@ -1,7 +1,20 @@
-const production = "https://backend-nomp.herokuapp.com";
-const development = "http://localhost:8000";
+const production = {
+  frontend: "https://orbital-nomp.netlify.app",
+  backend: "https://backend-nomp.herokuapp.com",
+};
+const development = {
+  frontend: "http://localhost:3000",
+  backend: "http://localhost:8000",
+};
+
+const FRONTEND_URL =
+  process.env.NODE_ENV === "development"
+    ? development.frontend
+    : production.frontend;
 
 const BACKEND_URL =
-  process.env.NODE_ENV === "development" ? development : production;
+  process.env.NODE_ENV === "development"
+    ? development.backend
+    : production.backend;
 
-export default BACKEND_URL;
+export { FRONTEND_URL, BACKEND_URL };

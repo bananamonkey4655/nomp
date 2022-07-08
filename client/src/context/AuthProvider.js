@@ -1,7 +1,7 @@
 import { useState, createContext, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import BACKEND_URL from "../config";
+import { BACKEND_URL } from "../config";
 
 const AuthContext = createContext(null);
 

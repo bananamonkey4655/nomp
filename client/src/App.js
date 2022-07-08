@@ -34,6 +34,7 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/group" element={<Group />} />
+              <Route path="/group/:groupInviteId" element={<Group />} />
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/searchsettings" element={<GroupSettings />} />
               <Route path="/voting" element={<Voting />} />

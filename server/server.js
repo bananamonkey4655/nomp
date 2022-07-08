@@ -33,6 +33,7 @@ app.get("/", (req, res) => {
 });
 
 // Websocket
+// TODO: organize into other folders
 const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {

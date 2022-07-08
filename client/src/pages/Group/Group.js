@@ -1,5 +1,5 @@
 import { useSocket } from "../../context/SocketProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import "./Group.css";
@@ -9,10 +9,25 @@ const Group = () => {
   const [roomName, setRoomName] = useState("");
   const { socket, initSocket, setName, setGroupId } = useSocket();
   const navigate = useNavigate();
+  const { groupInviteId } = useParams();
 
   useEffect(() => {
     initSocket();
   }, []);
+
+  // useEffect(() => {
+  //   if (socket && groupInviteId) {
+  //     socket.emit("user:join-group", {
+  //       nickname: "GUEST",
+  //       groupId: groupInviteId,
+  //       isHost: false,
+  //     });
+  //     setName("GUEST");
+  //     setGroupId(groupInviteId);
+
+  //     navigate("/lobby", { state: { name: "GUEST" } });
+  //   }
+  // }, [socket, groupInviteId]);
 
   const joinGroup = (e, isHost) => {
     e.preventDefault();

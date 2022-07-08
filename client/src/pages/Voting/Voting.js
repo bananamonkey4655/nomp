@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
 import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
-import BACKEND_URL from "../../config";
+import { BACKEND_URL } from "../../config";
 
 const Voting = () => {
   const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional

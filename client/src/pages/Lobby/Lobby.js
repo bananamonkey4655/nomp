@@ -7,6 +7,7 @@ import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
 
 import { Users } from "phosphor-react";
 import "./Lobby.css";
+import { FRONTEND_URL } from "../../config";
 
 const Lobby = () => {
   const { socket, name, groupId } = useSocket();
@@ -42,6 +43,7 @@ const Lobby = () => {
               <span>{groupMembers.length}</span>
             </div>
           </div>
+          {/* <div>{`Invite link: ${FRONTEND_URL}/group/${groupId}`}</div> */}
           <ul className="members-list">
             {groupMembers.map((member, index) => (
               <li key={index}>

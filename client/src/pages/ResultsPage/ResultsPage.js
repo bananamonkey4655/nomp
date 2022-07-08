@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import "./ResultsPage.css";
 import { MapPin } from "phosphor-react";
-import BACKEND_URL from "../../config";
+import { BACKEND_URL } from "../../config";
 import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
 
 const ResultsPage = () => {
