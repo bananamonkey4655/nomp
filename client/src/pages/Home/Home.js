@@ -12,8 +12,8 @@ const Home = () => {
       <section>
         <h1 className={styles.title}>Find food with friends!</h1>
         <p className={styles.description}>
-          Join or create a group, then set your preferences and click to find a
-          place to eat!
+          Join a group, set your preferences and vote with your friends to find
+          a place to eat!
         </p>
         <button onClick={() => navigate("/group")} className={styles.button}>
           Get Started

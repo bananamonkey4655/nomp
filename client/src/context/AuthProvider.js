@@ -20,26 +20,28 @@ const AuthProvider = ({ children }) => {
     try {
       const token = await authenticateUser("register", username, password);
       setToken(token);
+      if (token) {
+        navigate("/dashboard");
+      }
     } catch (err) {
       setErrorMessage("Failure to connect to server :(");
       setIsLoading(false);
     }
-
-    navigate("/dashboard");
   };
 
   const attemptLogin = async (username, password) => {
     try {
       const token = await authenticateUser("login", username, password);
       setToken(token);
+      if (token) {
+        // Send user back to page where they were after logging in
+        const origin = location.state?.from?.pathname || "/group";
+        navigate(origin);
+      }
     } catch (err) {
       setErrorMessage("Failure to connect to server :(");
       setIsLoading(false);
     }
-
-    // Send user back to page where they were after logging in
-    const origin = location.state?.from?.pathname || "/group";
-    navigate(origin);
   };
 
   const authenticateUser = async (method, username, password) => {
