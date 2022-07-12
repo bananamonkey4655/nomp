@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSocket } from "../context/SocketProvider";
 import { FRONTEND_URL } from "../config";
 
+import styles from "../styles/InviteLink.module.css";
+
 const InviteLink = () => {
   const { socket } = useSocket();
   const { groupId } = socket;
@@ -24,9 +26,14 @@ const InviteLink = () => {
   };
 
   return (
-    <div>
-      Invite Link: <span>{inviteLink}</span>
-      <button onClick={handleCopyClick}>{isCopied ? "Copied" : "Copy"}</button>
+    <div className={styles.invite}>
+      <div>
+        Invite Link: <span className={styles.link}>{inviteLink}</span>
+      </div>
+
+      <button className={styles.btn} onClick={handleCopyClick}>
+        {isCopied ? "Copied" : "Copy"}
+      </button>
     </div>
   );
 };
