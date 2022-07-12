@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 
-import styles from "./ChatBox.module.css";
+import styles from "../styles/ChatBox.module.css";
 
 const ChatBox = ({ name }) => {
   const { socket, groupId } = useSocket();

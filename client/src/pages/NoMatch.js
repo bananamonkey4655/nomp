@@ -1,4 +1,4 @@
-import styles from "./NoMatch.module.css";
+import styles from "../styles/NoMatch.module.css";
 
 const NoMatch = () => {
   return (

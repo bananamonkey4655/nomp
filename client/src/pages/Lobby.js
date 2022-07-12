@@ -1,13 +1,13 @@
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ChatBox from "../../components/ChatBox/ChatBox";
-import GroupSettings from "../../components/GroupSettings/GroupSettings";
-import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
+import ChatBox from "../components/ChatBox";
+import GroupSettings from "../components/GroupSettings";
+import LoadingDisplay from "../components/LoadingDisplay";
 
 import { Users } from "phosphor-react";
-import "./Lobby.css";
-import { FRONTEND_URL } from "../../config";
+import "../styles/Lobby.css";
+import { FRONTEND_URL } from "../config";
 
 const Lobby = () => {
   const { socket, name, groupId } = useSocket();

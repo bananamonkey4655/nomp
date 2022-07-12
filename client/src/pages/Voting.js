@@ -1,11 +1,11 @@
-import "./Voting.css";
+import "../styles/Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
-import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
-import { BACKEND_URL } from "../../config";
+import { useSocket } from "../context/SocketProvider";
+import LoadingDisplay from "../components/LoadingDisplay";
+import { BACKEND_URL } from "../config";
 
 const Voting = () => {
   const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional

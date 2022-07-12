@@ -1,12 +1,12 @@
-import "./groupsettings.css";
+import "../styles/GroupSettings.css";
 import Button from "react-bootstrap/Button";
-import { BACKEND_URL } from "../../config";
+import { BACKEND_URL } from "../config";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 
-import useGeoLocation from "../../hooks/useGeoLocation";
+import useGeoLocation from "../hooks/useGeoLocation";
 
 const GroupSettings = ({ isHost }) => {
   const { socket, groupId } = useSocket();

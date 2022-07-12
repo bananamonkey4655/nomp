@@ -1,11 +1,11 @@
-import "./Register.css";
+import "../styles/Register.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
-import ErrorMessage from "../../components/ErrorMessage";
-import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
+import { useAuth } from "../context/AuthProvider";
+import ErrorMessage from "../components/ErrorMessage";
+import LoadingDisplay from "../components/LoadingDisplay";
 
 const Register = () => {
   const [username, setUsername] = useState("");

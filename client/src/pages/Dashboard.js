@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../../config";
-import { useAuth } from "../../context/AuthProvider";
+import { BACKEND_URL } from "../config";
+import { useAuth } from "../context/AuthProvider";
 
 const Dashboard = () => {
   const { token } = useAuth();

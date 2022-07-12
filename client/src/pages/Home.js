@@ -1,6 +1,6 @@
-import group2 from "../../assets/group_img_2.png";
-import food4 from "../../assets/food_img_4.png";
-import styles from "./Home.module.css";
+import group2 from "../assets/group_img_2.png";
+import food4 from "../assets/food_img_4.png";
+import styles from "../styles/Home.module.css";
 
 import { useNavigate } from "react-router-dom";
 

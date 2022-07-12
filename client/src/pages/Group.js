@@ -1,8 +1,8 @@
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import "./Group.css";
+import "../styles/Group.css";
 
 const Group = () => {
   const [nickname, setNickname] = useState("");

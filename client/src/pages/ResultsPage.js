@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import "./ResultsPage.css";
+import "../styles/ResultsPage.css";
 import { MapPin } from "phosphor-react";
-import { BACKEND_URL } from "../../config";
-import LoadingDisplay from "../../components/LoadingDisplay/LoadingDisplay";
+import { BACKEND_URL } from "../config";
+import LoadingDisplay from "../components/LoadingDisplay";
 
 const ResultsPage = () => {
   const location = useLocation();
