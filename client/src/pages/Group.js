@@ -3,11 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import "../styles/Group.css";
+import { useAuth } from "../context/AuthProvider";
 
 const Group = () => {
   const [nickname, setNickname] = useState("");
   const [roomName, setRoomName] = useState("");
-  const { socket, initSocket, setName, setGroupId } = useSocket();
+  const { socket, initSocket } = useSocket();
   const navigate = useNavigate();
   const { groupInviteId } = useParams();
 
@@ -15,29 +16,26 @@ const Group = () => {
     initSocket();
   }, []);
 
-  // useEffect(() => {
-  //   if (socket && groupInviteId) {
-  //     socket.emit("user:join-group", {
-  //       nickname: "GUEST",
-  //       groupId: groupInviteId,
-  //       isHost: false,
-  //     });
-  //     setName("GUEST");
-  //     setGroupId(groupInviteId);
-
-  //     navigate("/lobby", { state: { name: "GUEST" } });
-  //   }
-  // }, [socket, groupInviteId]);
+  useEffect(() => {
+    if (groupInviteId) {
+      setRoomName(groupInviteId);
+    }
+  }, []);
 
   const joinGroup = (e, isHost) => {
     e.preventDefault();
-    if (roomName === "") return;
+    if (nickname === "" || roomName === "") return;
 
-    socket.emit("user:join-group", { nickname, groupId: roomName, isHost });
-    setName(nickname);
-    setGroupId(roomName);
+    socket.name = nickname;
+    socket.groupId = roomName;
 
-    navigate("/lobby", { state: { name: nickname } });
+    socket.emit("user:join-group", {
+      nickname: nickname,
+      groupId: roomName,
+      isHost: isHost,
+    });
+
+    navigate("/lobby");
   };
 
   return (

@@ -10,7 +10,8 @@ import { BACKEND_URL } from "../config";
 const Voting = () => {
   const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional
   const navigate = useNavigate();
-  const { socket, groupId, name } = useSocket();
+  const { socket } = useSocket();
+  const { name, groupId } = socket;
 
   const [eateries, setEateries] = useState(null);
   const [displayedEatery, setDisplayedEatery] = useState(null);

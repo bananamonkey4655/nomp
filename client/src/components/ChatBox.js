@@ -4,7 +4,8 @@ import { useSocket } from "../context/SocketProvider";
 import styles from "../styles/ChatBox.module.css";
 
 const ChatBox = ({ name }) => {
-  const { socket, groupId } = useSocket();
+  const { socket } = useSocket();
+  const { groupId } = socket;
 
   const messageEl = useRef(null);
   const [myMessage, setMyMessage] = useState("");

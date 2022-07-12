@@ -8,7 +8,6 @@ const useSocket = () => useContext(SocketContext);
 
 const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
-  const [name, setName] = useState("");
   const [groupId, setGroupId] = useState(null);
 
   const initSocket = () => {
@@ -21,8 +20,6 @@ const SocketProvider = ({ children }) => {
   const value = {
     socket,
     initSocket,
-    name,
-    setName,
     groupId,
     setGroupId,
     isHost,

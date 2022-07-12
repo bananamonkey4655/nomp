@@ -9,7 +9,8 @@ import { useSocket } from "../context/SocketProvider";
 import useGeoLocation from "../hooks/useGeoLocation";
 
 const GroupSettings = ({ isHost }) => {
-  const { socket, groupId } = useSocket();
+  const { socket } = useSocket();
+  const { groupId } = socket;
   const navigate = useNavigate();
   const geoLocation = useGeoLocation();
 
@@ -144,8 +145,6 @@ const GroupSettings = ({ isHost }) => {
               />
             </label>
           </div> */}
-
-          <div>Get Link</div>
 
           <Button
             type="submit"

@@ -6,8 +6,11 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthProvider";
 import ErrorMessage from "../components/ErrorMessage";
 import LoadingDisplay from "../components/LoadingDisplay";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, errorMessage, attemptRegister } = useAuth();
