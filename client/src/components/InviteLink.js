@@ -32,7 +32,7 @@ const InviteLink = () => {
       </div>
 
       <button className={styles.btn} onClick={handleCopyClick}>
-        {isCopied ? "Copied" : "Copy"}
+        {isCopied ? "Copied!" : "Copy"}
       </button>
     </div>
   );
