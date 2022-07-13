@@ -6,16 +6,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 }
 
+/**
 .home-wrapper button {
   padding: 5px 20px;
   background-color: rgb(239, 159, 94);
 }
+*/
 
 .home-wrapper h1 {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
+}
+
+.button-box {
+  max-width: 50%;
 }
 
 .home-wrapper p {

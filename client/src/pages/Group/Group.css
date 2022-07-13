@@ -1,9 +1,11 @@
+
 .group-container {
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-family: "Montserrat", sans-serif;
 }
 
 .group-wrapper {
@@ -27,10 +29,6 @@
 button {
   border-radius: 20px;
   font-weight: 500;
-}
-
-.create-button {
-  background-color: lightcoral;
 }
 
 button:hover {

@@ -1,13 +1,51 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 
 import "./FindEatery.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
 import BACKEND_URL from "../../config";
 import { useSocket } from "../../context/SocketProvider";
+import Loader from "../../components/Loader/Loader";
 
 const FindEatery = () => {
+
+  const controls = useAnimation();
+
+  const [isAnimation, setIsAnimation] = useState(false);
+  function noButtons() {
+    setIsAnimation(true);
+    setTimeout(() => setIsAnimation(false), 600);
+  }
+
+   // findeaterypage variant
+   const pageVariants ={
+    //exit: {
+    //  opacity: 0,
+    //  transition: { duration : 0.5}
+    //},
+    exit: {
+      x: '-100vw',
+      transition: { ease: 'easeInOut', duration : 0.5 }
+    }
+  }
+
+  //fling left or right animation
+  const animationVariants = {
+    initial: {
+      x: 0,
+      y: 0,
+    },
+    flingleft: {
+      x: '-10vw',
+      transition: {
+        duration: 0.5,
+        ease: 'easeInOut'
+      }
+    }
+  }
+
   let { location, term } = useParams(); // location is required, term is optional
   const navigate = useNavigate();
 
@@ -59,6 +97,13 @@ const FindEatery = () => {
   }, [eateries]);
 
   const addToList = () => {
+    // framer-motion rotate left
+    controls.start({
+      rotate: [0, -15, 0],
+      transition: {duration: 0.5}
+    })
+    // remove buttons during animation
+    noButtons();
     // setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
     socket.emit("add-desired-eatery", {
       eateryId: displayedEatery.id,
@@ -67,6 +112,13 @@ const FindEatery = () => {
     getNextEatery();
   };
   const skip = () => {
+    //framer-motion rotate right
+    controls.start({
+      rotate: [0, 15, 0],
+      transition: {duration: 0.5}
+    })
+    // remove buttons during animation
+    noButtons();
     getNextEatery();
   };
   const getNextEatery = () => {
@@ -82,11 +134,11 @@ const FindEatery = () => {
 
   // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
   if (!displayedEatery) {
-    return <h1>Loading...</h1>;
+    return <h1> <Loader message="Loading"/> </h1>;
   } else if (fetchErrorMessage) {
     return <h1>Error fetching eateries!</h1>;
   } else if (isSearchComplete) {
-    return <h1>Waiting for other members to complete search...</h1>;
+    return <h1><Loader message="Waiting for other members to complete search..." /> </h1>;
   } else {
     const {
       name,
@@ -101,8 +153,8 @@ const FindEatery = () => {
 
     return (
       <div className="wrapper">
-        <h1>{`${eateryIndex}/${eateries.length} restaurants viewed`}</h1>
-        <div className="container">
+        <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex}/${eateries.length} Restaurants Viewed`}</h1>
+        <motion.div variants={animationVariants} animate={controls} className="container mt-3">
           <img src={image_url} />
           <div className="imagebox-text">
             <div className="empty-space"></div>
@@ -124,22 +176,22 @@ const FindEatery = () => {
               <div></div>
             </section>
           </div>
-        </div>
-        <div className="buttons">
-          <Heart
+        </motion.div>
+        <div className="buttons mt-5">
+          {!isAnimation && <Heart
             className="want-button hover-effect"
             onClick={addToList}
             size={50}
             color="#f14a59"
             weight="fill"
-          />
-          <X
+          />}
+          {!isAnimation && <X
             className="skip-button hover-effect"
             onClick={skip}
             size={50}
             color="#5e5e5e"
             weight="bold"
-          />{" "}
+          />}{" "}
         </div>
       </div>
     );

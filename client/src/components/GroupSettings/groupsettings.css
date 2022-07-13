@@ -1,7 +1,12 @@
 .group-settings-box {
   width: 700px;
   height: 800px;
-  border: 20px solid rgba(247, 231, 206, 1);
-  align-self: center;
-  margin-top: 73px;
+  border: 15px solid rgba(247, 231, 206, 1);
+  justify-content: center;
+  margin-top: 10px;
+  background: lightsalmon
+}
+
+.group-settings-text {
+  font-family: "Montserrat", sans-serif;
 }

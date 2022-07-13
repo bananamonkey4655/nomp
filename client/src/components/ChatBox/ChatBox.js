@@ -31,7 +31,7 @@ const ChatBox = ({ name }) => {
   return (
     <div className="chatbox-wrapper">
       <h1>Chat Lobby</h1>
-      <section className="chat-container">
+      <section className="chat-container mt-5">
         {chatMessages.map((msg, index) => {
           return (
             <div className="chat-message-box" key={index}>
@@ -42,7 +42,7 @@ const ChatBox = ({ name }) => {
         })}
       </section>
       <form onSubmit={sendMessage}>
-        <label>
+        <label className="mt-5">
           Message
           <input
             type="text"
@@ -50,9 +50,10 @@ const ChatBox = ({ name }) => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
+            className="ms-2"
           />
         </label>
-        <input type="submit" value="Send" />
+        <input type="submit" value="Send" className="ms-2" />
       </form>
     </div>
   );

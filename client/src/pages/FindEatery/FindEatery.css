@@ -1,3 +1,7 @@
+.text-restaurants {
+  font-family: "Montserrat", sans-serif;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;

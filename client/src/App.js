@@ -1,7 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { SocketProvider } from "./context/SocketProvider";
 
@@ -16,17 +16,21 @@ import Group from "./pages/Group/Group";
 import FindEatery from "./pages/FindEatery/FindEatery";
 import GroupSettings from "./components/GroupSettings/GroupSettings";
 import Lobby from "./pages/Lobby/Lobby";
+import { AnimatePresence } from "framer-motion";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
 
 import "./App.css";
 
 const App = () => {
+  const location = useLocation();
+
   return (
     <AuthProvider>
       <SocketProvider>
         <Navigation />
         <main className="app-body">
-          <Routes>
+        <AnimatePresence>
+          <Routes location={location} key={location.key}>
             <Route index element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -45,6 +49,7 @@ const App = () => {
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>
+        </AnimatePresence>
         </main>
       </SocketProvider>
     </AuthProvider>

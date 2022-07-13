@@ -1,13 +1,32 @@
 import { useSocket } from "../../context/SocketProvider";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate} from "react-router-dom";
 import ChatBox from "../../components/ChatBox/ChatBox";
 import GroupSettings from "../../components/GroupSettings/GroupSettings";
+import { motion } from "framer-motion";
 
-import { Users } from "phosphor-react";
+import { AlignLeftSimple, Users } from "phosphor-react";
 import "./Lobby.css";
+import Loader from "../../components/Loader/Loader";
 
 const Lobby = () => {
+  // lobbypage variant
+  const pageVariants ={
+    exit: {
+      opacity: 0,
+      transition: { duration : 0.5}
+    },
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 1,
+      }
+    }
+  }
+
   const { socket, name, groupId } = useSocket();
   const [groupMembers, setGroupMembers] = useState([]);
   const [isHost, setIsHost] = useState(false);
@@ -32,7 +51,7 @@ const Lobby = () => {
 
   // TODO: change index
   return groupMembers?.length ? (
-    <div className="lobby-container">
+    <motion.div variants={pageVariants} initial="hidden" animate="visible" exit="exit" className="lobby-container">
       <section className="lobby-left">
         <div className="members">
           <div className="members-count-wrapper">
@@ -53,9 +72,11 @@ const Lobby = () => {
       </section>
 
       <ChatBox name={name} />
-    </div>
+    </motion.div>
   ) : (
-    <h1>Loading...</h1>
+    <h1>
+      <Loader message="Loading..."/>
+    </h1>
   );
 };
 
