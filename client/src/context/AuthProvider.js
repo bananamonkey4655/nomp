@@ -1,14 +1,13 @@
 import { useState, createContext, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { BACKEND_URL } from "../config";
 
+// Initialize context
 const AuthContext = createContext(null);
-
 // Create custom authentication hook
 const useAuth = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }) => {
+function AuthProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -80,6 +79,6 @@ const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
 export { AuthProvider, useAuth };

@@ -1,6 +1,6 @@
 import { useAuth } from "../context/AuthProvider";
 
-const ErrorMessage = () => {
+function ErrorMessage() {
   const { errorMessage } = useAuth();
 
   return (
@@ -9,6 +9,6 @@ const ErrorMessage = () => {
       <p>{errorMessage}</p>
     </>
   );
-};
+}
 
 export default ErrorMessage;

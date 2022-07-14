@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-
-import "../styles/ResultsPage.css";
+import "./ResultsPage.css";
 import { MapPin } from "phosphor-react";
 
-import Loader from "../components/Loader/Loader";
+import Loader from "../../components/Loader";
+import LoadingDisplay from "../../components/LoadingDisplay";
 
-import { BACKEND_URL } from "../config";
-import LoadingDisplay from "../components/LoadingDisplay";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { BACKEND_URL } from "../../config";
 
-const ResultsPage = () => {
+function ResultsPage() {
   const location = useLocation();
   const { eateryId, count } = location.state;
 
@@ -82,6 +81,6 @@ const ResultsPage = () => {
       </div>
     );
   }
-};
+}
 
 export default ResultsPage;

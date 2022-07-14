@@ -1,31 +1,30 @@
 import "./styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Routes, Route, useLocation } from "react-router-dom";
-import { AuthProvider } from "./context/AuthProvider";
-import { SocketProvider } from "./context/SocketProvider";
-
-import ProtectedRoute from "./router/ProtectedRoute";
-import Navigation from "./pages/Navigation";
+import ProtectedRoute from "./utils/ProtectedRoute";
+import Navbar from "./components/Navbar";
 import NoMatch from "./pages/NoMatch";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
-import GroupSettings from "./components/GroupSettings";
 import Lobby from "./pages/Lobby";
 import Voting from "./pages/Voting";
 import ResultsPage from "./pages/ResultsPage";
+
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider";
+import { SocketProvider } from "./context/SocketProvider";
 import { AnimatePresence } from "framer-motion";
 
-const App = () => {
+function App() {
   const location = useLocation();
 
   return (
     <AuthProvider>
       <SocketProvider>
-        <Navigation />
+        <Navbar />
         <main className="app-body">
           <AnimatePresence>
             <Routes location={location} key={location.key}>
@@ -38,7 +37,6 @@ const App = () => {
                 <Route path="/group" element={<Group />} />
                 <Route path="/group/:groupInviteId" element={<Group />} />
                 <Route path="/lobby" element={<Lobby />} />
-                <Route path="/searchsettings" element={<GroupSettings />} />
                 <Route path="/voting" element={<Voting />} />
                 <Route path="/gameover" element={<ResultsPage />} />
               </Route>
@@ -49,6 +47,6 @@ const App = () => {
       </SocketProvider>
     </AuthProvider>
   );
-};
+}
 
 export default App;

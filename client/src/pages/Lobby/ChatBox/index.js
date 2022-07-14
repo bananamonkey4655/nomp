@@ -1,9 +1,9 @@
+import styles from "./ChatBox.module.css";
+
 import { useEffect, useState, useRef } from "react";
-import { useSocket } from "../context/SocketProvider";
+import { useSocket } from "../../../context/SocketProvider";
 
-import styles from "../styles/ChatBox.module.css";
-
-const ChatBox = ({ name }) => {
+function ChatBox({ name }) {
   const { socket } = useSocket();
   const { groupId } = socket;
 
@@ -84,6 +84,6 @@ const ChatBox = ({ name }) => {
       </form>
     </div>
   );
-};
+}
 
 export default ChatBox;

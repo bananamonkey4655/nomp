@@ -1,14 +1,15 @@
-import "../styles/Register.css";
+import "./Register.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-import { useState } from "react";
-import { useAuth } from "../context/AuthProvider";
-import ErrorMessage from "../components/ErrorMessage";
-import LoadingDisplay from "../components/LoadingDisplay";
-import { useNavigate } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
+import LoadingDisplay from "../../components/LoadingDisplay";
 
-const Register = () => {
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
+
+function Register() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -69,6 +70,6 @@ const Register = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Register;

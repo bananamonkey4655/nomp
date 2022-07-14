@@ -1,14 +1,14 @@
-import "../styles/Login.css";
+import "./Login.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
+import ErrorMessage from "../../components/ErrorMessage";
+import LoadingDisplay from "../../components/LoadingDisplay";
+
 import { useState } from "react";
-import { useAuth } from "../context/AuthProvider";
-import ErrorMessage from "../components/ErrorMessage";
-import LoadingDisplay from "../components/LoadingDisplay";
+import { useAuth } from "../../context/AuthProvider";
 
-const Login = () => {
-
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, errorMessage, attemptLogin } = useAuth();
@@ -59,7 +59,7 @@ const Login = () => {
           <Button
             disabled={isLoading}
             variant="primary"
-            size ="lg"
+            size="lg"
             type="submit"
             className="login-button btn-dark mt-3"
           >
@@ -69,6 +69,6 @@ const Login = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Login;

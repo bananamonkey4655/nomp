@@ -1,12 +1,13 @@
-import "../styles/Navigation.css";
+import "./Navbar.css";
+
+import Logo from "../Logo";
 
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 
-import Logo from "../components/Logo";
-
-const Navigation = () => {
+function Navbar() {
   const { token, handleLogout } = useAuth();
+
   return (
     <nav>
       <div className="nav-logo">
@@ -70,6 +71,6 @@ const Navigation = () => {
       </ul>
     </nav>
   );
-};
+}
 
-export default Navigation;
+export default Navbar;

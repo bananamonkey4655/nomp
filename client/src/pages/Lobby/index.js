@@ -1,18 +1,19 @@
-import { useSocket } from "../context/SocketProvider";
+import "./Lobby.css";
+import { Users } from "phosphor-react";
+
+import ChatBox from "./ChatBox";
+import GroupSettings from "./GroupSettings";
+import InviteLink from "./InviteLink";
+import Loader from "../../components/Loader";
+import LoadingDisplay from "../../components/LoadingDisplay";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ChatBox from "../components/ChatBox";
-import GroupSettings from "../components/GroupSettings";
-import LoadingDisplay from "../components/LoadingDisplay";
-import InviteLink from "../components/InviteLink";
-import { Users } from "phosphor-react";
-import "../styles/Lobby.css";
-import { FRONTEND_URL } from "../config";
-
+import { useSocket } from "../../context/SocketProvider";
 import { motion } from "framer-motion";
-import Loader from "../components/Loader/Loader";
+import { FRONTEND_URL } from "../../config";
 
-const Lobby = () => {
+function Lobby() {
   // lobbypage variant
   const pageVariants = {
     exit: {
@@ -90,6 +91,6 @@ const Lobby = () => {
       <Loader message="Loading..." />
     </h1>
   );
-};
+}
 
 export default Lobby;

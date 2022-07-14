@@ -1,11 +1,11 @@
-import group2 from "../assets/group_img_2.png";
-import food4 from "../assets/food_img_4.png";
-import styles from "../styles/Home.module.css";
+import styles from "./Home.module.css";
+import groupImage from "../../assets/group_img_2.png";
+import foodImage from "../../assets/food_img_4.png";
 
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-const Home = () => {
+function Home() {
   const navigate = useNavigate();
 
   // framer-motion variants
@@ -107,7 +107,7 @@ const Home = () => {
           </button>
         </motion.div>
         <motion.div variants={childVariants}>
-          <img src={food4} className={styles.food} />
+          <img src={foodImage} className={styles.food} />
         </motion.div>
         <div className="red-circle"></div>
       </motion.section>
@@ -116,11 +116,11 @@ const Home = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1.5 }}
-          src={group2}
+          src={groupImage}
         />
       </div>
     </motion.div>
   );
-};
+}
 
 export default Home;

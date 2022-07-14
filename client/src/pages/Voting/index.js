@@ -1,15 +1,16 @@
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import Loader from "../components/Loader/Loader";
-import "../styles/Voting.css";
+import "./Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
+
+import Loader from "../../components/Loader";
+import LoadingDisplay from "../../components/LoadingDisplay";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSocket } from "../context/SocketProvider";
-import LoadingDisplay from "../components/LoadingDisplay";
-import { BACKEND_URL } from "../config";
+import { useSocket } from "../../context/SocketProvider";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import { BACKEND_URL } from "../../config";
 
-const Voting = () => {
+function Voting() {
   const controls = useAnimation();
 
   const [isAnimation, setIsAnimation] = useState(false);
@@ -210,6 +211,6 @@ const Voting = () => {
       </div>
     );
   }
-};
+}
 
 export default Voting;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { BACKEND_URL } from "../config";
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
-const Dashboard = () => {
+function Dashboard() {
   const { token } = useAuth();
   const [backendResponse, setBackendResponse] = useState("");
 
@@ -28,6 +28,6 @@ const Dashboard = () => {
       <h1>{backendResponse}</h1>
     </div>
   );
-};
+}
 
 export default Dashboard;

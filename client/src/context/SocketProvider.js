@@ -2,11 +2,12 @@ import { createContext, useContext, useState } from "react";
 import { io } from "socket.io-client";
 import { BACKEND_URL } from "../config";
 
+// Initialize context
 const SocketContext = createContext();
-
+// Create custom socket hook
 const useSocket = () => useContext(SocketContext);
 
-const SocketProvider = ({ children }) => {
+function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null);
   const [groupId, setGroupId] = useState(null);
 
@@ -28,6 +29,6 @@ const SocketProvider = ({ children }) => {
   return (
     <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );
-};
+}
 
 export { SocketProvider, useSocket };

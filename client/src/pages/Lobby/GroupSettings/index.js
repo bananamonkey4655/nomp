@@ -1,15 +1,15 @@
-import "../styles/GroupSettings.css";
+import "./GroupSettings.css";
 import Button from "react-bootstrap/Button";
-import { BACKEND_URL } from "../config";
+
+import Loader from "../../../components/Loader";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../context/SocketProvider";
+import { useSocket } from "../../../context/SocketProvider";
+import useGeoLocation from "../../../hooks/useGeoLocation";
+import { BACKEND_URL } from "../../../config";
 
-import useGeoLocation from "../hooks/useGeoLocation";
-import Loader from "./Loader/Loader";
-
-const GroupSettings = ({ isHost }) => {
+function GroupSettings({ isHost }) {
   const [location, setLocation] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [budget, setBudget] = useState("0");
@@ -168,6 +168,6 @@ const GroupSettings = ({ isHost }) => {
       )}
     </div>
   );
-};
+}
 
 export default GroupSettings;

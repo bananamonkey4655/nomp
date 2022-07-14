@@ -1,51 +1,51 @@
-import { useSocket } from "../context/SocketProvider";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import "./Group.css";
 import Button from "react-bootstrap/esm/Button";
 
-import "../styles/Group.css";
-import { useAuth } from "../context/AuthProvider";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthProvider";
+import { useSocket } from "../../context/SocketProvider";
+import { motion } from "framer-motion";
 
-const Group = () => {
-    // grouppage variant
-    const pageVariants ={
-      exit: {
-        opacity: 0,
-        transition: { duration : 0.5}
+function Group() {
+  // grouppage variant
+  const pageVariants = {
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.5 },
+    },
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 1,
       },
-      hidden: {
-        opacity: 0,
-      },
-      visible: {
-        opacity: 1,
-        transition: {
-          duration: 1,
-        }
-      }
-    }
+    },
+  };
 
-    const buttonVariants ={
-      hidden: {opacity : 0},
-      visible: {
-        opacity: 1,
-        transition: {
-          // delay as button will not use childVariant but still has to appear in order
-          delay: 1,
-          duration: 1
-        }
+  const buttonVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        // delay as button will not use childVariant but still has to appear in order
+        delay: 1,
+        duration: 1,
       },
-      hover: {
-        scale: 1.1,
-        textShadow: "0px 0px 8px rgb(255,255,255)",
-        boxShadow: "0px 0px 8px rgb(255,255,255)",
-        transition: {
-          duration: 0.5,
-          repeat: Infinity,
-          repeatType: 'reverse'
-        }
-      }
-    }
+    },
+    hover: {
+      scale: 1.1,
+      textShadow: "0px 0px 8px rgb(255,255,255)",
+      boxShadow: "0px 0px 8px rgb(255,255,255)",
+      transition: {
+        duration: 0.5,
+        repeat: Infinity,
+        repeatType: "reverse",
+      },
+    },
+  };
 
   const [nickname, setNickname] = useState("");
   const [roomName, setRoomName] = useState("");
@@ -80,7 +80,13 @@ const Group = () => {
   };
 
   return (
-    <motion.div variants={pageVariants} initial="hidden" animate="visible" exit="exit" className="group-wrapper">
+    <motion.div
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="group-wrapper"
+    >
       <div className="group-container">
         <h1>Create or Join a group</h1>
         <form>
@@ -107,16 +113,26 @@ const Group = () => {
               className="mx-1 my-1 w-100"
             ></input>
           </label>
-          <Button variant="danger" size="lg" onClick={(e) => joinGroup(e, true)} className="mt-3 shadow create-button">
+          <Button
+            variant="danger"
+            size="lg"
+            onClick={(e) => joinGroup(e, true)}
+            className="mt-3 shadow create-button"
+          >
             Create a Group
           </Button>
-          <Button variant="light" size="lg" onClick={(e) => joinGroup(e, false)} className="mt-3 shadow">
+          <Button
+            variant="light"
+            size="lg"
+            onClick={(e) => joinGroup(e, false)}
+            className="mt-3 shadow"
+          >
             Join a Group
           </Button>
         </form>
       </div>
     </motion.div>
   );
-};
+}
 
 export default Group;
