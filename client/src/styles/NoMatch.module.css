@@ -1,0 +1,15 @@
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heading {
+  padding-right: 2.5rem;
+  border-right: 0.2rem solid #000000;
+}
+
+.text {
+  padding-left: 2.5rem;
+}

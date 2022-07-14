@@ -1,72 +1,68 @@
 import { useState, createContext, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import BACKEND_URL from "../config";
+import { BACKEND_URL } from "../config";
 
 const AuthContext = createContext(null);
 
+// Create custom authentication hook
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [token, setToken] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const attemptLogin = async (username, password) => {
+  const attemptRegister = async (username, password) => {
     try {
-      setIsLoading(true);
-      const token = await authenticateUser(username, password);
-      setIsLoading(false);
-      if (token === null) {
-        setErrorMessage("Wrong username or password!");
-        navigate("/login");
-      } else {
-        setToken(token);
-        navigate("/home");
+      const token = await authenticateUser("register", username, password);
+      setToken(token);
+      if (token) {
+        navigate("/dashboard");
       }
     } catch (err) {
-      setErrorMessage("Network connection failure :(");
+      setErrorMessage("Failure to connect to server :(");
       setIsLoading(false);
     }
-
-    // Work in progress: feature: navigate user back to page where they came from after login
-
-    // const origin = location.state?.from?.pathname || "/login";
-    // navigate(origin);
   };
 
-  const authenticateUser = async (username, password) => {
-    const response = await fetch(BACKEND_URL + "/auth/login", {
+  const attemptLogin = async (username, password) => {
+    try {
+      const token = await authenticateUser("login", username, password);
+      setToken(token);
+      if (token) {
+        // Send user back to page where they were after logging in
+        const origin = location.state?.from?.pathname || "/group";
+        navigate(origin);
+      }
+    } catch (err) {
+      setErrorMessage("Failure to connect to server :(");
+      setIsLoading(false);
+    }
+  };
+
+  const authenticateUser = async (method, username, password) => {
+    setIsLoading(true);
+
+    const response = await fetch(`${BACKEND_URL}/auth/${method}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
     });
+    const data = await response.json();
+    setIsLoading(false);
 
     if (!response.ok) {
+      setErrorMessage(data.message);
       return null;
     }
-    return "sample-token"; //edit this
-  };
 
-  const attemptRegister = async (username, password) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(BACKEND_URL + "/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      setIsLoading(false);
-      navigate("/login");
-      // TODO: logic on if username already taken etc, response is a failure
-    } catch (err) {
-      setErrorMessage("Network connection failure :(");
-      setIsLoading(false);
-    }
+    return data.token;
   };
 
   const handleLogout = () => {
