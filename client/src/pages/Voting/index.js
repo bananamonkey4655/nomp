@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import shuffleArray from "../../utils/shuffleArray";
 import { BACKEND_URL } from "../../config";
 
 function Voting() {
@@ -45,6 +46,7 @@ function Voting() {
       },
     },
   };
+
   const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional
   const navigate = useNavigate();
   const { socket } = useSocket();
@@ -58,13 +60,6 @@ function Voting() {
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
 
   useEffect(() => {
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
     async function fetchData() {
       // console.log(location, term, budget);
       const response = await fetch(
@@ -76,8 +71,7 @@ function Voting() {
         console.log(`${data.error.code}: ${data.error.description}`);
         setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
       } else {
-        // shuffle(data.businesses);
-        setEateries(data.businesses);
+        setEateries(shuffleArray(data.businesses));
       }
     }
 
