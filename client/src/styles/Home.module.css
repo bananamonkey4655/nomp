@@ -9,33 +9,18 @@
   overflow: hidden;
 }
 
-<<<<<<< HEAD:client/src/pages/Home.css
-/**
-.home-wrapper button {
-  padding: 5px 20px;
-=======
 .button {
   padding: 8px 20px;
->>>>>>> main:client/src/styles/Home.module.css
   background-color: rgb(239, 159, 94);
   border-radius: 0.5rem;
 }
-*/
 
 .title {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
 }
 
-<<<<<<< HEAD:client/src/pages/Home.css
-.button-box {
-  max-width: 50%;
-}
-
-.home-wrapper p {
-=======
 .description {
->>>>>>> main:client/src/styles/Home.module.css
   padding-right: 30%;
   margin-bottom: 30px;
 }
