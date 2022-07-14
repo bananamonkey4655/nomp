@@ -30,8 +30,7 @@ const Register = () => {
   return (
     <div className="register-wrapper">
       <div className="register-form">
-        {errorMessage && <ErrorMessage />}
-        <h1>Register</h1>
+        <h1 className="mb-3">Register</h1>
         <Form className="form" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
@@ -60,8 +59,9 @@ const Register = () => {
           <Button
             disabled={isLoading}
             variant="primary"
+            size="lg"
             type="submit"
-            className="register-button btn-dark"
+            className="register-button btn-dark mt-3"
           >
             Sign Up
           </Button>

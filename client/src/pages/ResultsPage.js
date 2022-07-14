@@ -3,6 +3,9 @@ import { useLocation } from "react-router-dom";
 
 import "../styles/ResultsPage.css";
 import { MapPin } from "phosphor-react";
+
+import Loader from "../components/Loader/Loader";
+
 import { BACKEND_URL } from "../config";
 import LoadingDisplay from "../components/LoadingDisplay";
 
@@ -44,7 +47,7 @@ const ResultsPage = () => {
     } = resultEatery;
 
     return (
-      <div>
+      <div className="results-page-wrapper">
         <div className="container">
           <img src={image_url} />
           <div className="imagebox-text">
@@ -69,12 +72,12 @@ const ResultsPage = () => {
           </div>
         </div>
         <a
-          className="external-redirect-button"
+          className="external-redirect-button mt-3 shadow w-25"
           href={url}
           target="_blank"
           rel="noreferrer noopener"
         >
-          Eat here!
+          Eat Here!
         </a>
       </div>
     );

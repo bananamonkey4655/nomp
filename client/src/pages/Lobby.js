@@ -1,16 +1,35 @@
 import { useSocket } from "../context/SocketProvider";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatBox from "../components/ChatBox";
 import GroupSettings from "../components/GroupSettings";
 import LoadingDisplay from "../components/LoadingDisplay";
 import InviteLink from "../components/InviteLink";
-
 import { Users } from "phosphor-react";
 import "../styles/Lobby.css";
 import { FRONTEND_URL } from "../config";
 
+import { motion } from "framer-motion";
+import Loader from "../components/Loader/Loader";
+
 const Lobby = () => {
+  // lobbypage variant
+  const pageVariants = {
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.5 },
+    },
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 1,
+      },
+    },
+  };
+
   const { socket } = useSocket();
   const { name, groupId } = socket;
   const navigate = useNavigate();
@@ -35,41 +54,41 @@ const Lobby = () => {
     );
   }, [groupMembers]);
 
-  // TODO: change index, restructure into smaller components
-  if (groupMembers) {
-    return (
-      <div className="lobby-container">
-        <section className="lobby-left">
-          <div className="members">
-            <div className="members-count-wrapper">
-              <div className="members-count">
-                <Users size={30} />
-                <span>{groupMembers.length}</span>
-              </div>
+  // TODO: change index
+  return groupMembers?.length ? (
+    <motion.div
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="lobby-container"
+    >
+      <section className="lobby-left">
+        <div className="members">
+          <div className="members-count-wrapper">
+            <div className="members-count">
+              <Users size={30} />
+              <span>{groupMembers.length}</span>
             </div>
-            <ul className="members-list">
-              {groupMembers.map((member, index) => (
-                <li key={index}>
-                  {member.isHost
-                    ? member.nickname + " (Host)"
-                    : member.nickname}
-                </li>
-              ))}
-            </ul>
           </div>
-          <InviteLink />
-          <GroupSettings isHost={isHost} />
-        </section>
+          <ul className="members-list">
+            {groupMembers.map((member, index) => (
+              <li key={index}>
+                {member.isHost ? member.nickname + " (Host)" : member.nickname}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <InviteLink />
+        <GroupSettings isHost={isHost} />
+      </section>
 
-        <ChatBox name={name} />
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <LoadingDisplay />
-    </>
+      <ChatBox name={name} />
+    </motion.div>
+  ) : (
+    <h1>
+      <Loader message="Loading..." />
+    </h1>
   );
 };
 

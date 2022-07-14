@@ -8,6 +8,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import LoadingDisplay from "../components/LoadingDisplay";
 
 const Login = () => {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, errorMessage, attemptLogin } = useAuth();
@@ -28,7 +29,7 @@ const Login = () => {
     <div className="login-wrapper">
       <div className="login-form">
         {errorMessage && <ErrorMessage />}
-        <h1>Login</h1>
+        <h1 className="mb-3">Login</h1>
         <Form className="form" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
@@ -58,8 +59,9 @@ const Login = () => {
           <Button
             disabled={isLoading}
             variant="primary"
+            size ="lg"
             type="submit"
-            className="login-button btn-dark"
+            className="login-button btn-dark mt-3"
           >
             Continue
           </Button>
