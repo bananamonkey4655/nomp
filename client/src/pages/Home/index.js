@@ -17,7 +17,7 @@ function Home() {
     visible: {
       opacity: 1,
       transition: {
-        duration: 1,
+        duration: 0.25,
         staggerChildren: 0.5,
       },
     },
@@ -31,7 +31,7 @@ function Home() {
     visible: {
       opacity: 1,
       transition: {
-        duration: 1,
+        duration: 0.25,
       },
     },
   };
@@ -40,7 +40,7 @@ function Home() {
   const pageVariants = {
     exit: {
       opacity: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.25 },
     },
     //exit: {
     //  x: '-100vw',
@@ -56,7 +56,7 @@ function Home() {
       transition: {
         // delay as button will not use childVariant but still has to appear in order
         delay: 1,
-        duration: 1,
+        duration: 0.25,
       },
     },
     hover: {
@@ -64,7 +64,7 @@ function Home() {
       textShadow: "0px 0px 8px rgb(255,255,255)",
       boxShadow: "0px 0px 8px rgb(255,255,255)",
       transition: {
-        duration: 0.5,
+        duration: 0.25,
         repeat: Infinity,
         repeatType: "reverse",
       },
@@ -88,7 +88,6 @@ function Home() {
         animate="visible"
       >
         <motion.h1 variants={childVariants} className={styles.title}>
-          {" "}
           Find food with friends!
         </motion.h1>
         <motion.p variants={childVariants} className={styles.description}>
@@ -107,7 +106,7 @@ function Home() {
           </button>
         </motion.div>
         <motion.div variants={childVariants}>
-          <img src={foodImage} className={styles.food} />
+          <img src={foodImage} className={styles.food} alt="A plate of food" />
         </motion.div>
         <div className="red-circle"></div>
       </motion.section>
@@ -115,8 +114,9 @@ function Home() {
         <motion.img
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1.5 }}
+          transition={{ delay: 0.25, duration: 0.25 }}
           src={groupImage}
+          alt="Landing page image"
         />
       </div>
     </motion.div>

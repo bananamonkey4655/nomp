@@ -28,7 +28,7 @@ function Voting() {
     //},
     exit: {
       x: "-100vw",
-      transition: { ease: "easeInOut", duration: 0.5 },
+      transition: { ease: "easeInOut", duration: 0 },
     },
   };
 
@@ -41,13 +41,13 @@ function Voting() {
     flingleft: {
       x: "-10vw",
       transition: {
-        duration: 0.5,
+        duration: 0,
         ease: "easeInOut",
       },
     },
   };
 
-  const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional
+  const { location, query, budget, coordinates } = useLocation().state; // location is required, query is optional
   const navigate = useNavigate();
   const { socket } = useSocket();
   const { name, groupId } = socket;
@@ -56,25 +56,19 @@ function Voting() {
   const [displayedEatery, setDisplayedEatery] = useState(null);
   const [eateryIndex, setEateryIndex] = useState(0);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
-
-  const [fetchErrorMessage, setFetchErrorMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchData() {
-      // console.log(location, term, budget);
-      const response = await fetch(
-        `${BACKEND_URL}/eatery/search?location=${location}&term=${term}&budget=${budget}`
-      );
+      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&latitude=${coordinates.lat}&longitude=${coordinates.lng}`;
+      const response = await fetch(URL);
       const data = await response.json();
       if (data.error) {
-        console.log("Error here");
-        console.log(`${data.error.code}: ${data.error.description}`);
-        setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
+        setError(`${data.error.code}: ${data.error.description}`);
       } else {
         setEateries(shuffleArray(data.businesses));
       }
     }
-
     fetchData();
     socket.on("show-results", ({ eateryId, count }) => {
       navigate("/gameover", { state: { eateryId, count } });
@@ -91,8 +85,8 @@ function Voting() {
   const addToList = () => {
     // framer-motion rotate left
     controls.start({
-      rotate: [0, -15, 0],
-      transition: { duration: 0.5 },
+      rotate: [0, 0, 0],
+      transition: { duration: 0 },
     });
     // remove buttons during animation
     noButtons();
@@ -103,38 +97,42 @@ function Voting() {
     });
     getNextEatery();
   };
+
   const skip = () => {
     //framer-motion rotate right
     controls.start({
-      rotate: [0, 15, 0],
-      transition: { duration: 0.5 },
+      rotate: [0, 0, 0],
+      transition: { duration: 0 },
     });
     // remove buttons during animation
     noButtons();
     getNextEatery();
   };
+
   const getNextEatery = () => {
     if (eateryIndex >= eateries.length) {
       setIsSearchComplete(true);
       socket.emit("member-completed-game", name);
-    } else {
-      setEateryIndex((prev) => (prev += 1));
-      const nextEatery = eateries[eateryIndex];
-      setDisplayedEatery(nextEatery);
+      return;
     }
+    setEateryIndex((prev) => prev + 1);
+    const nextEatery = eateries[eateryIndex];
+    setDisplayedEatery(nextEatery);
   };
 
-  // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
-
-  if (fetchErrorMessage) {
+  if (error) {
     return <h1>Error fetching eateries!</h1>;
-  } else if (!displayedEatery) {
+  }
+
+  if (!displayedEatery) {
     return (
       <h1>
         <Loader message="Loading" />
       </h1>
     );
-  } else if (isSearchComplete) {
+  }
+
+  if (isSearchComplete) {
     return (
       <h1>
         <Loader message="Waiting for other members to complete search..." />

@@ -20,7 +20,7 @@ function Group() {
     visible: {
       opacity: 1,
       transition: {
-        duration: 1,
+        duration: 0.25,
       },
     },
   };
@@ -32,7 +32,7 @@ function Group() {
       transition: {
         // delay as button will not use childVariant but still has to appear in order
         delay: 1,
-        duration: 1,
+        duration: 0.25,
       },
     },
     hover: {
@@ -40,7 +40,7 @@ function Group() {
       textShadow: "0px 0px 8px rgb(255,255,255)",
       boxShadow: "0px 0px 8px rgb(255,255,255)",
       transition: {
-        duration: 0.5,
+        duration: 0.25,
         repeat: Infinity,
         repeatType: "reverse",
       },

@@ -42,9 +42,15 @@ function Lobby() {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
     });
-    socket.on("members-start-search", ({ location, searchTerm, budget }) => {
-      navigate(`/voting`, { state: { location, searchTerm, budget } }); //TODO: call yelp api once only and store eateries
-    });
+    socket.on(
+      "members-start-search",
+      ({ location, query, budget, coordinates }) => {
+        console.log(coordinates);
+        navigate(`/voting`, {
+          state: { location, query, budget, coordinates },
+        }); //TODO: call yelp api once only and store eateries
+      }
+    );
   }, [socket]);
 
   useEffect(() => {

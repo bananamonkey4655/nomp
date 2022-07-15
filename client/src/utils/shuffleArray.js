@@ -1,4 +1,8 @@
 export default function shuffleArray(input) {
+  if (!input || input?.length === 0) {
+    return [];
+  }
+
   const array = [...input];
 
   for (let i = array.length - 1; i > 0; i--) {

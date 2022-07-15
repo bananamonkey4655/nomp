@@ -11,9 +11,12 @@ import { BACKEND_URL } from "../../../config";
 
 function GroupSettings({ isHost }) {
   const [location, setLocation] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [budget, setBudget] = useState("0");
+  const [query, setQuery] = useState("");
+  const [budget, setBudget] = useState("no-preference");
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
+  const [coordinatesStatus, setCoordinatesStatus] =
+    useState("No coordinates set");
 
   const { socket } = useSocket();
   const { groupId } = socket;
@@ -23,6 +26,21 @@ function GroupSettings({ isHost }) {
   // const handleRadiusChange = (e) => setRadius(e.target.value);
   const handleRadioClick = (e) => setBudget(e.currentTarget.value);
   const isBudgetSelected = (selectedBudget) => budget === selectedBudget;
+
+  const getLatLong = (e) => {
+    e.preventDefault();
+
+    if (!navigator.geolocation) {
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      setCoordinates({ lat, lng });
+      setCoordinatesStatus("Coordinates have been set!");
+    });
+  };
 
   function pasteAddress(geoLocation) {
     if (geoLocation.loaded) {
@@ -38,8 +56,6 @@ function GroupSettings({ isHost }) {
     );
     const data = await response.json();
     if (data.error) {
-      console.log("Error here");
-      console.log(`${data.error.code}: ${data.error.description}`);
       setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
     } else {
       setLocation(data.results[1].formatted_address);
@@ -49,11 +65,17 @@ function GroupSettings({ isHost }) {
   const findEateries = (e) => {
     e.preventDefault();
 
-    socket.emit("host-start-search", { location, searchTerm, budget, groupId });
-    navigate("/voting", { state: { location, searchTerm, budget } });
+    socket.emit("host-start-search", {
+      location,
+      query,
+      budget,
+      coordinates,
+      groupId,
+    });
+    navigate("/voting", { state: { location, query, budget, coordinates } });
 
     setLocation("");
-    setSearchTerm("");
+    setQuery("");
   };
 
   return (
@@ -72,7 +94,6 @@ function GroupSettings({ isHost }) {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              required
             />
             <Button
               variant="secondary"
@@ -85,13 +106,19 @@ function GroupSettings({ isHost }) {
           </div>
 
           <div>
+            <h3>{coordinatesStatus}</h3>
+            <h5>Coordinates: {JSON.stringify(coordinates)}</h5>
+            <button onClick={getLatLong}>Get latitude longitude</button>
+          </div>
+
+          <div>
             <label className="me-3 mt-3 fs-5 fw-bold group-settings-text">
               Search
             </label>
             <input
               type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </div>
 
@@ -100,9 +127,9 @@ function GroupSettings({ isHost }) {
             <label>
               <input
                 type="radio"
-                value="0"
+                value="no-preference"
                 name="budget"
-                checked={isBudgetSelected("0")}
+                checked={isBudgetSelected("no-preference")}
                 onChange={handleRadioClick}
               />
               No preference
@@ -110,9 +137,9 @@ function GroupSettings({ isHost }) {
             <label>
               <input
                 type="radio"
-                value="1"
+                value="low-budget"
                 name="budget"
-                checked={isBudgetSelected("1")}
+                checked={isBudgetSelected("low-budget")}
                 onChange={handleRadioClick}
               />
               $
@@ -120,9 +147,9 @@ function GroupSettings({ isHost }) {
             <label>
               <input
                 type="radio"
-                value="1, 2"
+                value="mid-budget"
                 name="budget"
-                checked={isBudgetSelected("1, 2")}
+                checked={isBudgetSelected("mid-budget")}
                 onChange={handleRadioClick}
               />
               $$
@@ -130,9 +157,9 @@ function GroupSettings({ isHost }) {
             <label>
               <input
                 type="radio"
-                value="1, 2, 3"
+                value="high-budget"
                 name="budget"
-                checked={isBudgetSelected("1, 2, 3")}
+                checked={isBudgetSelected("high-budget")}
                 onChange={handleRadioClick}
               />
               $$$

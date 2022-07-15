@@ -1,9 +1,7 @@
 // This page routes all of our "website.com/eatery" URLs
-
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-
 require("dotenv").config();
 
 // Configure axios calls on this particular instance to use these settings
@@ -14,10 +12,30 @@ const yelpAPI = axios.create({
   // let app handle error by sending JSON of { "error": ... } instead
 });
 
+const mapBudgetToPrice = (budget) => {
+  switch (budget) {
+    case "low-budget":
+      return "1";
+    case "mid-budget":
+      return "1, 2";
+    case "high-budget":
+      return "1, 2, 3";
+    default:
+      return "1, 2, 3, 4";
+  }
+};
+
+/* Endpoint for searching restaurants with given filters set */
 router.get("/search", async (req, res) => {
-  const { location, term, budget: price } = req.query;
-  const searchParams = { location, term, price };
+  let { location, query: term, budget, latitude, longitude } = req.query;
+
+  if (latitude && longitude) {
+    location = null;
+  }
   const LIMIT = 20; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
+  const price = mapBudgetToPrice(budget);
+
+  const searchParams = { location, term, price, latitude, longitude };
   let URL = `businesses/search?limit=${LIMIT}`;
 
   // Check whether each parameter has a value, skip if empty
@@ -28,23 +46,21 @@ router.get("/search", async (req, res) => {
   }
 
   try {
-    console.log(URL);
     const yelpResponse = await yelpAPI.get(URL);
-
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
-    console.log("Error");
     return res.json(error.message);
   }
 });
 
+/* Endpoint for searching a single restaurant with given ID */
 router.get("/match", async (req, res) => {
   const { id } = req.query;
+
   try {
     const yelpResponse = await yelpAPI.get(`businesses/${id}`);
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
-    console.log("Error");
     return res.json(error.message);
   }
 });
