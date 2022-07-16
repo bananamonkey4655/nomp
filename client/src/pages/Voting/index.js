@@ -47,7 +47,7 @@ function Voting() {
     },
   };
 
-  const { location, query, budget, coordinates, radius } = useLocation().state; // location is required, query is optional
+  const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
   const navigate = useNavigate();
   const { socket } = useSocket();
   const { name, groupId } = socket;
@@ -60,11 +60,13 @@ function Voting() {
 
   useEffect(() => {
     async function fetchData() {
-      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&radius=${radius}`;
+      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}
+        &latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&radius=${radius}`;
       const response = await fetch(URL);
       const data = await response.json();
-      if (data.error) {
-        setError(`${data.error.code}: ${data.error.description}`);
+
+      if (!response.ok) {
+        setError(data.error);
       } else {
         // const shuffledRestaurants = shuffleArray(data.businesses);
         setEateries(data.businesses);
@@ -122,7 +124,7 @@ function Voting() {
   };
 
   if (error) {
-    return <h1>Error fetching eateries!</h1>;
+    return <h1>{error}</h1>;
   }
 
   if (!displayedEatery) {

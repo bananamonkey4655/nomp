@@ -35,7 +35,6 @@ router.get("/search", async (req, res) => {
     longitude,
     radius,
   } = req.query;
-  console.log(req.query);
 
   // Input validation/sanitization/modification
   if (latitude && longitude) {
@@ -48,7 +47,6 @@ router.get("/search", async (req, res) => {
   const price = mapBudgetToPrice(budget);
 
   const searchParams = { location, term, price, latitude, longitude, radius };
-  console.log(searchParams);
   let URL = `businesses/search?limit=${LIMIT}`;
 
   // Check whether each parameter has a value, skip if empty
@@ -60,9 +58,12 @@ router.get("/search", async (req, res) => {
 
   try {
     const yelpResponse = await yelpAPI.get(URL);
+    if (yelpResponse.data.total == 0) {
+      throw "No restaurants with given restrictions found!";
+    }
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
-    return res.json(error.message);
+    return res.status(400).json({ error });
   }
 });
 
@@ -74,7 +75,7 @@ router.get("/match", async (req, res) => {
     const yelpResponse = await yelpAPI.get(`businesses/${id}`);
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
-    return res.json(error.message);
+    return res.status(400).json({ error });
   }
 });
 
