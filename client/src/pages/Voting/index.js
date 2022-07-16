@@ -47,7 +47,7 @@ function Voting() {
     },
   };
 
-  const { location, query, budget, coordinates } = useLocation().state; // location is required, query is optional
+  const { location, query, budget, coordinates, radius } = useLocation().state; // location is required, query is optional
   const navigate = useNavigate();
   const { socket } = useSocket();
   const { name, groupId } = socket;
@@ -60,7 +60,7 @@ function Voting() {
 
   useEffect(() => {
     async function fetchData() {
-      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
+      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&radius=${radius}`;
       const response = await fetch(URL);
       const data = await response.json();
       if (data.error) {

@@ -42,9 +42,9 @@ function Lobby() {
     });
     socket.on(
       "members-start-search",
-      ({ location, query, budget, coordinates }) => {
+      ({ location, query, budget, coordinates, radius }) => {
         navigate(`/voting`, {
-          state: { location, query, budget, coordinates },
+          state: { location, query, budget, coordinates, radius },
         }); //TODO: call yelp api once only and store eateries
       }
     );

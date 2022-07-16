@@ -28,16 +28,16 @@ function GroupSettings({ isHost }) {
   const handleRadioClick = (e) => setBudget(e.currentTarget.value);
   const isBudgetSelected = (selectedBudget) => budget === selectedBudget;
 
-  function pasteAddress(geoLocation) {
+  const pasteAddress = (geoLocation) => {
     if (geoLocation.loaded) {
       fetchDataAndPaste();
       setCoordinates(geoLocation.coordinates);
     } else {
       console.log("Location data not available yet");
     }
-  }
+  };
 
-  async function fetchDataAndPaste() {
+  const fetchDataAndPaste = async () => {
     const response = await fetch(
       `${BACKEND_URL}/geolocation/get?lat=${geoLocation.coordinates.latitude}&lng=${geoLocation.coordinates.longitude}`
     );
@@ -47,7 +47,7 @@ function GroupSettings({ isHost }) {
     } else {
       setLocation(data.results[1].formatted_address);
     }
-  }
+  };
 
   const findEateries = (e) => {
     e.preventDefault();
@@ -58,8 +58,11 @@ function GroupSettings({ isHost }) {
       budget,
       coordinates,
       groupId,
+      radius,
     });
-    navigate("/voting", { state: { location, query, budget, coordinates } });
+    navigate("/voting", {
+      state: { location, query, budget, coordinates, radius },
+    });
 
     setLocation("");
     setQuery("");

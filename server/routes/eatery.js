@@ -27,15 +27,28 @@ const mapBudgetToPrice = (budget) => {
 
 /* Endpoint for searching restaurants with given filters set */
 router.get("/search", async (req, res) => {
-  let { location, query: term, budget, latitude, longitude } = req.query;
+  let {
+    location,
+    query: term,
+    budget,
+    latitude,
+    longitude,
+    radius,
+  } = req.query;
+  console.log(req.query);
 
+  // Input validation/sanitization/modification
   if (latitude && longitude) {
     location = null;
   }
+  radius = (function convertKmToMetres(km) {
+    return km * 1000;
+  })(radius);
   const LIMIT = 20; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
   const price = mapBudgetToPrice(budget);
 
-  const searchParams = { location, term, price, latitude, longitude };
+  const searchParams = { location, term, price, latitude, longitude, radius };
+  console.log(searchParams);
   let URL = `businesses/search?limit=${LIMIT}`;
 
   // Check whether each parameter has a value, skip if empty

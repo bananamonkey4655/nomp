@@ -68,12 +68,13 @@ io.on("connection", (socket) => {
     // Begin voting game when host starts
     socket.on(
       "host-start-search",
-      ({ location, query, budget, coordinates, groupId }) => {
+      ({ location, query, budget, coordinates, radius, groupId }) => {
         io.in(groupId).emit("members-start-search", {
           location,
           query,
           budget,
           coordinates,
+          radius,
         });
       }
     );
