@@ -60,13 +60,14 @@ function Voting() {
 
   useEffect(() => {
     async function fetchData() {
-      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&latitude=${coordinates.lat}&longitude=${coordinates.lng}`;
+      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
       const response = await fetch(URL);
       const data = await response.json();
       if (data.error) {
         setError(`${data.error.code}: ${data.error.description}`);
       } else {
-        setEateries(shuffleArray(data.businesses));
+        // const shuffledRestaurants = shuffleArray(data.businesses);
+        setEateries(data.businesses);
       }
     }
     fetchData();

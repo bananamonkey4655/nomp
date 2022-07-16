@@ -10,41 +10,28 @@ import useGeoLocation from "../../../hooks/useGeoLocation";
 import { BACKEND_URL } from "../../../config";
 
 function GroupSettings({ isHost }) {
+  //TODO: move form state into a single form object?
   const [location, setLocation] = useState("");
   const [query, setQuery] = useState("");
   const [budget, setBudget] = useState("no-preference");
-  const [fetchErrorMessage, setFetchErrorMessage] = useState("");
   const [coordinates, setCoordinates] = useState(null);
-  const [coordinatesStatus, setCoordinatesStatus] =
-    useState("No coordinates set");
+  const DEFAULT_RADIUS_METRES = 10;
+  const [radius, setRadius] = useState(DEFAULT_RADIUS_METRES);
+  const [fetchErrorMessage, setFetchErrorMessage] = useState("");
 
   const { socket } = useSocket();
   const { groupId } = socket;
   const navigate = useNavigate();
   const geoLocation = useGeoLocation();
 
-  // const handleRadiusChange = (e) => setRadius(e.target.value);
+  const handleRadiusChange = (e) => setRadius(e.target.value);
   const handleRadioClick = (e) => setBudget(e.currentTarget.value);
   const isBudgetSelected = (selectedBudget) => budget === selectedBudget;
-
-  const getLatLong = (e) => {
-    e.preventDefault();
-
-    if (!navigator.geolocation) {
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      setCoordinates({ lat, lng });
-      setCoordinatesStatus("Coordinates have been set!");
-    });
-  };
 
   function pasteAddress(geoLocation) {
     if (geoLocation.loaded) {
       fetchDataAndPaste();
+      setCoordinates(geoLocation.coordinates);
     } else {
       console.log("Location data not available yet");
     }
@@ -94,6 +81,7 @@ function GroupSettings({ isHost }) {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              required
             />
             <Button
               variant="secondary"
@@ -106,9 +94,7 @@ function GroupSettings({ isHost }) {
           </div>
 
           <div>
-            <h3>{coordinatesStatus}</h3>
             <h5>Coordinates: {JSON.stringify(coordinates)}</h5>
-            <button onClick={getLatLong}>Get latitude longitude</button>
           </div>
 
           <div>
@@ -166,18 +152,19 @@ function GroupSettings({ isHost }) {
             </label>
           </div>
 
-          {/* <div>
+          <div>
             <label>
-              Radius
+              Radius (km)
               <input
                 type="range"
                 value={radius}
                 onChange={handleRadiusChange}
-                min="100"
-                max="40000"
+                min="0"
+                max="40"
               />
             </label>
-          </div> */}
+            <div>{radius}</div>
+          </div>
 
           <Button
             type="submit"

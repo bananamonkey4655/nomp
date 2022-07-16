@@ -5,13 +5,11 @@ import ChatBox from "./ChatBox";
 import GroupSettings from "./GroupSettings";
 import InviteLink from "./InviteLink";
 import Loader from "../../components/Loader";
-import LoadingDisplay from "../../components/LoadingDisplay";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
 import { motion } from "framer-motion";
-import { FRONTEND_URL } from "../../config";
 
 function Lobby() {
   // lobbypage variant
@@ -45,7 +43,6 @@ function Lobby() {
     socket.on(
       "members-start-search",
       ({ location, query, budget, coordinates }) => {
-        console.log(coordinates);
         navigate(`/voting`, {
           state: { location, query, budget, coordinates },
         }); //TODO: call yelp api once only and store eateries
