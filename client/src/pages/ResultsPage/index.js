@@ -3,6 +3,7 @@ import { MapPin } from "phosphor-react";
 
 import Loader from "../../components/Loader";
 import LoadingDisplay from "../../components/LoadingDisplay";
+import ReviewStars from "../../components/ReviewStars";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -58,9 +59,7 @@ function ResultsPage() {
                 .substring(1)}
             </h5>
             <section>
-              <div>
-                <span>Rating: {rating}/5</span>
-              </div>
+              <ReviewStars rating={rating} />
               <div>{price}</div>
               <div className="address">
                 <MapPin size={20} />

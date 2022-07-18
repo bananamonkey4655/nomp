@@ -3,49 +3,50 @@ import { MapPin, Heart, X } from "phosphor-react";
 
 import Loader from "../../components/Loader";
 import LoadingDisplay from "../../components/LoadingDisplay";
+import ReviewStars from "../../components/ReviewStars";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
+// import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import shuffleArray from "../../utils/shuffleArray";
 import { BACKEND_URL } from "../../config";
 
 function Voting() {
-  const controls = useAnimation();
+  // const controls = useAnimation();
 
-  const [isAnimation, setIsAnimation] = useState(false);
-  function noButtons() {
-    setIsAnimation(true);
-    setTimeout(() => setIsAnimation(false), 600);
-  }
+  // const [isAnimation, setIsAnimation] = useState(false);
+  // function noButtons() {
+  //   setIsAnimation(true);
+  //   setTimeout(() => setIsAnimation(false), 600);
+  // }
 
-  // findeaterypage variant
-  const pageVariants = {
-    //exit: {
-    //  opacity: 0,
-    //  transition: { duration : 0.5}
-    //},
-    exit: {
-      x: "-100vw",
-      transition: { ease: "easeInOut", duration: 0 },
-    },
-  };
+  // // findeaterypage variant
+  // const pageVariants = {
+  //   //exit: {
+  //   //  opacity: 0,
+  //   //  transition: { duration : 0.5}
+  //   //},
+  //   exit: {
+  //     x: "-100vw",
+  //     transition: { ease: "easeInOut", duration: 0 },
+  //   },
+  // };
 
-  //fling left or right animation
-  const animationVariants = {
-    initial: {
-      x: 0,
-      y: 0,
-    },
-    flingleft: {
-      x: "-10vw",
-      transition: {
-        duration: 0,
-        ease: "easeInOut",
-      },
-    },
-  };
+  // //fling left or right animation
+  // const animationVariants = {
+  //   initial: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  //   flingleft: {
+  //     x: "-10vw",
+  //     transition: {
+  //       duration: 0,
+  //       ease: "easeInOut",
+  //     },
+  //   },
+  // };
 
   const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
   const navigate = useNavigate();
@@ -87,12 +88,12 @@ function Voting() {
 
   const addToList = () => {
     // framer-motion rotate left
-    controls.start({
-      rotate: [0, 0, 0],
-      transition: { duration: 0 },
-    });
-    // remove buttons during animation
-    noButtons();
+    // controls.start({
+    //   rotate: [0, 0, 0],
+    //   transition: { duration: 0 },
+    // });
+    // // remove buttons during animation
+    // noButtons();
     // setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
     socket.emit("add-desired-eatery", {
       eateryId: displayedEatery.id,
@@ -103,12 +104,12 @@ function Voting() {
 
   const skip = () => {
     //framer-motion rotate right
-    controls.start({
-      rotate: [0, 0, 0],
-      transition: { duration: 0 },
-    });
+    // controls.start({
+    //   rotate: [0, 0, 0],
+    //   transition: { duration: 0 },
+    // });
     // remove buttons during animation
-    noButtons();
+    // noButtons();
     getNextEatery();
   };
 
@@ -156,12 +157,12 @@ function Voting() {
     return (
       <div className="wrapper">
         <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex}/${eateries.length} Restaurants Viewed`}</h1>
-        <motion.div
-          variants={animationVariants}
-          animate={controls}
+        <div
+          // variants={animationVariants}
+          // animate={controls}
           className="container mt-3"
         >
-          <img src={image_url} />
+          <img className="container-img" src={image_url} />
           <div className="imagebox-text">
             <div className="empty-space"></div>
             <h1>{name}</h1>
@@ -171,9 +172,7 @@ function Voting() {
                 .substring(1)}
             </h5>
             <section>
-              <div>
-                <span>Rating: {rating}</span>
-              </div>
+              <ReviewStars rating={rating} />
               <div>{price}</div>
               <div className="address">
                 <MapPin size={20} />
@@ -182,26 +181,26 @@ function Voting() {
               <div></div>
             </section>
           </div>
-        </motion.div>
+        </div>
         <div className="buttons mt-5">
-          {!isAnimation && (
-            <Heart
-              className="want-button hover-effect"
-              onClick={addToList}
-              size={50}
-              color="#f14a59"
-              weight="fill"
-            />
-          )}
-          {!isAnimation && (
-            <X
-              className="skip-button hover-effect"
-              onClick={skip}
-              size={50}
-              color="#5e5e5e"
-              weight="bold"
-            />
-          )}{" "}
+          {/* {!isAnimation && ( */}
+          <Heart
+            className="want-button hover-effect"
+            onClick={addToList}
+            size={50}
+            color="#f14a59"
+            weight="fill"
+          />
+          {/* )} */}
+          {/* {!isAnimation && ( */}
+          <X
+            className="skip-button hover-effect"
+            onClick={skip}
+            size={50}
+            color="#5e5e5e"
+            weight="bold"
+          />
+          {/* )}{" "} */}
         </div>
       </div>
     );

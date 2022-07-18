@@ -1,6 +1,6 @@
 import styles from "./Home.module.css";
-import groupImage from "../../assets/group_img_2.png";
-import foodImage from "../../assets/food_img_4.png";
+import groupImage from "../../assets/bg/group_img_2.png";
+import foodImage from "../../assets/bg/food_img_4.png";
 
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
