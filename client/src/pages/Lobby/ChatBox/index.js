@@ -46,7 +46,7 @@ function ChatBox({ name }) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>{groupId}</h1>
+        <h2>Group ID: {groupId}</h2>
         <div className={styles.user}>
           <h3>{name}</h3>
           <div className={styles.online} />

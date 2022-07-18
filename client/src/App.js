@@ -26,23 +26,23 @@ function App() {
       <SocketProvider>
         <Navbar />
         <main className="app-body">
-          <AnimatePresence>
-            <Routes location={location} key={location.key}>
-              <Route index element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/group" element={<Group />} />
-                <Route path="/group/:groupInviteId" element={<Group />} />
-                <Route path="/lobby" element={<Lobby />} />
-                <Route path="/voting" element={<Voting />} />
-                <Route path="/gameover" element={<ResultsPage />} />
-              </Route>
-              <Route path="*" element={<NoMatch />} />
-            </Routes>
-          </AnimatePresence>
+          {/* <AnimatePresence> */}
+          <Routes location={location} key={location.key}>
+            <Route index element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/group" element={<Group />} />
+              <Route path="/group/:groupInviteId" element={<Group />} />
+              <Route path="/lobby" element={<Lobby />} />
+              <Route path="/voting" element={<Voting />} />
+              <Route path="/gameover" element={<ResultsPage />} />
+            </Route>
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+          {/* </AnimatePresence> */}
         </main>
       </SocketProvider>
     </AuthProvider>

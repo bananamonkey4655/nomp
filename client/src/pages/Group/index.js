@@ -9,43 +9,43 @@ import { motion } from "framer-motion";
 
 function Group() {
   // grouppage variant
-  const pageVariants = {
-    exit: {
-      opacity: 0,
-      transition: { duration: 0.5 },
-    },
-    hidden: {
-      opacity: 0,
-    },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.25,
-      },
-    },
-  };
+  // const pageVariants = {
+  //   exit: {
+  //     opacity: 0,
+  //     transition: { duration: 0.5 },
+  //   },
+  //   hidden: {
+  //     opacity: 0,
+  //   },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       duration: 0.25,
+  //     },
+  //   },
+  // };
 
-  const buttonVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        // delay as button will not use childVariant but still has to appear in order
-        delay: 1,
-        duration: 0.25,
-      },
-    },
-    hover: {
-      scale: 1.1,
-      textShadow: "0px 0px 8px rgb(255,255,255)",
-      boxShadow: "0px 0px 8px rgb(255,255,255)",
-      transition: {
-        duration: 0.25,
-        repeat: Infinity,
-        repeatType: "reverse",
-      },
-    },
-  };
+  // const buttonVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       // delay as button will not use childVariant but still has to appear in order
+  //       delay: 1,
+  //       duration: 0.25,
+  //     },
+  //   },
+  //   hover: {
+  //     scale: 1.1,
+  //     textShadow: "0px 0px 8px rgb(255,255,255)",
+  //     boxShadow: "0px 0px 8px rgb(255,255,255)",
+  //     transition: {
+  //       duration: 0.25,
+  //       repeat: Infinity,
+  //       repeatType: "reverse",
+  //     },
+  //   },
+  // };
 
   const [nickname, setNickname] = useState("");
   const [roomName, setRoomName] = useState("");
@@ -80,11 +80,11 @@ function Group() {
   };
 
   return (
-    <motion.div
-      variants={pageVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
+    <div
+      // variants={pageVariants}
+      // initial="hidden"
+      // animate="visible"
+      // exit="exit"
       className="group-wrapper"
     >
       <div className="group-container">
@@ -131,7 +131,7 @@ function Group() {
           </Button>
         </form>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
