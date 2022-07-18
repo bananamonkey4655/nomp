@@ -1,17 +1,4 @@
 module.exports = (io) => {
-  // const addUserToGroup = function ({ nickname, groupId, isHost }) {
-  //   console.log("Adding user to group...");
-  //   const socket = this; //because using arrow function doesnt work with 'this'
-  //   sanitizeInput(groupId);
-  //   socket.join(groupId);
-  //   addMemberToMap(nickname, groupId, isHost, names);
-  //   io.to(groupId).emit("update-members", names.get(groupId));
-  //   io.to(groupId).emit("new-member", nickname);
-  // };
-
-  // Given input string, return sanitized output.
-  const sanitizeInput = (string) => string.toLowerCase();
-
   // Given array of users, return whether there is already a host.
   const doesHostAlreadyExist = (roomMembers) => {
     for (const member of roomMembers) {
@@ -72,7 +59,6 @@ module.exports = (io) => {
   };
 
   return {
-    sanitizeInput,
     addMemberToMap,
     removeMemberFromMap,
     updateMembersOnClient,

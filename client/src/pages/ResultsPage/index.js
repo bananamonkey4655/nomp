@@ -25,7 +25,6 @@ function ResultsPage() {
         console.log(`${data.error.code}: ${data.error.description}`);
       } else {
         setResultEatery(data);
-        console.log(data);
       }
     };
     fetchData(eateryId);
@@ -43,7 +42,7 @@ function ResultsPage() {
       review_count,
       categories,
       price,
-      url,
+      url: page_url,
     } = resultEatery;
 
     return (
@@ -71,7 +70,7 @@ function ResultsPage() {
         </div>
         <a
           className="external-redirect-button mt-3 shadow w-25"
-          href={url}
+          href={page_url}
           target="_blank"
           rel="noreferrer noopener"
         >

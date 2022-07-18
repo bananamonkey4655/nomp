@@ -6,12 +6,13 @@ module.exports = (io) => {
       eateries.set(roomId, new Map());
     }
     const voteCounts = eateries.get(roomId);
+
     if (!voteCounts.has(eateryId)) {
       voteCounts.set(eateryId, 1);
-    } else {
-      const curr = voteCounts.get(eateryId);
-      voteCounts.set(eateryId, curr + 1);
+      return;
     }
+    const curr = voteCounts.get(eateryId);
+    voteCounts.set(eateryId, curr + 1);
   };
 
   const changeMemberDoneStatus = (name, map, roomId) => {
@@ -20,6 +21,16 @@ module.exports = (io) => {
       (member) => member.nickname === name
     );
     gameCompletedMember.done = true;
+  };
+
+  const isGameOver = (map, roomId) => {
+    const roomMembers = map.get(roomId);
+    for (const member of roomMembers) {
+      if (!member.done) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const handleGameOver = (roomId) => {
@@ -38,16 +49,6 @@ module.exports = (io) => {
       eateryId: highestVotedEatery,
       count: max,
     });
-  };
-
-  const isGameOver = (map, roomId) => {
-    const roomMembers = map.get(roomId);
-    for (const member of roomMembers) {
-      if (!member.done) {
-        return false;
-      }
-    }
-    return true;
   };
 
   return {

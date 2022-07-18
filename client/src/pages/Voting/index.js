@@ -48,17 +48,19 @@ function Voting() {
   //   },
   // };
 
-  const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
   const navigate = useNavigate();
   const { socket } = useSocket();
   const { name, groupId } = socket;
+  const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
 
   const [eateries, setEateries] = useState(null);
-  const [displayedEatery, setDisplayedEatery] = useState(null);
   const [eateryIndex, setEateryIndex] = useState(0);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
   const [error, setError] = useState("");
 
+  const displayedEatery = eateries?.[eateryIndex];
+
+  // Fetch restaurants data and listen for event denoting end of game
   useEffect(() => {
     async function fetchData() {
       const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}
@@ -68,25 +70,32 @@ function Voting() {
 
       if (!response.ok) {
         setError(data.error);
-      } else {
-        // const shuffledRestaurants = shuffleArray(data.businesses);
-        setEateries(data.businesses);
+        return;
       }
+      // const shuffledRestaurants = shuffleArray(data.businesses);
+      setEateries(data.businesses);
     }
+
     fetchData();
+
     socket.on("show-results", ({ eateryId, count }) => {
       navigate("/gameover", { state: { eateryId, count } });
     });
   }, []);
 
-  // Update currently displayed eatery whenever user decides to keep or skip the eatery
+  // Check for whether search has been completed
   useEffect(() => {
-    if (eateries) {
-      getNextEatery();
+    if (!eateries) {
+      return;
     }
-  }, [eateries]);
 
-  const addToList = () => {
+    if (eateryIndex >= eateries.length) {
+      setIsSearchComplete(true);
+      socket.emit("member-completed-game", name);
+    }
+  }, [eateryIndex]);
+
+  const addEateryToDesired = () => {
     // framer-motion rotate left
     // controls.start({
     //   rotate: [0, 0, 0],
@@ -94,15 +103,14 @@ function Voting() {
     // });
     // // remove buttons during animation
     // noButtons();
-    // setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
     socket.emit("add-desired-eatery", {
-      eateryId: displayedEatery.id,
+      eateryId: eateries[eateryIndex].id,
       roomId: groupId,
     });
-    getNextEatery();
+    setEateryIndex((prev) => prev + 1);
   };
 
-  const skip = () => {
+  const skipEatery = () => {
     //framer-motion rotate right
     // controls.start({
     //   rotate: [0, 0, 0],
@@ -110,22 +118,19 @@ function Voting() {
     // });
     // remove buttons during animation
     // noButtons();
-    getNextEatery();
-  };
-
-  const getNextEatery = () => {
-    if (eateryIndex >= eateries.length) {
-      setIsSearchComplete(true);
-      socket.emit("member-completed-game", name);
-      return;
-    }
     setEateryIndex((prev) => prev + 1);
-    const nextEatery = eateries[eateryIndex];
-    setDisplayedEatery(nextEatery);
   };
 
   if (error) {
     return <h1>{error}</h1>;
+  }
+
+  if (isSearchComplete) {
+    return (
+      <h1>
+        <Loader message="Waiting for other members to complete search..." />
+      </h1>
+    );
   }
 
   if (!displayedEatery) {
@@ -136,75 +141,69 @@ function Voting() {
     );
   }
 
-  if (isSearchComplete) {
-    return (
-      <h1>
-        <Loader message="Waiting for other members to complete search..." />
-      </h1>
-    );
-  } else {
-    const {
-      name,
-      rating,
-      review_count,
-      categories,
-      image_url,
-      location: place,
-      display_phone,
-      price,
-    } = displayedEatery;
+  const {
+    name: restaurant_name,
+    rating,
+    review_count,
+    categories,
+    image_url,
+    location: place,
+    display_phone,
+    price,
+  } = displayedEatery;
 
-    return (
-      <div className="wrapper">
-        <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex}/${eateries.length} Restaurants Viewed`}</h1>
-        <div
-          // variants={animationVariants}
-          // animate={controls}
-          className="container mt-3"
-        >
-          <img className="container-img" src={image_url} />
-          <div className="imagebox-text">
-            <div className="empty-space"></div>
-            <h1>{name}</h1>
-            <h5>
-              {categories
-                .reduce((acc, curr) => acc + ", " + curr.title, "")
-                .substring(1)}
-            </h5>
-            <section>
-              <ReviewStars rating={rating} />
-              <div>{price}</div>
-              <div className="address">
-                <MapPin size={20} />
-                <span>{place.address1}</span>
-              </div>
-              <div></div>
-            </section>
-          </div>
-        </div>
-        <div className="buttons mt-5">
-          {/* {!isAnimation && ( */}
-          <Heart
-            className="want-button hover-effect"
-            onClick={addToList}
-            size={50}
-            color="#f14a59"
-            weight="fill"
-          />
-          {/* )} */}
-          {/* {!isAnimation && ( */}
-          <X
-            className="skip-button hover-effect"
-            onClick={skip}
-            size={50}
-            color="#5e5e5e"
-            weight="bold"
-          />
-          {/* )}{" "} */}
+  return (
+    <div className="wrapper">
+      <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex + 1}/${
+        eateries.length
+      } Restaurants Viewed`}</h1>
+      <div
+        // variants={animationVariants}
+        // animate={controls}
+        className="container mt-3"
+      >
+        <img className="container-img" src={image_url} />
+        <div className="imagebox-text">
+          <div className="empty-space"></div>
+          <h1>{restaurant_name}</h1>
+          <h5>
+            {categories
+              .reduce((acc, curr) => acc + ", " + curr.title, "")
+              .substring(1)}
+          </h5>
+          <section>
+            <ReviewStars rating={rating} />
+            <div>{price}</div>
+            <div className="address">
+              <MapPin size={20} />
+              <span>{place.address1}</span>
+            </div>
+            <div></div>
+          </section>
         </div>
       </div>
-    );
-  }
+      <div className="buttons mt-5">
+        {/* {!isAnimation && ( */}
+        <Heart
+          className="want-button hover-effect"
+          onClick={addEateryToDesired}
+          size={50}
+          color="#f14a59"
+          weight="fill"
+        />
+        {/* )} */}
+        {/* {!isAnimation && ( */}
+        <X
+          className="skip-button hover-effect"
+          onClick={skipEatery}
+          size={50}
+          color="#5e5e5e"
+          weight="bold"
+        />
+        {/* )}{" "} */}
+      </div>
+    </div>
+  );
 }
 
 export default Voting;

@@ -87,7 +87,7 @@ function Lobby() {
         <GroupSettings isHost={isHost} />
       </section>
 
-      <ChatBox name={name} />
+      <ChatBox name={name} groupId={groupId} />
     </motion.div>
   ) : (
     <h1>

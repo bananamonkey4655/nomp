@@ -3,9 +3,8 @@ import styles from "./ChatBox.module.css";
 import { useEffect, useState, useRef } from "react";
 import { useSocket } from "../../../context/SocketProvider";
 
-function ChatBox({ name }) {
+function ChatBox({ name, groupId }) {
   const { socket } = useSocket();
-  const { groupId } = socket;
 
   const messageEl = useRef(null);
   const [myMessage, setMyMessage] = useState("");
@@ -13,6 +12,7 @@ function ChatBox({ name }) {
 
   const sendMyMessage = (e) => {
     e.preventDefault();
+
     socket.emit("send-message", { name, message: myMessage });
     setMyMessage("");
   };

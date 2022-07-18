@@ -3,50 +3,9 @@ import Button from "react-bootstrap/esm/Button";
 
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
 import { useSocket } from "../../context/SocketProvider";
-import { motion } from "framer-motion";
 
 function Group() {
-  // grouppage variant
-  // const pageVariants = {
-  //   exit: {
-  //     opacity: 0,
-  //     transition: { duration: 0.5 },
-  //   },
-  //   hidden: {
-  //     opacity: 0,
-  //   },
-  //   visible: {
-  //     opacity: 1,
-  //     transition: {
-  //       duration: 0.25,
-  //     },
-  //   },
-  // };
-
-  // const buttonVariants = {
-  //   hidden: { opacity: 0 },
-  //   visible: {
-  //     opacity: 1,
-  //     transition: {
-  //       // delay as button will not use childVariant but still has to appear in order
-  //       delay: 1,
-  //       duration: 0.25,
-  //     },
-  //   },
-  //   hover: {
-  //     scale: 1.1,
-  //     textShadow: "0px 0px 8px rgb(255,255,255)",
-  //     boxShadow: "0px 0px 8px rgb(255,255,255)",
-  //     transition: {
-  //       duration: 0.25,
-  //       repeat: Infinity,
-  //       repeatType: "reverse",
-  //     },
-  //   },
-  // };
-
   const [nickname, setNickname] = useState("");
   const [roomName, setRoomName] = useState("");
   const { socket, initSocket } = useSocket();
@@ -54,7 +13,9 @@ function Group() {
   const { groupInviteId } = useParams();
 
   useEffect(() => {
-    initSocket();
+    if (!socket) {
+      initSocket();
+    }
   }, []);
 
   useEffect(() => {
@@ -65,14 +26,21 @@ function Group() {
 
   const joinGroup = (e, isHost) => {
     e.preventDefault();
-    if (nickname === "" || roomName === "") return;
 
-    socket.name = nickname;
-    socket.groupId = roomName;
+    // Simple input validation
+    const name = nickname.trim();
+    const room = roomName.trim();
+
+    if (!name || !room) {
+      return;
+    }
+
+    socket.name = name;
+    socket.groupId = room;
 
     socket.emit("user:join-group", {
-      nickname: nickname,
-      groupId: roomName,
+      nickname: name,
+      groupId: room,
       isHost: isHost,
     });
 
@@ -80,13 +48,7 @@ function Group() {
   };
 
   return (
-    <div
-      // variants={pageVariants}
-      // initial="hidden"
-      // animate="visible"
-      // exit="exit"
-      className="group-wrapper"
-    >
+    <div className="group-wrapper">
       <div className="group-container">
         <h1>Create or Join a group</h1>
         <form>
@@ -113,6 +75,7 @@ function Group() {
               className="mx-1 my-1 w-100"
             ></input>
           </label>
+
           <Button
             variant="danger"
             size="lg"
@@ -121,6 +84,7 @@ function Group() {
           >
             Create a Group
           </Button>
+
           <Button
             variant="light"
             size="lg"

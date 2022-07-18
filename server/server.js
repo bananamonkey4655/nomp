@@ -37,7 +37,6 @@ app.get("/", (req, res) => {
 const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {
-  sanitizeInput,
   addMemberToMap,
   removeMemberFromMap,
   updateMembersOnClient,
@@ -53,7 +52,9 @@ io.on("connection", (socket) => {
 
   // Add user to group
   socket.on("user:join-group", ({ nickname, groupId, isHost }) => {
-    sanitizeInput(groupId);
+    groupId = (function sanitizeInput(string) {
+      return string.toLowerCase();
+    })(groupId);
     socket.join(groupId);
     addMemberToMap(nickname, groupId, isHost, members);
 

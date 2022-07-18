@@ -8,7 +8,6 @@ const protect = async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    console.log("Authorization header is included");
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
@@ -25,7 +24,6 @@ const protect = async (req, res, next) => {
 
       next();
     } catch (err) {
-      console.log("Error with auth middleware: " + err);
       res.status(401).json({ message: "Server error" });
     }
   }
