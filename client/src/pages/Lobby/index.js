@@ -51,6 +51,7 @@ function Lobby() {
   }, [socket]);
 
   useEffect(() => {
+    // Set the user on this page as host if server's data says so
     setIsHost(
       !!groupMembers.filter(
         (member) => member.nickname === name && member.isHost

@@ -27,58 +27,59 @@ function ResultsPage() {
         setResultEatery(data);
       }
     };
+
     fetchData(eateryId);
   }, []);
 
   if (!resultEatery) {
     return <LoadingDisplay />;
-  } else {
-    const {
-      name,
-      image_url,
-      display_phone,
-      location,
-      rating,
-      review_count,
-      categories,
-      price,
-      url: page_url,
-    } = resultEatery;
-
-    return (
-      <div className="results-page-wrapper">
-        <div className="container">
-          <img src={image_url} />
-          <div className="imagebox-text">
-            <div className="empty-space"></div>
-            <h1>{name}</h1>
-            <h5>
-              {categories
-                .reduce((acc, curr) => acc + ", " + curr.title, "")
-                .substring(1)}
-            </h5>
-            <section>
-              <ReviewStars rating={rating} />
-              <div>{price}</div>
-              <div className="address">
-                <MapPin size={20} />
-                <span>{location.address1}</span>
-              </div>
-              <div>{display_phone}</div>
-            </section>
-          </div>
-        </div>
-        <a
-          className="external-redirect-button mt-3 shadow w-25"
-          href={page_url}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          Eat Here!
-        </a>
-      </div>
-    );
   }
+
+  const {
+    name: restaurant_name,
+    image_url,
+    display_phone,
+    location: place,
+    rating,
+    review_count,
+    categories,
+    price,
+    url: page_url,
+  } = resultEatery;
+
+  return (
+    <div className="results-page-wrapper">
+      <div className="container">
+        <img src={image_url} />
+        <div className="imagebox-text">
+          <div className="empty-space"></div>
+          <h1>{restaurant_name}</h1>
+          <h5>
+            {categories
+              .reduce((acc, curr) => acc + ", " + curr.title, "")
+              .substring(1)}
+          </h5>
+          <section>
+            <ReviewStars rating={rating} />
+            <div>{price}</div>
+            <div className="address">
+              <MapPin size={20} />
+              <span>{place.address1}</span>
+            </div>
+            <div>{display_phone}</div>
+          </section>
+        </div>
+      </div>
+      <a
+        className="external-redirect-button mt-3 shadow w-25"
+        href={page_url}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        Eat Here!
+      </a>
+    </div>
+  );
 }
 
 export default ResultsPage;

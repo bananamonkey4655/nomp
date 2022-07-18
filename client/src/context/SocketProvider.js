@@ -16,14 +16,19 @@ function SocketProvider({ children }) {
     setSocket(socket);
   };
 
-  let isHost = false;
+  const disconnectSocket = () => {
+    if (socket) {
+      socket.disconnect();
+      setSocket(null);
+    }
+  };
 
   const value = {
     socket,
     initSocket,
+    disconnectSocket,
     groupId,
     setGroupId,
-    isHost,
   };
 
   return (

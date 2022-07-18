@@ -41,11 +41,13 @@ module.exports = (io) => {
 
   // Given a member, remove him from data structure
   const removeMemberFromMap = (name, roomId, map) => {
-    console.log("Removing member from map...");
+    console.log(`Removing member ${name} from map...`);
     if (map.has(roomId)) {
       const roomMembers = map.get(roomId);
-      roomMembers.splice(roomMembers.indexOf(name), 1); // Retrieve the array and remove disconnected user's nickname
-      console.log("Member removed");
+      const updatedArray = roomMembers.filter((member) => {
+        return member.nickname !== name;
+      });
+      map.set(roomId, updatedArray);
     }
   };
 
