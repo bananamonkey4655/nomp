@@ -1,12 +1,18 @@
 import LoadingDisplay from "../../components/LoadingDisplay";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../../context/AuthProvider";
+import { useSocket } from "../../context/SocketProvider";
 import { BACKEND_URL } from "../../config";
 import useFetch from "../../hooks/useFetch";
 
 function Dashboard() {
   const { token } = useAuth();
+  const { disconnectSocket } = useSocket();
+
+  useEffect(() => {
+    disconnectSocket();
+  }, []);
 
   const { response, isLoading, error } = useFetch(`${BACKEND_URL}/user/info`, {
     headers: {

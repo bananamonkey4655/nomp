@@ -5,13 +5,19 @@ import Form from "react-bootstrap/Form";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingDisplay from "../../components/LoadingDisplay";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
+import { useSocket } from "../../context/SocketProvider";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, errorMessage, attemptLogin } = useAuth();
+  const { disconnectSocket } = useSocket();
+
+  useEffect(() => {
+    disconnectSocket();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();

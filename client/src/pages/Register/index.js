@@ -5,9 +5,10 @@ import Form from "react-bootstrap/Form";
 import ErrorMessage from "../../components/ErrorMessage";
 import LoadingDisplay from "../../components/LoadingDisplay";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
+import { useSocket } from "../../context/SocketProvider";
 
 function Register() {
   const navigate = useNavigate();
@@ -15,6 +16,11 @@ function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, errorMessage, attemptRegister } = useAuth();
+  const { disconnectSocket } = useSocket();
+
+  useEffect(() => {
+    disconnectSocket();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
