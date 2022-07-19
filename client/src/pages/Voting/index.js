@@ -52,6 +52,7 @@ function Voting() {
   const { socket } = useSocket();
   const { name, groupId } = socket;
   const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
+  console.log(useLocation().state);
 
   const [eateries, setEateries] = useState(null);
   const [eateryIndex, setEateryIndex] = useState(0);
@@ -63,8 +64,10 @@ function Voting() {
   // Fetch restaurants data and listen for event denoting end of game
   useEffect(() => {
     async function fetchData() {
-      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}
-        &latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&radius=${radius}`;
+      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&radius=${radius}`;
+      if (coordinates) {
+        URL += `&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
+      }
       const response = await fetch(URL);
       const data = await response.json();
 

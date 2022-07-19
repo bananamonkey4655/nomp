@@ -36,10 +36,11 @@ router.get("/search", async (req, res) => {
     radius,
   } = req.query;
 
-  // Input validation/sanitization/modification
+  // Input modification
   if (latitude && longitude) {
     location = null;
   }
+
   radius = (function convertKmToMetres(km) {
     return km * 1000;
   })(radius);
