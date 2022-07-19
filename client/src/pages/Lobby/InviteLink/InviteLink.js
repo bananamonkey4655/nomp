@@ -1,8 +1,8 @@
 import styles from "./InviteLink.module.css";
 
 import { useState } from "react";
-import { useSocket } from "../../../context/SocketProvider";
-import { FRONTEND_URL } from "../../../config";
+import { useSocket } from "context/SocketProvider";
+import { FRONTEND_URL } from "config";
 
 function InviteLink() {
   const { socket } = useSocket();

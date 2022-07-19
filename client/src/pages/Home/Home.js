@@ -1,10 +1,10 @@
 import styles from "./Home.module.css";
-import groupImage from "../../assets/bg/group_img_2.png";
-import foodImage from "../../assets/bg/food_img_4.png";
+import groupImage from "assets/bg/group_img_2.png";
+import foodImage from "assets/bg/food_img_4.png";
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "context/SocketProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
 function Home() {

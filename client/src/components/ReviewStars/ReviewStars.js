@@ -9,7 +9,7 @@ import {
   stars_four,
   stars_four_half,
   stars_five,
-} from "../../assets/ratings";
+} from "assets/ratings";
 
 import styles from "./ReviewStars.module.css";
 

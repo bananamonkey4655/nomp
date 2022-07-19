@@ -1,9 +1,9 @@
 import "./Navbar.css";
 
-import Logo from "../Logo";
+import Logo from "components/Logo";
 
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+import { useAuth } from "context/AuthProvider";
 
 function Navbar() {
   const { token, handleLogout } = useAuth();

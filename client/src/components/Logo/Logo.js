@@ -1,5 +1,5 @@
 import "./logo.css";
-import logo from "../../assets/Nomp_placeholder_icon.png";
+import logo from "assets/Nomp_placeholder_icon.png";
 
 function Logo() {
   return (

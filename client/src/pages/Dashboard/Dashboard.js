@@ -1,10 +1,10 @@
-import LoadingDisplay from "../../components/LoadingDisplay";
+import LoadingDisplay from "components/LoadingDisplay";
 
 import { useEffect } from "react";
-import { useAuth } from "../../context/AuthProvider";
-import { useSocket } from "../../context/SocketProvider";
-import { BACKEND_URL } from "../../config";
-import useFetch from "../../hooks/useFetch";
+import { useAuth } from "context/AuthProvider";
+import { useSocket } from "context/SocketProvider";
+import useFetch from "hooks/useFetch";
+import { BACKEND_URL } from "config";
 
 function Dashboard() {
   const { token } = useAuth();

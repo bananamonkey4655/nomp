@@ -1,7 +1,7 @@
 import styles from "./ExitGroupButton.module.css";
 
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "context/SocketProvider";
 
 function ExitGroupButton() {
   const { disconnectSocket } = useSocket();

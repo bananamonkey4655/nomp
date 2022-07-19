@@ -4,13 +4,13 @@ import { Users } from "phosphor-react";
 import ChatBox from "./ChatBox";
 import GroupSettings from "./GroupSettings";
 import InviteLink from "./InviteLink";
-import Loader from "../../components/Loader";
+import Loader from "components/Loader";
+import ExitGroupButton from "components/ExitGroupButton";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "context/SocketProvider";
 import { motion } from "framer-motion";
-import ExitGroupButton from "../../components/ExitGroupButton";
 
 function Lobby() {
   // lobbypage variant

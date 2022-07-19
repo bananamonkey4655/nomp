@@ -1,21 +1,21 @@
-import "./styles/App.css";
+import "styles/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import ProtectedRoute from "./utils/ProtectedRoute";
-import Navbar from "./components/Navbar";
-import NoMatch from "./pages/NoMatch";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import Group from "./pages/Group";
-import Lobby from "./pages/Lobby";
-import Voting from "./pages/Voting";
-import ResultsPage from "./pages/ResultsPage";
+import ProtectedRoute from "utils/ProtectedRoute";
+import Navbar from "components/Navbar";
+import NoMatch from "pages/NoMatch";
+import Home from "pages/Home";
+import Login from "pages/Login";
+import Register from "pages/Register";
+import Dashboard from "pages/Dashboard";
+import Group from "pages/Group";
+import Lobby from "pages/Lobby";
+import Voting from "pages/Voting";
+import ResultsPage from "pages/ResultsPage";
 
 import { Routes, Route, useLocation } from "react-router-dom";
-import { AuthProvider } from "./context/AuthProvider";
-import { SocketProvider } from "./context/SocketProvider";
+import { AuthProvider } from "context/AuthProvider";
+import { SocketProvider } from "context/SocketProvider";
 import { AnimatePresence } from "framer-motion";
 
 function App() {

@@ -1,13 +1,13 @@
 import "./GroupSettings.css";
 import Button from "react-bootstrap/Button";
 
-import Loader from "../../../components/Loader";
+import Loader from "components/Loader";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../../context/SocketProvider";
-import useGeoLocation from "../../../hooks/useGeoLocation";
-import { BACKEND_URL } from "../../../config";
+import { useSocket } from "context/SocketProvider";
+import useGeoLocation from "hooks/useGeoLocation";
+import { BACKEND_URL } from "config";
 
 function GroupSettings({ isHost }) {
   //TODO: move form state into a single form object?

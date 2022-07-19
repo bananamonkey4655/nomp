@@ -2,13 +2,13 @@ import "./Register.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-import ErrorMessage from "../../components/ErrorMessage";
-import LoadingDisplay from "../../components/LoadingDisplay";
+import ErrorMessage from "components/ErrorMessage";
+import LoadingDisplay from "components/LoadingDisplay";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
-import { useSocket } from "../../context/SocketProvider";
+import { useAuth } from "context/AuthProvider";
+import { useSocket } from "context/SocketProvider";
 
 function Register() {
   const navigate = useNavigate();

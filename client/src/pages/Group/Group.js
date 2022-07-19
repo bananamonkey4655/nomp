@@ -3,7 +3,7 @@ import Button from "react-bootstrap/esm/Button";
 
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "context/SocketProvider";
 
 function Group() {
   const [nickname, setNickname] = useState("");

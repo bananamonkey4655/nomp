@@ -1,17 +1,17 @@
 import "./Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
-import Loader from "../../components/Loader";
-import LoadingDisplay from "../../components/LoadingDisplay";
-import ReviewStars from "../../components/ReviewStars";
-import ExitGroupButton from "../../components/ExitGroupButton";
+import Loader from "components/Loader";
+import LoadingDisplay from "components/LoadingDisplay";
+import ReviewStars from "components/ReviewStars";
+import ExitGroupButton from "components/ExitGroupButton";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "context/SocketProvider";
 // import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import shuffleArray from "../../utils/shuffleArray";
-import { BACKEND_URL } from "../../config";
+import shuffleArray from "utils/shuffleArray";
+import { BACKEND_URL } from "config";
 
 function Voting() {
   // const controls = useAnimation();

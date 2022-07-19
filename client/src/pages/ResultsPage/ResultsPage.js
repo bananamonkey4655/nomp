@@ -1,14 +1,14 @@
 import "./ResultsPage.css";
 import { MapPin } from "phosphor-react";
 
-import Loader from "../../components/Loader";
-import LoadingDisplay from "../../components/LoadingDisplay";
-import ReviewStars from "../../components/ReviewStars";
+import Loader from "components/Loader";
+import LoadingDisplay from "components/LoadingDisplay";
+import ReviewStars from "components/ReviewStars";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useSocket } from "../../context/SocketProvider";
-import { BACKEND_URL } from "../../config";
+import { useSocket } from "context/SocketProvider";
+import { BACKEND_URL } from "config";
 
 function ResultsPage() {
   const { disconnectSocket } = useSocket();
