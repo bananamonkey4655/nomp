@@ -7,9 +7,11 @@ import ReviewStars from "../../components/ReviewStars";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useSocket } from "../../context/SocketProvider";
 import { BACKEND_URL } from "../../config";
 
 function ResultsPage() {
+  const { disconnectSocket } = useSocket();
   const location = useLocation();
   const { eateryId, count } = location.state;
 
@@ -18,8 +20,10 @@ function ResultsPage() {
   useEffect(() => {
     const fetchData = async (id) => {
       const URL = `${BACKEND_URL}/eatery/match?id=${id}`;
+
       const response = await fetch(URL);
       const data = await response.json();
+
       if (data.error) {
         console.log("Error from fetching...");
         console.log(`${data.error.code}: ${data.error.description}`);
@@ -30,6 +34,12 @@ function ResultsPage() {
 
     fetchData(eateryId);
   }, []);
+
+  useEffect(() => {
+    if (resultEatery) {
+      disconnectSocket();
+    }
+  }, [resultEatery]);
 
   if (!resultEatery) {
     return <LoadingDisplay />;
