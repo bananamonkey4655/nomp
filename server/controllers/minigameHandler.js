@@ -23,17 +23,26 @@ module.exports = (io) => {
     gameCompletedMember.done = true;
   };
 
-  const isGameOver = (map, roomId) => {
-    const roomMembers = map.get(roomId);
-    for (const member of roomMembers) {
-      if (!member.done) {
+  const handleGameOver = (membersMap, roomId) => {
+    const isGameOver = (map, roomId) => {
+      const roomMembers = map.get(roomId);
+
+      if (!roomMembers) {
         return false;
       }
-    }
-    return true;
-  };
 
-  const handleGameOver = (roomId) => {
+      for (const member of roomMembers) {
+        if (!member.done) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    if (!isGameOver(membersMap, roomId)) {
+      return;
+    }
+
     const voteCounts = eateries.get(roomId);
     let max = 0;
     let highestVotedEatery = null;
@@ -54,7 +63,6 @@ module.exports = (io) => {
   return {
     addEateryVote,
     changeMemberDoneStatus,
-    isGameOver,
     handleGameOver,
   };
 };

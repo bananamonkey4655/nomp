@@ -4,6 +4,7 @@ import { MapPin, Heart, X } from "phosphor-react";
 import Loader from "../../components/Loader";
 import LoadingDisplay from "../../components/LoadingDisplay";
 import ReviewStars from "../../components/ReviewStars";
+import ExitGroupButton from "../../components/ExitGroupButton/ExitGroupButton";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -52,7 +53,6 @@ function Voting() {
   const { socket } = useSocket();
   const { name, groupId } = socket;
   const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
-  console.log(useLocation().state);
 
   const [eateries, setEateries] = useState(null);
   const [eateryIndex, setEateryIndex] = useState(0);
@@ -64,7 +64,7 @@ function Voting() {
   // Fetch restaurants data and listen for event denoting end of game
   useEffect(() => {
     async function fetchData() {
-      const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&radius=${radius}`;
+      let URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&radius=${radius}`;
 
       if (coordinates) {
         URL += `&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
@@ -159,6 +159,7 @@ function Voting() {
 
   return (
     <div className="wrapper">
+      <ExitGroupButton />
       <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex + 1}/${
         eateries.length
       } Restaurants Viewed`}</h1>

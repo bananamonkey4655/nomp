@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 // Websocket
 // TODO: organize into other folders
-const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
+const { addEateryVote, changeMemberDoneStatus, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {
   addMemberToMap,
@@ -87,10 +87,7 @@ io.on("connection", (socket) => {
     socket.on("member-completed-game", (name) => {
       console.log("Received member-completed-game event");
       changeMemberDoneStatus(name, members, groupId);
-      if (isGameOver(members, groupId)) {
-        console.log("Game is over");
-        handleGameOver(groupId);
-      }
+      handleGameOver(members, groupId);
     });
 
     // Disconnect from server
@@ -99,6 +96,7 @@ io.on("connection", (socket) => {
       removeMemberFromMap(nickname, groupId, members);
       updateMembersOnClient(groupId, members);
       deleteGroupIfEmpty(groupId, members);
+      handleGameOver(members, groupId);
     });
   });
 });

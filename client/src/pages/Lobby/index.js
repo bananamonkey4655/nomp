@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
 import { motion } from "framer-motion";
+import ExitGroupButton from "../../components/ExitGroupButton/ExitGroupButton";
 
 function Lobby() {
   // lobbypage variant
@@ -70,6 +71,7 @@ function Lobby() {
     >
       <section className="lobby-left">
         <div className="members">
+          <ExitGroupButton />
           <div className="members-count-wrapper">
             <div className="members-count">
               <Users size={30} />
