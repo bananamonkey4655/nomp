@@ -15,8 +15,15 @@ function Register() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, errorMessage, attemptRegister } = useAuth();
+  const { token, isLoading, errorMessage, attemptRegister } = useAuth();
   const { disconnectSocket } = useSocket();
+
+  // If already logged in, send back to home page
+  useEffect(() => {
+    if (token) {
+      navigate("/home");
+    }
+  }, []);
 
   useEffect(() => {
     disconnectSocket();

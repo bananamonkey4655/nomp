@@ -8,12 +8,21 @@ import LoadingDisplay from "components/LoadingDisplay";
 import { useEffect, useState } from "react";
 import { useAuth } from "context/AuthProvider";
 import { useSocket } from "context/SocketProvider";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, errorMessage, attemptLogin } = useAuth();
+  const { token, isLoading, errorMessage, attemptLogin } = useAuth();
   const { disconnectSocket } = useSocket();
+
+  // If already logged in, send back to home page
+  useEffect(() => {
+    if (token) {
+      navigate("/home");
+    }
+  }, []);
 
   useEffect(() => {
     disconnectSocket();
