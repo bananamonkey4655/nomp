@@ -67,6 +67,11 @@ function GroupSettings({ isHost }) {
     setLocation("");
     setQuery("");
   };
+  const allowLocationInput = (e) => {
+    e.preventDefault();
+    setLocation("");
+    setCoordinates(null);
+  };
 
   return (
     <div className="shadow group-settings-box d-flex flex-direction-column">
@@ -84,6 +89,7 @@ function GroupSettings({ isHost }) {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              readOnly={coordinates}
               required
             />
             <Button
@@ -94,6 +100,7 @@ function GroupSettings({ isHost }) {
             >
               Get Location
             </Button>
+            <button onClick={allowLocationInput}>Remove coordinates</button>
           </div>
 
           <div>

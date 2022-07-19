@@ -65,9 +65,11 @@ function Voting() {
   useEffect(() => {
     async function fetchData() {
       const URL = `${BACKEND_URL}/eatery/search?location=${location}&query=${query}&budget=${budget}&radius=${radius}`;
+
       if (coordinates) {
         URL += `&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
       }
+
       const response = await fetch(URL);
       const data = await response.json();
 
