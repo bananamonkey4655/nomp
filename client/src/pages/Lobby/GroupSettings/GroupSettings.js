@@ -11,6 +11,11 @@ import { BACKEND_URL } from "config";
 
 function GroupSettings({ isHost }) {
   const DEFAULT_RADIUS_METRES = 10;
+  const { socket } = useSocket();
+  const { groupId } = socket;
+  const navigate = useNavigate();
+  const geoLocation = useGeoLocation();
+
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
   const [form, setForm] = useState({
     location: "",
@@ -19,11 +24,6 @@ function GroupSettings({ isHost }) {
     coordinates: null,
     radius: DEFAULT_RADIUS_METRES,
   });
-
-  const { socket } = useSocket();
-  const { groupId } = socket;
-  const navigate = useNavigate();
-  const geoLocation = useGeoLocation();
 
   /** Controlled component form state handlers */
   const allowLocationInput = (e) => {

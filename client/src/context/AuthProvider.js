@@ -28,7 +28,7 @@ function AuthProvider({ children }) {
     }
   };
 
-  const attemptLogin = async (username, password) => {
+  const attemptLogin = async ({ username, password }) => {
     try {
       const token = await authenticateUser("login", username, password);
       setToken(token);

@@ -11,11 +11,14 @@ import { useSocket } from "context/SocketProvider";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const { token, isLoading, errorMessage, attemptLogin } = useAuth();
   const { disconnectSocket } = useSocket();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
 
   // If already logged in, send back to home page
   useEffect(() => {
@@ -30,15 +33,16 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    attemptLogin(username, password);
 
-    setUsername("");
-    setPassword("");
+    attemptLogin(form);
+    setForm({ username: "", password: "" });
   };
 
   if (isLoading) {
     return <LoadingDisplay />;
   }
+
+  const { username, password } = form;
 
   return (
     <div className="login-wrapper">
@@ -54,7 +58,7 @@ function Login() {
               maxLength="18"
               autoComplete="off"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
               required
             />
             <Form.Text className="text-dark ">Welcome to Nomp!</Form.Text>
@@ -67,7 +71,7 @@ function Login() {
               placeholder="Password"
               maxLength="18"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
             />
           </Form.Group>
