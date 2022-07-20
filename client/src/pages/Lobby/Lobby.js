@@ -10,32 +10,22 @@ import ExitGroupButton from "components/ExitGroupButton";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
-import { motion } from "framer-motion";
 
 function Lobby() {
-  // lobbypage variant
-  const pageVariants = {
-    exit: {
-      opacity: 0,
-      transition: { duration: 0.5 },
-    },
-    hidden: {
-      opacity: 0,
-    },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 1,
-      },
-    },
-  };
-
   const { socket } = useSocket();
   const { name, groupId } = socket;
   const navigate = useNavigate();
 
   const [groupMembers, setGroupMembers] = useState([]);
   const [isHost, setIsHost] = useState(false);
+
+  useEffect(() => {
+    socket.emit("user:join-group", {
+      nickname: name,
+      groupId: groupId,
+      isHost: socket.isHost,
+    });
+  }, []);
 
   useEffect(() => {
     socket.on("update-members", (newMembers) => {
@@ -62,13 +52,7 @@ function Lobby() {
 
   // TODO: change index
   return groupMembers?.length ? (
-    <motion.div
-      variants={pageVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      className="lobby-container"
-    >
+    <div className="lobby-container">
       <section className="lobby-left">
         <div className="members">
           <ExitGroupButton />
@@ -91,7 +75,7 @@ function Lobby() {
       </section>
 
       <ChatBox name={name} groupId={groupId} />
-    </motion.div>
+    </div>
   ) : (
     <h1>
       <Loader message="Loading..." />

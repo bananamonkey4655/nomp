@@ -38,10 +38,19 @@ function ChatBox({ name, groupId }) {
         message: `${name} has joined the lobby`,
       });
     });
+
     socket.on("new-message", (message) => {
       updateChat(message);
     });
-  }, [socket]);
+
+    socket.on("chat:leave-group", (nickname) => {
+      console.log("Leaving group");
+      updateChat({
+        name: "NOMP",
+        message: `${nickname} has left the lobby`,
+      });
+    });
+  }, []);
 
   return (
     <div className={styles.container}>

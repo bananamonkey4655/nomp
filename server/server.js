@@ -93,10 +93,13 @@ io.on("connection", (socket) => {
     // Disconnect from server
     socket.on("disconnect", () => {
       console.log(`Disconnected: ${socket.id}`);
+      console.log("--------------------------------------------------------");
       removeMemberFromMap(nickname, groupId, members);
       updateMembersOnClient(groupId, members);
       deleteGroupIfEmpty(groupId, members);
       handleGameOver(members, groupId);
+
+      socket.emit("chat:leave-group", nickname);
     });
   });
 });

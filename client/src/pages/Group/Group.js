@@ -8,15 +8,21 @@ import { useSocket } from "context/SocketProvider";
 function Group() {
   const [nickname, setNickname] = useState("");
   const [roomName, setRoomName] = useState("");
-  const { socket, initSocket } = useSocket();
+  const { socket, initSocket, disconnectSocket } = useSocket();
   const navigate = useNavigate();
   const { groupInviteId } = useParams();
+
+  useEffect(() => {
+    if (socket) {
+      disconnectSocket();
+    }
+  }, []);
 
   useEffect(() => {
     if (!socket) {
       initSocket();
     }
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     if (groupInviteId) {
@@ -37,12 +43,7 @@ function Group() {
 
     socket.name = name;
     socket.groupId = room;
-
-    socket.emit("user:join-group", {
-      nickname: name,
-      groupId: room,
-      isHost: isHost,
-    });
+    socket.isHost = isHost;
 
     navigate("/lobby");
   };
