@@ -12,11 +12,13 @@ import { useSocket } from "context/SocketProvider";
 
 function Register() {
   const navigate = useNavigate();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const { token, isLoading, errorMessage, attemptRegister } = useAuth();
   const { disconnectSocket } = useSocket();
+
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
 
   // If already logged in, send back to home page
   useEffect(() => {
@@ -31,15 +33,16 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    attemptRegister(username, password);
+    attemptRegister(form);
 
-    setUsername("");
-    setPassword("");
+    setForm({ username: "", password: "" });
   };
 
   if (isLoading) {
     return <LoadingDisplay />;
   }
+
+  const { username, password } = form;
 
   return (
     <div className="register-wrapper">
@@ -54,7 +57,7 @@ function Register() {
               maxLength="18"
               autoComplete="off"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
               required
             />
           </Form.Group>
@@ -66,7 +69,7 @@ function Register() {
               placeholder="Password"
               maxLength="18"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
             />
           </Form.Group>

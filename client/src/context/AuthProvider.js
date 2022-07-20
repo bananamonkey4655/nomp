@@ -15,7 +15,7 @@ function AuthProvider({ children }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const attemptRegister = async (username, password) => {
+  const attemptRegister = async ({ username, password }) => {
     try {
       const token = await authenticateUser("register", username, password);
       setToken(token);
