@@ -11,7 +11,7 @@ import { useSocket } from "context/SocketProvider";
 import { BACKEND_URL } from "config";
 
 function ResultsPage() {
-  const { disconnectSocket } = useSocket();
+  const { quitGroup } = useSocket();
   const location = useLocation();
   const { eateryId, count } = location.state;
 
@@ -35,11 +35,11 @@ function ResultsPage() {
     fetchData(eateryId);
   }, []);
 
-  useEffect(() => {
-    if (resultEatery) {
-      disconnectSocket();
-    }
-  }, [resultEatery]);
+  // useEffect(() => {
+  //   if (resultEatery) {
+  //     quitGroup();
+  //   }
+  // }, [resultEatery]);
 
   if (!resultEatery) {
     return <LoadingDisplay />;

@@ -1,21 +1,21 @@
-const eateries = new Map();
+const eateriesByRoomId = new Map();
 
 module.exports = (io) => {
   const addEateryVote = ({ eateryId, roomId }) => {
-    if (!eateries.has(roomId)) {
-      eateries.set(roomId, new Map());
+    if (!eateriesByRoomId.has(roomId)) {
+      eateriesByRoomId.set(roomId, new Map());
     }
-    const voteCounts = eateries.get(roomId);
+    const votesByEatery = eateriesByRoomId.get(roomId);
 
-    if (!voteCounts.has(eateryId)) {
-      voteCounts.set(eateryId, 1);
+    if (!votesByEatery.has(eateryId)) {
+      votesByEatery.set(eateryId, 1);
       return;
     }
-    const curr = voteCounts.get(eateryId);
-    voteCounts.set(eateryId, curr + 1);
+    const curr = votesByEatery.get(eateryId);
+    votesByEatery.set(eateryId, curr + 1);
   };
 
-  const changeMemberDoneStatus = (name, map, roomId) => {
+  const changeMemberDoneStatus = ({ name, roomId }, map) => {
     const roomMembers = map.get(roomId);
     const gameCompletedMember = roomMembers.find(
       (member) => member.nickname === name
@@ -23,9 +23,11 @@ module.exports = (io) => {
     gameCompletedMember.done = true;
   };
 
-  const handleGameOver = (membersMap, roomId) => {
+  const handleGameOver = (roomId, membersMap) => {
     const isGameOver = (map, roomId) => {
       const roomMembers = map.get(roomId);
+      console.log("Checking if game is over...");
+      console.log(roomMembers);
 
       if (!roomMembers) {
         return false;
@@ -43,11 +45,12 @@ module.exports = (io) => {
       return;
     }
 
-    const voteCounts = eateries.get(roomId);
+    console.log("Game is over");
+    const votesByEatery = eateriesByRoomId.get(roomId);
     let max = 0;
     let highestVotedEatery = null;
 
-    for (const [eatery, count] of voteCounts) {
+    for (const [eatery, count] of votesByEatery) {
       if (count >= max) {
         max = count;
         highestVotedEatery = eatery;

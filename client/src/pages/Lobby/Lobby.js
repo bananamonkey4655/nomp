@@ -13,17 +13,17 @@ import { useSocket } from "context/SocketProvider";
 
 function Lobby() {
   const { socket } = useSocket();
-  const { name, groupId } = socket;
+  const { name, groupId, isHost } = socket;
   const navigate = useNavigate();
 
+  // Server is single source of truth
   const [groupMembers, setGroupMembers] = useState([]);
-  const [isHost, setIsHost] = useState(false);
 
   useEffect(() => {
-    socket.emit("user:join-group", {
+    socket.emit("join-group", {
       nickname: name,
       groupId: groupId,
-      isHost: socket.isHost,
+      isHost: isHost,
     });
   }, []);
 
@@ -31,27 +31,35 @@ function Lobby() {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
     });
-    socket.on(
-      "members-start-search",
-      ({ location, query, budget, coordinates, radius }) => {
-        navigate(`/voting`, {
-          state: { location, query, budget, coordinates, radius },
-        }); //TODO: call yelp api once only and store eateries
-      }
-    );
+
+    socket.on("members-start-search", (queryParameters) => {
+      navigate(`/voting`, {
+        state: queryParameters,
+      }); //TODO: call yelp api once only and store eateries
+    });
+
+    return () => {
+      console.log("unmounting lobby");
+    };
   }, [socket]);
 
   useEffect(() => {
-    // Set the user on this page as host if server's data says so
-    setIsHost(
-      !!groupMembers.filter(
-        (member) => member.nickname === name && member.isHost
-      ).length
-    );
+    console.log(groupMembers);
   }, [groupMembers]);
 
+  const user = groupMembers.find((member) => member.nickname === name);
+
   // TODO: change index
-  return groupMembers?.length ? (
+  if (!groupMembers) {
+    return (
+      <h1>
+        <Loader message="Loading..." />
+      </h1>
+    );
+  }
+
+  // TODO: make smaller components here
+  return (
     <div className="lobby-container">
       <section className="lobby-left">
         <div className="members">
@@ -71,15 +79,11 @@ function Lobby() {
           </ul>
         </div>
         <InviteLink />
-        <GroupSettings isHost={isHost} />
+        <GroupSettings isHost={user?.isHost} />
       </section>
 
       <ChatBox name={name} groupId={groupId} />
     </div>
-  ) : (
-    <h1>
-      <Loader message="Loading..." />
-    </h1>
   );
 }
 

@@ -4,9 +4,11 @@ import Logo from "components/Logo";
 
 import { NavLink } from "react-router-dom";
 import { useAuth } from "context/AuthProvider";
+import { useSocket } from "context/SocketProvider";
 
 function Navbar() {
   const { token, handleLogout } = useAuth();
+  const { quitGroup } = useSocket();
 
   return (
     <nav>
@@ -19,6 +21,7 @@ function Navbar() {
           <NavLink
             to="/home"
             className={({ isActive }) => (isActive ? "activenav" : "navlink")}
+            onClick={quitGroup}
           >
             Home
           </NavLink>
@@ -28,6 +31,7 @@ function Navbar() {
             <NavLink
               to="/dashboard"
               className={({ isActive }) => (isActive ? "activenav" : "navlink")}
+              onClick={quitGroup}
             >
               Dashboard
             </NavLink>
@@ -37,6 +41,7 @@ function Navbar() {
           <NavLink
             to="/group"
             className={({ isActive }) => (isActive ? "activenav" : "navlink")}
+            onClick={quitGroup}
           >
             I'm Hungry
           </NavLink>
@@ -63,7 +68,13 @@ function Navbar() {
         </li>
         <li>
           {token && (
-            <button type="button" onClick={handleLogout}>
+            <button
+              type="button"
+              onClick={() => {
+                handleLogout();
+                quitGroup();
+              }}
+            >
               Sign Out
             </button>
           )}

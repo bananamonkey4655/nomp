@@ -13,7 +13,6 @@ import { useSocket } from "context/SocketProvider";
 function Register() {
   const navigate = useNavigate();
   const { token, isLoading, errorMessage, attemptRegister } = useAuth();
-  const { disconnectSocket } = useSocket();
 
   const [form, setForm] = useState({
     username: "",
@@ -25,10 +24,6 @@ function Register() {
     if (token) {
       navigate("/home");
     }
-  }, []);
-
-  useEffect(() => {
-    disconnectSocket();
   }, []);
 
   const handleSubmit = async (e) => {

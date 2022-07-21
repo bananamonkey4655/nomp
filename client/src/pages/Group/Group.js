@@ -6,23 +6,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
 
 function Group() {
-  const [nickname, setNickname] = useState("");
-  const [roomName, setRoomName] = useState("");
+  const [nickname, setNickname] = useState("tom");
+  const [roomName, setRoomName] = useState("room123");
   const { socket, initSocket, disconnectSocket } = useSocket();
   const navigate = useNavigate();
   const { groupInviteId } = useParams();
-
-  useEffect(() => {
-    if (socket) {
-      disconnectSocket();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!socket) {
-      initSocket();
-    }
-  }, [socket]);
 
   useEffect(() => {
     if (groupInviteId) {
@@ -30,7 +18,7 @@ function Group() {
     }
   }, []);
 
-  const joinGroup = (e, isHost) => {
+  const handleSubmit = (e, isHost) => {
     e.preventDefault();
 
     // Simple input validation
@@ -41,11 +29,16 @@ function Group() {
       return;
     }
 
-    socket.name = name;
-    socket.groupId = room;
-    socket.isHost = isHost;
-
-    navigate("/lobby");
+    socket.emit("try-join", name, room, (response) => {
+      if (!response.ok) {
+        console.log(response.error);
+      } else {
+        socket.name = name;
+        socket.groupId = room;
+        socket.isHost = isHost;
+        navigate("/lobby");
+      }
+    });
   };
 
   return (
@@ -80,7 +73,7 @@ function Group() {
           <Button
             variant="danger"
             size="lg"
-            onClick={(e) => joinGroup(e, true)}
+            onClick={(e) => handleSubmit(e, true)}
             className="mt-3 shadow create-button"
           >
             Create a Group
@@ -89,7 +82,7 @@ function Group() {
           <Button
             variant="light"
             size="lg"
-            onClick={(e) => joinGroup(e, false)}
+            onClick={(e) => handleSubmit(e, false)}
             className="mt-3 shadow"
           >
             Join a Group

@@ -8,11 +8,6 @@ import { BACKEND_URL } from "config";
 
 function Dashboard() {
   const { token } = useAuth();
-  const { disconnectSocket } = useSocket();
-
-  useEffect(() => {
-    disconnectSocket();
-  }, []);
 
   const { response, isLoading, error } = useFetch(`${BACKEND_URL}/user/info`, {
     headers: {

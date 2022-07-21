@@ -96,7 +96,7 @@ function Voting() {
 
     if (eateryIndex >= eateries.length) {
       setIsSearchComplete(true);
-      socket.emit("member-completed-game", name);
+      socket.emit("user-voting-complete", name);
     }
   }, [eateryIndex]);
 
@@ -108,7 +108,7 @@ function Voting() {
     // });
     // // remove buttons during animation
     // noButtons();
-    socket.emit("add-desired-eatery", {
+    socket.emit("increment-eatery-vote", {
       eateryId: eateries[eateryIndex].id,
       roomId: groupId,
     });

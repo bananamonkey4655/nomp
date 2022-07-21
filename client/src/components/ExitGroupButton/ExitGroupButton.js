@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
 
 function ExitGroupButton() {
-  const { disconnectSocket } = useSocket();
+  const { quitGroup } = useSocket();
   const navigate = useNavigate();
 
   const exitGroup = () => {
-    disconnectSocket();
+    quitGroup();
     navigate("/group");
   };
 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { BACKEND_URL } from "config";
 
@@ -9,26 +9,22 @@ const useSocket = () => useContext(SocketContext);
 
 function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null);
-  const [groupId, setGroupId] = useState(null);
 
-  const initSocket = () => {
-    const socket = io(BACKEND_URL);
-    setSocket(socket);
+  const quitGroup = () => {
+    socket.emit("quit-group");
   };
 
-  const disconnectSocket = () => {
+  useEffect(() => {
     if (socket) {
-      socket.disconnect();
-      setSocket(null);
+      return;
     }
-  };
+    const mySocket = io(BACKEND_URL);
+    setSocket(mySocket);
+  }, []);
 
   const value = {
     socket,
-    initSocket,
-    disconnectSocket,
-    groupId,
-    setGroupId,
+    quitGroup,
   };
 
   return (

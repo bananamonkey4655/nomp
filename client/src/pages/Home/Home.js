@@ -77,11 +77,6 @@ function Home() {
   };
 
   const navigate = useNavigate();
-  const { disconnectSocket } = useSocket();
-
-  useEffect(() => {
-    disconnectSocket();
-  }, []);
 
   return (
     <motion.div

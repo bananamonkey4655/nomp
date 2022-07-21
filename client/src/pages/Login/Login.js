@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { token, isLoading, errorMessage, attemptLogin } = useAuth();
-  const { disconnectSocket } = useSocket();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -25,10 +24,6 @@ function Login() {
     if (token) {
       navigate("/home");
     }
-  }, []);
-
-  useEffect(() => {
-    disconnectSocket();
   }, []);
 
   const handleSubmit = (e) => {

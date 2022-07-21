@@ -13,7 +13,7 @@ function ChatBox({ name, groupId }) {
   const sendMyMessage = (e) => {
     e.preventDefault();
 
-    socket.emit("send-message", { name, message: myMessage });
+    socket.emit("chat:send-message", { name, message: myMessage });
     setMyMessage("");
   };
 
@@ -33,13 +33,15 @@ function ChatBox({ name, groupId }) {
 
   useEffect(() => {
     socket.on("chat:new-member", (name) => {
+      console.log("New member joining");
       updateChat({
         name: "NOMP",
         message: `${name} has joined the lobby`,
       });
     });
 
-    socket.on("new-message", (message) => {
+    socket.on("chat:new-message", (message) => {
+      console.log("New MSG incoming");
       updateChat(message);
     });
 
@@ -50,6 +52,12 @@ function ChatBox({ name, groupId }) {
         message: `${nickname} has left the lobby`,
       });
     });
+
+    return () => {
+      socket.off("chat:new-member");
+      socket.off("chat:new-message");
+      socket.off("chat:leave-group");
+    };
   }, []);
 
   return (
