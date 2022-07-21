@@ -1,33 +1,63 @@
-const eateries = new Map();
+const eateriesByRoomId = new Map();
 
 module.exports = (io) => {
-  const addEateryVote = ({ eateryId, roomId }) => {
-    if (!eateries.has(roomId)) {
-      eateries.set(roomId, new Map());
+  function addEateryVote({ eateryId, roomId }) {
+    if (!eateriesByRoomId.has(roomId)) {
+      eateriesByRoomId.set(roomId, new Map());
     }
-    const voteCounts = eateries.get(roomId);
-    if (!voteCounts.has(eateryId)) {
-      voteCounts.set(eateryId, 1);
-    } else {
-      const curr = voteCounts.get(eateryId);
-      voteCounts.set(eateryId, curr + 1);
-    }
-  };
+    const votesByEatery = eateriesByRoomId.get(roomId);
 
-  const changeMemberDoneStatus = (name, map, roomId) => {
-    const roomMembers = map.get(roomId);
-    const gameCompletedMember = roomMembers.find(
-      (member) => member.nickname === name
-    );
+    if (!votesByEatery.has(eateryId)) {
+      votesByEatery.set(eateryId, 1);
+      return;
+    }
+    const curr = votesByEatery.get(eateryId);
+    votesByEatery.set(eateryId, curr + 1);
+  }
+
+  function changeMemberDoneStatus({ name, roomId }, usersByRoomId) {
+    const users = usersByRoomId.get(roomId);
+
+    if (!users) {
+      return;
+    }
+
+    const gameCompletedMember = users.find((user) => user.nickname === name);
+
+    if (!gameCompletedMember) {
+      return;
+    }
+
     gameCompletedMember.done = true;
-  };
+  }
 
-  const handleGameOver = (roomId) => {
-    const voteCounts = eateries.get(roomId);
+  function handleGameOver(roomId, usersByRoomId) {
+    const isGameOver = (usersByRoomId, roomId) => {
+      const roomMembers = usersByRoomId.get(roomId);
+      const votesByEatery = eateriesByRoomId.get(roomId);
+
+      if (!roomMembers || !votesByEatery) {
+        return false;
+      }
+
+      for (const member of roomMembers) {
+        if (!member.done) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    if (!isGameOver(usersByRoomId, roomId)) {
+      return;
+    }
+
+    const votesByEatery = eateriesByRoomId.get(roomId);
+
     let max = 0;
     let highestVotedEatery = null;
 
-    for (const [eatery, count] of voteCounts) {
+    for (const [eatery, count] of votesByEatery) {
       if (count >= max) {
         max = count;
         highestVotedEatery = eatery;
@@ -38,22 +68,14 @@ module.exports = (io) => {
       eateryId: highestVotedEatery,
       count: max,
     });
-  };
 
-  const isGameOver = (map, roomId) => {
-    const roomMembers = map.get(roomId);
-    for (const member of roomMembers) {
-      if (!member.done) {
-        return false;
-      }
-    }
-    return true;
-  };
+    //Cleanup votesByEatery map
+    eateriesByRoomId.delete(roomId);
+  }
 
   return {
     addEateryVote,
     changeMemberDoneStatus,
-    isGameOver,
     handleGameOver,
   };
 };

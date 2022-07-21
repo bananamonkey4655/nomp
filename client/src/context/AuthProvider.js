@@ -1,14 +1,13 @@
 import { useState, createContext, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "config";
 
-import { BACKEND_URL } from "../config";
-
+// Initialize context
 const AuthContext = createContext(null);
-
 // Create custom authentication hook
 const useAuth = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }) => {
+function AuthProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,7 +15,7 @@ const AuthProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const attemptRegister = async (username, password) => {
+  const attemptRegister = async ({ username, password }) => {
     try {
       const token = await authenticateUser("register", username, password);
       setToken(token);
@@ -29,7 +28,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const attemptLogin = async (username, password) => {
+  const attemptLogin = async ({ username, password }) => {
     try {
       const token = await authenticateUser("login", username, password);
       setToken(token);
@@ -80,6 +79,6 @@ const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}
 
 export { AuthProvider, useAuth };

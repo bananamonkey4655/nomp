@@ -32,70 +32,123 @@ app.get("/", (req, res) => {
   );
 });
 
-// Websocket
+/***************** Websocket ******************/
+
 // TODO: organize into other folders
-const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
+const { addEateryVote, changeMemberDoneStatus, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {
-  sanitizeInput,
+  doesHostAlreadyExist,
   addMemberToMap,
   removeMemberFromMap,
   updateMembersOnClient,
   deleteGroupIfEmpty,
-  emitMessageToClients,
 } = require("./controllers/groupHandler")(io);
 
-const members = new Map();
+const usersByRoomId = new Map();
 
 // Run when client connects
 io.on("connection", (socket) => {
-  console.log(`Connection: User socket id: ${socket.id}`);
+  console.log(
+    io.engine.clientsCount,
+    `Connection: User socket id: ${socket.id}`
+  );
+
+  // Check if user is allowed to join the group
+  socket.on("try-join", (name, roomId, callbackFromClient) => {
+    const status = canUserJoinGroup({ name, roomId }, usersByRoomId);
+    callbackFromClient(status);
+  });
+
+  function canUserJoinGroup({ name, roomId }, usersByRoomId) {
+    const users = usersByRoomId.get(roomId);
+
+    // Check if user already exists
+    if (users && users.some((user) => user.nickname === name)) {
+      return { ok: false, error: "User already exists" };
+    }
+
+    //TODO: check if room has already started voting
+    // if (room has already started) {
+    //   dont allow
+    // } else {
+    //   allow
+    // }
+    return { ok: true };
+  }
 
   // Add user to group
-  socket.on("user:join-group", ({ nickname, groupId, isHost }) => {
-    sanitizeInput(groupId);
+  socket.on("join-group", (userDetails) => {
+    const { nickname, groupId, isHost } = userDetails;
+
+    //TODO: find a better way
+    const eventListenerNames = [
+      "chat:send-message",
+      "host-start-search",
+      "increment-eatery-vote",
+      "user-voting-complete",
+      "quit-group",
+      "disconnect",
+    ];
+
+    // groupId = (function sanitizeInput(string) {
+    //   return string.toLowerCase();
+    // })(groupId);
+
     socket.join(groupId);
-    addMemberToMap(nickname, groupId, isHost, members);
 
-    updateMembersOnClient(groupId, members);
-    io.to(groupId).emit("chat:new-member", nickname);
+    addMemberToMap({ name: nickname, roomId: groupId, isHost }, usersByRoomId);
 
-    // Broadcast message to chat room
-    socket.on("send-message", (message) => {
-      emitMessageToClients(groupId, message);
+    updateMembersOnClient(groupId, usersByRoomId);
+    io.in(groupId).emit("chat:new-member", nickname);
+
+    // Listen for messages to broadcast to chat room
+    socket.on("chat:send-message", (message) => {
+      io.in(groupId).emit("chat:new-message", message);
     });
 
-    // Begin voting game when host starts
-    socket.on(
-      "host-start-search",
-      ({ location, searchTerm, budget, groupId }) => {
-        io.in(groupId).emit("members-start-search", {
-          location,
-          searchTerm,
-          budget,
-        });
-      }
-    );
+    // Listen for host to start voting game
+    socket.on("host-start-search", (queryParameters) => {
+      io.in(groupId).emit("members-start-search", queryParameters);
+    });
 
     // Increment vote count for a restaurant
-    socket.on("add-desired-eatery", addEateryVote);
+    socket.on("increment-eatery-vote", addEateryVote);
 
     // End voting game when completed
-    socket.on("member-completed-game", (name) => {
-      console.log("Received member-completed-game event");
-      changeMemberDoneStatus(name, members, groupId);
-      if (isGameOver(members, groupId)) {
-        console.log("Game is over");
-        handleGameOver(groupId);
+    socket.on("user-voting-complete", () => {
+      changeMemberDoneStatus(
+        { name: nickname, roomId: groupId },
+        usersByRoomId
+      );
+      handleGameOver(groupId, usersByRoomId);
+    });
+
+    function removeEventListeners(socket, listeners) {
+      for (const listener of listeners) {
+        socket.removeAllListeners(listener);
       }
+    }
+
+    socket.on("quit-group", () => {
+      console.log("quitting group");
+      socket.leave(groupId);
+      removeEventListeners(socket, eventListenerNames);
+      io.in(groupId).emit("chat:leave-group", nickname);
+      removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
+      updateMembersOnClient(groupId, usersByRoomId);
+      deleteGroupIfEmpty(groupId, usersByRoomId);
+      handleGameOver(groupId, usersByRoomId);
+      // io.in(socket.id).socketsLeave(groupId);
     });
 
     // Disconnect from server
     socket.on("disconnect", () => {
-      console.log(`Disconnected: ${socket.id}`);
-      removeMemberFromMap(nickname, groupId, members);
-      updateMembersOnClient(groupId, members);
-      deleteGroupIfEmpty(groupId, members);
+      io.to(groupId).emit("chat:leave-group", nickname);
+      removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
+      updateMembersOnClient(groupId, usersByRoomId);
+      deleteGroupIfEmpty(groupId, usersByRoomId);
+      handleGameOver(groupId, usersByRoomId);
     });
   });
 });
