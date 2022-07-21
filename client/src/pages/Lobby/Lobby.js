@@ -19,6 +19,7 @@ function Lobby() {
   // Server is single source of truth
   const [groupMembers, setGroupMembers] = useState([]);
 
+  // Join group on server
   useEffect(() => {
     socket.emit("join-group", {
       nickname: name,
@@ -27,6 +28,7 @@ function Lobby() {
     });
   }, []);
 
+  // Listen for events: 1) A member joined/left the group, 2) Host starts voting game
   useEffect(() => {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
@@ -43,10 +45,6 @@ function Lobby() {
       socket.off("members-start-search");
     };
   }, [socket]);
-
-  useEffect(() => {
-    console.log(groupMembers);
-  }, [groupMembers]);
 
   const user = groupMembers.find((member) => member.nickname === name);
 

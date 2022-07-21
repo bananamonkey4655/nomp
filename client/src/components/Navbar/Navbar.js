@@ -26,7 +26,7 @@ function Navbar() {
             Home
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           {token && (
             <NavLink
               to="/dashboard"
@@ -36,7 +36,7 @@ function Navbar() {
               Dashboard
             </NavLink>
           )}
-        </li>
+        </li> */}
         <li>
           <NavLink
             to="/group"

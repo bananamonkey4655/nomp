@@ -33,7 +33,6 @@ function ChatBox({ name, groupId }) {
 
   useEffect(() => {
     socket.on("chat:new-member", (name) => {
-      console.log("New member joining");
       updateChat({
         name: "NOMP",
         message: `${name} has joined the lobby`,
@@ -41,12 +40,10 @@ function ChatBox({ name, groupId }) {
     });
 
     socket.on("chat:new-message", (message) => {
-      console.log("New MSG incoming");
       updateChat(message);
     });
 
     socket.on("chat:leave-group", (nickname) => {
-      console.log("Leaving group");
       updateChat({
         name: "NOMP",
         message: `${nickname} has left the lobby`,

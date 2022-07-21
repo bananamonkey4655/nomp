@@ -32,7 +32,8 @@ app.get("/", (req, res) => {
   );
 });
 
-// Websocket
+/***************** Websocket ******************/
+
 // TODO: organize into other folders
 const { addEateryVote, changeMemberDoneStatus, handleGameOver } =
   require("./controllers/minigameHandler")(io);
@@ -53,10 +54,10 @@ io.on("connection", (socket) => {
     `Connection: User socket id: ${socket.id}`
   );
 
-  socket.on("try-join", (name, roomId, callback) => {
-    console.log("Attempting to join room...");
+  // Check if user is allowed to join the group
+  socket.on("try-join", (name, roomId, callbackFromClient) => {
     const status = canUserJoinGroup({ name, roomId }, usersByRoomId);
-    callback(status);
+    callbackFromClient(status);
   });
 
   function canUserJoinGroup({ name, roomId }, usersByRoomId) {
@@ -64,12 +65,15 @@ io.on("connection", (socket) => {
 
     // Check if user already exists
     if (users && users.some((user) => user.nickname === name)) {
-      console.log("User already exists! Can't join room...");
       return { ok: false, error: "User already exists" };
     }
 
     //TODO: check if room has already started voting
-    console.log("Ok you can join the room!");
+    // if (room has already started) {
+    //   dont allow
+    // } else {
+    //   allow
+    // }
     return { ok: true };
   }
 
@@ -77,16 +81,23 @@ io.on("connection", (socket) => {
   socket.on("join-group", (userDetails) => {
     const { nickname, groupId, isHost } = userDetails;
 
+    //TODO: find a better way
+    const eventListenerNames = [
+      "chat:send-message",
+      "host-start-search",
+      "increment-eatery-vote",
+      "user-voting-complete",
+      "quit-group",
+      "disconnect",
+    ];
+
     // groupId = (function sanitizeInput(string) {
     //   return string.toLowerCase();
     // })(groupId);
 
     socket.join(groupId);
-    console.log(`${nickname} is joining room ${groupId}`);
 
     addMemberToMap({ name: nickname, roomId: groupId, isHost }, usersByRoomId);
-    console.log("MAP usersByRoomId:");
-    console.log(usersByRoomId);
 
     updateMembersOnClient(groupId, usersByRoomId);
     io.in(groupId).emit("chat:new-member", nickname);
@@ -105,8 +116,7 @@ io.on("connection", (socket) => {
     socket.on("increment-eatery-vote", addEateryVote);
 
     // End voting game when completed
-    socket.on("user-voting-complete", (name) => {
-      console.log("Received user-voting-complete event");
+    socket.on("user-voting-complete", () => {
       changeMemberDoneStatus(
         { name: nickname, roomId: groupId },
         usersByRoomId
@@ -114,20 +124,26 @@ io.on("connection", (socket) => {
       handleGameOver(groupId, usersByRoomId);
     });
 
+    function removeEventListeners(socket, listeners) {
+      for (const listener of listeners) {
+        socket.removeAllListeners(listener);
+      }
+    }
+
     socket.on("quit-group", () => {
-      console.log("--------------------------------------------------------");
-      console.log(`${nickname} quit ${groupId}`);
+      console.log("quitting group");
+      socket.leave(groupId);
+      removeEventListeners(socket, eventListenerNames);
       io.in(groupId).emit("chat:leave-group", nickname);
       removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
       updateMembersOnClient(groupId, usersByRoomId);
       deleteGroupIfEmpty(groupId, usersByRoomId);
       handleGameOver(groupId, usersByRoomId);
+      // io.in(socket.id).socketsLeave(groupId);
     });
 
     // Disconnect from server
     socket.on("disconnect", () => {
-      console.log("--------------------------------------------------------");
-      console.log(`Disconnected: ${socket.id}`);
       io.to(groupId).emit("chat:leave-group", nickname);
       removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
       updateMembersOnClient(groupId, usersByRoomId);

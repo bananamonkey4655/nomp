@@ -1,7 +1,7 @@
 const eateriesByRoomId = new Map();
 
 module.exports = (io) => {
-  const addEateryVote = ({ eateryId, roomId }) => {
+  function addEateryVote({ eateryId, roomId }) {
     if (!eateriesByRoomId.has(roomId)) {
       eateriesByRoomId.set(roomId, new Map());
     }
@@ -9,41 +9,32 @@ module.exports = (io) => {
 
     if (!votesByEatery.has(eateryId)) {
       votesByEatery.set(eateryId, 1);
-
-      /**Debugging */
-      console.log(eateriesByRoomId);
-      /**Debugging */
-
       return;
     }
     const curr = votesByEatery.get(eateryId);
     votesByEatery.set(eateryId, curr + 1);
+  }
 
-    /**Debugging */
-    console.log(eateriesByRoomId);
-    /**Debugging */
-  };
+  function changeMemberDoneStatus({ name, roomId }, usersByRoomId) {
+    const users = usersByRoomId.get(roomId);
 
-  const changeMemberDoneStatus = ({ name, roomId }, map) => {
-    const roomMembers = map.get(roomId);
-    const gameCompletedMember = roomMembers.find(
-      (member) => member.nickname === name
-    );
+    if (!users) {
+      return;
+    }
+
+    const gameCompletedMember = users.find((user) => user.nickname === name);
+
+    if (!gameCompletedMember) {
+      return;
+    }
+
     gameCompletedMember.done = true;
-  };
+  }
 
-  const handleGameOver = (roomId, usersByRoomId) => {
+  function handleGameOver(roomId, usersByRoomId) {
     const isGameOver = (usersByRoomId, roomId) => {
       const roomMembers = usersByRoomId.get(roomId);
       const votesByEatery = eateriesByRoomId.get(roomId);
-
-      /**Debugging */
-      console.log("Checking if game is over...");
-      console.log("MAP usersByRoomId:");
-      console.log(usersByRoomId);
-      console.log("MAP votesByEatery:");
-      console.log(votesByEatery);
-      /**Debugging */
 
       if (!roomMembers || !votesByEatery) {
         return false;
@@ -63,12 +54,6 @@ module.exports = (io) => {
 
     const votesByEatery = eateriesByRoomId.get(roomId);
 
-    /**Debugging */
-    console.log("Game is over");
-    console.log("MAP votesByEatery:");
-    console.log(votesByEatery);
-    /**Debugging */
-
     let max = 0;
     let highestVotedEatery = null;
 
@@ -79,13 +64,6 @@ module.exports = (io) => {
       }
     }
 
-    /**Debugging */
-    console.log("MAP votesByEatery:");
-    console.log(votesByEatery);
-    console.log(`Winner is ${highestVotedEatery} with count of ${max}`);
-    console.log("Emitting show results event...");
-    /**Debugging */
-
     io.in(roomId).emit("show-results", {
       eateryId: highestVotedEatery,
       count: max,
@@ -93,12 +71,7 @@ module.exports = (io) => {
 
     //Cleanup votesByEatery map
     eateriesByRoomId.delete(roomId);
-
-    /**Debugging */
-    console.log("Cleanup votesByEatery, eateriesByRoomId MAP:");
-    console.log(eateriesByRoomId);
-    /**Debugging */
-  };
+  }
 
   return {
     addEateryVote,

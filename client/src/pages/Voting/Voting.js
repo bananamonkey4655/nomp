@@ -100,7 +100,7 @@ function Voting() {
 
     if (eateryIndex >= eateries.length) {
       setIsSearchComplete(true);
-      socket.emit("user-voting-complete", name);
+      socket.emit("user-voting-complete");
     }
   }, [eateryIndex]);
 

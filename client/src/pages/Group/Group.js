@@ -6,11 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
 
 function Group() {
-  const [nickname, setNickname] = useState("tom");
-  const [roomName, setRoomName] = useState("room123");
-  const { socket, initSocket, disconnectSocket } = useSocket();
+  const { socket } = useSocket();
   const navigate = useNavigate();
   const { groupInviteId } = useParams();
+
+  const [nickname, setNickname] = useState("");
+  const [roomName, setRoomName] = useState("");
 
   useEffect(() => {
     if (groupInviteId) {
@@ -32,6 +33,7 @@ function Group() {
     socket.emit("try-join", name, room, (response) => {
       if (!response.ok) {
         console.log(response.error);
+        //TODO: render error message
       } else {
         socket.name = name;
         socket.groupId = room;
