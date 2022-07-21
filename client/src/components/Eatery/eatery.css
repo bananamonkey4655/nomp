@@ -1,0 +1,33 @@
+.categories {
+    font-size: large !important;
+}
+
+.eatery-title {
+    font-family: "Montserrat", sans-serif;
+}
+
+.budget {
+    font-family: "Montserrat", sans-serif;
+    font-size: x-large !important;
+}
+
+.rating {
+    font-family: "Montserrat", sans-serif;
+    font-size: x-large !important;
+}
+
+.font-style {
+    font-family: "Montserrat", sans-serif;
+}
+
+.carousel-wrapper {
+    width: 800px;
+    height: 600px;
+}
+
+.eatery-img {
+    float: left;
+    width:  800px;
+    height: 600px;
+    object-fit: cover;
+}

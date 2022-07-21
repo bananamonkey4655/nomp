@@ -1,0 +1,22 @@
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f3f4f6;
+}
+
+.app-container {
+  min-height: 100%;
+  margin: 0;
+}
+
+.app-body {
+  padding: 1rem 2rem;
+  flex-grow: 1;
+  height: calc(100vh - 80px);
+}
+
+html {
+  background: #f3f4f6;;
+}

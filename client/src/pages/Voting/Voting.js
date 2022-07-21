@@ -5,6 +5,10 @@ import Loader from "components/Loader";
 import LoadingDisplay from "components/LoadingDisplay";
 import ReviewStars from "components/ReviewStars";
 import ExitGroupButton from "components/ExitGroupButton";
+import Eatery from "../../components/Eatery/Eatery";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -58,6 +62,16 @@ function Voting() {
   const [eateryIndex, setEateryIndex] = useState(0);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
   const [error, setError] = useState("");
+  const [viewMoreDetails, setViewMoreDetails] = useState(false);
+  // for toggle button to view more details
+  const [toggle, setToggle] = useState(false);
+
+  // for rendering extra info about the toggle button
+  const renderInfo = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      More information loaded. Longer loading time.
+    </Tooltip>
+  );
 
   const displayedEatery = eateries?.[eateryIndex];
 
@@ -159,6 +173,7 @@ function Voting() {
     location: place,
     display_phone,
     price,
+    id,
   } = displayedEatery;
 
   return (
@@ -167,31 +182,57 @@ function Voting() {
       <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex + 1}/${
         eateries.length
       } Restaurants Viewed`}</h1>
-      <div
-        // variants={animationVariants}
-        // animate={controls}
-        className="container mt-3"
-      >
-        <img className="container-img" src={image_url} />
-        <div className="imagebox-text">
-          <div className="empty-space"></div>
-          <h1>{restaurant_name}</h1>
-          <h5>
-            {categories
-              .reduce((acc, curr) => acc + ", " + curr.title, "")
-              .substring(1)}
-          </h5>
-          <section>
-            <ReviewStars rating={rating} />
-            <div>{price}</div>
-            <div className="address">
-              <MapPin size={20} />
-              <span>{place.address1}</span>
-            </div>
-            <div></div>
-          </section>
+      {!viewMoreDetails && (
+        <div
+          // variants={animationVariants}
+          // animate={controls}
+
+          className="container mt-3"
+        >
+          <img className="container-img" src={image_url} />
+          <div className="imagebox-text">
+            <div className="empty-space"></div>
+            <h1>{restaurant_name}</h1>
+            <h5>
+              {categories
+                .reduce((acc, curr) => acc + ", " + curr.title, "")
+                .substring(1)}
+            </h5>
+            <section>
+              <ReviewStars rating={rating} />
+              <div>{price}</div>
+              <div className="address">
+                <MapPin size={20} />
+                <span>{place.address1}</span>
+              </div>
+              <div></div>
+            </section>
+          </div>
         </div>
-      </div>
+      )}
+
+      {viewMoreDetails && <Eatery key={id} id={id} />}
+
+      <OverlayTrigger
+        placement="right"
+        delay={{ show: 250, hide: 400 }}
+        overlay={renderInfo}
+      >
+        <ToggleButton
+          className="my-3 fw-bold font-style"
+          id="toggle-check"
+          type="checkbox"
+          variant="outline-primary"
+          checked={toggle}
+          value="1"
+          onChange={(e) => {
+            setToggle(e.currentTarget.checked);
+            setViewMoreDetails(!viewMoreDetails);
+          }}
+        >
+          Toggle Me to view more details
+        </ToggleButton>
+      </OverlayTrigger>
       <div className="buttons mt-5">
         {/* {!isAnimation && ( */}
         <Heart
