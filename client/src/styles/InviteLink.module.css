@@ -1,0 +1,21 @@
+.btn {
+  border-radius: 5px;
+  background-color: inherit;
+  padding: 0.5rem 1rem;
+}
+
+.invite {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  border: 2px solid grey;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.link {
+  color: #2563eb;
+  font-weight: 600;
+}

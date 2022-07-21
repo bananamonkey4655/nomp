@@ -1,20 +1,23 @@
-import { useSocket } from "../../context/SocketProvider";
+import { useSocket } from "../context/SocketProvider";
 import React, { useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom";
-import ChatBox from "../../components/ChatBox/ChatBox";
-import GroupSettings from "../../components/GroupSettings/GroupSettings";
+import { useNavigate } from "react-router-dom";
+import ChatBox from "../components/ChatBox";
+import GroupSettings from "../components/GroupSettings";
+import LoadingDisplay from "../components/LoadingDisplay";
+import InviteLink from "../components/InviteLink";
+import { Users } from "phosphor-react";
+import "../styles/Lobby.css";
+import { FRONTEND_URL } from "../config";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { AlignLeftSimple, Users } from "phosphor-react";
-import "./Lobby.css";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../components/Loader/Loader";
 
 const Lobby = () => {
   // lobbypage variant
-  const pageVariants ={
+  const pageVariants = {
     exit: {
       opacity: 0,
-      transition: { duration : 0.5}
+      transition: { duration: 0.5 },
     },
     hidden: {
       opacity: 0,
@@ -23,21 +26,23 @@ const Lobby = () => {
       opacity: 1,
       transition: {
         duration: 1,
-      }
-    }
-  }
+      },
+    },
+  };
 
-  const { socket, name, groupId } = useSocket();
+  const { socket } = useSocket();
+  const { name, groupId } = socket;
+  const navigate = useNavigate();
+
   const [groupMembers, setGroupMembers] = useState([]);
   const [isHost, setIsHost] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("update-members", (newMembers) => {
       setGroupMembers(newMembers);
     });
-    socket.on("members-start-search", ({ location, searchTerm }) => {
-      navigate(`/findeatery/${location}/${searchTerm}`); //TODO: call yelp api once only and store eateries
+    socket.on("members-start-search", ({ location, searchTerm, budget }) => {
+      navigate(`/voting`, { state: { location, searchTerm, budget } }); //TODO: call yelp api once only and store eateries
     });
   }, [socket]);
 
@@ -52,7 +57,13 @@ const Lobby = () => {
   // TODO: change index
   
   return groupMembers?.length ? (
-     <motion.div key={groupMembers} variants={pageVariants} initial="hidden" animate="visible" exit="exit" className="lobby-container">
+    <motion.div
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="lobby-container"
+    >
       <section className="lobby-left">
         <div className="members">
           <div className="members-count-wrapper">
@@ -69,15 +80,16 @@ const Lobby = () => {
             ))}
           </ul>
         </div>
+        <InviteLink />
         <GroupSettings isHost={isHost} />
       </section>
 
       <ChatBox name={name} />
     </motion.div>
   ) : (
-    <motion.h1 key={groupMembers} variants={pageVariants} initial="hidden" animate="visible" exit="exit">
-      <Loader message="Loading..."/>
-    </motion.h1>
+    <h1>
+      <Loader message="Loading..." />
+    </h1>
   );
 };
 

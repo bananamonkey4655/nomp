@@ -1,6 +1,7 @@
-const TEST_URL = "http://localhost:3000";
-const ACTUAL_URL = "https://orbital-nomp.netlify.app";
+const production = "https://orbital-nomp.netlify.app";
+const development = "http://localhost:3000";
 
-const FRONTEND_URL = TEST_URL;
+const FRONTEND_URL =
+  process.env.NODE_ENV === "development" ? development : production;
 
 module.exports = FRONTEND_URL;

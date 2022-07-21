@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import "./ResultsPage.css";
+import "../styles/ResultsPage.css";
 import { MapPin } from "phosphor-react";
-import BACKEND_URL from "../../config";
-import Loader from "../../components/Loader/Loader";
+
+import Loader from "../components/Loader/Loader";
+
+import { BACKEND_URL } from "../config";
+import LoadingDisplay from "../components/LoadingDisplay";
 
 const ResultsPage = () => {
   const location = useLocation();
@@ -28,7 +31,9 @@ const ResultsPage = () => {
     fetchData(eateryId);
   }, []);
 
-  if (resultEatery) {
+  if (!resultEatery) {
+    return <LoadingDisplay />;
+  } else {
     const {
       name,
       image_url,
@@ -77,7 +82,6 @@ const ResultsPage = () => {
       </div>
     );
   }
-  return <h1> <Loader message="Loading"/> </h1>;
 };
 
 export default ResultsPage;

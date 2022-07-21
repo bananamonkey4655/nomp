@@ -1,16 +1,13 @@
 const express = require("express");
 const db = require("./config/database");
 const cors = require("cors");
-const axios = require("axios");
-const session = require("express-session");
-const passport = require("passport");
 const auth = require("./routes/auth");
 const eatery = require("./routes/eatery");
 const geolocation = require("./routes/geolocation");
+const user = require("./routes/user");
 const FRONTEND_URL = require("./config/config");
 
 require("dotenv").config();
-require("./config/passport");
 
 const app = express();
 const server = require("http").createServer(app);
@@ -22,20 +19,12 @@ const io = require("socket.io")(server, {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use("/auth", auth);
 app.use("/eatery", eatery);
 app.use("/geolocation", geolocation);
+app.use("/user", user);
 
 app.get("/", (req, res) => {
   res.send(
@@ -43,9 +32,8 @@ app.get("/", (req, res) => {
   );
 });
 
-/*************************************************************************************************************************************************************************** */
-// Create two-way WebSocket connection
-
+// Websocket
+// TODO: organize into other folders
 const { addEateryVote, changeMemberDoneStatus, isGameOver, handleGameOver } =
   require("./controllers/minigameHandler")(io);
 const {
@@ -59,9 +47,11 @@ const {
 
 const members = new Map();
 
+// Run when client connects
 io.on("connection", (socket) => {
   console.log(`Connection: User socket id: ${socket.id}`);
 
+  // Add user to group
   socket.on("user:join-group", ({ nickname, groupId, isHost }) => {
     sanitizeInput(groupId);
     socket.join(groupId);
@@ -70,16 +60,27 @@ io.on("connection", (socket) => {
     updateMembersOnClient(groupId, members);
     io.to(groupId).emit("chat:new-member", nickname);
 
+    // Broadcast message to chat room
     socket.on("send-message", (message) => {
       emitMessageToClients(groupId, message);
     });
 
-    socket.on("host-start-search", ({ location, searchTerm, groupId }) => {
-      io.in(groupId).emit("members-start-search", { location, searchTerm });
-    });
+    // Begin voting game when host starts
+    socket.on(
+      "host-start-search",
+      ({ location, searchTerm, budget, groupId }) => {
+        io.in(groupId).emit("members-start-search", {
+          location,
+          searchTerm,
+          budget,
+        });
+      }
+    );
 
+    // Increment vote count for a restaurant
     socket.on("add-desired-eatery", addEateryVote);
 
+    // End voting game when completed
     socket.on("member-completed-game", (name) => {
       console.log("Received member-completed-game event");
       changeMemberDoneStatus(name, members, groupId);
@@ -89,6 +90,7 @@ io.on("connection", (socket) => {
       }
     });
 
+    // Disconnect from server
     socket.on("disconnect", () => {
       console.log(`Disconnected: ${socket.id}`);
       removeMemberFromMap(nickname, groupId, members);

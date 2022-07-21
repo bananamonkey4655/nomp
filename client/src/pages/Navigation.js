@@ -1,9 +1,9 @@
-import "./Navigation.css";
+import "../styles/Navigation.css";
 
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
 
-import Logo from "../../components/Logo/Logo";
+import Logo from "../components/Logo";
 
 const Navigation = () => {
   const { token, handleLogout } = useAuth();
@@ -13,7 +13,7 @@ const Navigation = () => {
         <Logo />
         <h1>NOMP</h1>
       </div>
-      <ul>
+      <ul className="navbar">
         <li>
           <NavLink
             to="/home"

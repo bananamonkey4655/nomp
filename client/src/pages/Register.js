@@ -1,31 +1,36 @@
-import "./Login.css";
+import "../styles/Register.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
+import ErrorMessage from "../components/ErrorMessage";
+import LoadingDisplay from "../components/LoadingDisplay";
+import { useNavigate } from "react-router-dom";
 
-import ErrorMessage from "../../components/ErrorMessage";
-
-const Login = () => {
+const Register = () => {
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, errorMessage, attemptLogin } = useAuth();
+  const { isLoading, errorMessage, attemptRegister } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    attemptLogin(username, password);
+    attemptRegister(username, password);
 
     setUsername("");
     setPassword("");
   };
 
+  if (isLoading) {
+    return <LoadingDisplay />;
+  }
+
   return (
-    <div className="login-wrapper">
-      <div className="login-form">
-        {errorMessage && <ErrorMessage />}
-        <h1 className="mb-3">Login</h1>
+    <div className="register-wrapper">
+      <div className="register-form">
+        <h1 className="mb-3">Register</h1>
         <Form className="form" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
@@ -38,7 +43,6 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <Form.Text className="text-dark ">Welcome to Nomp!</Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="password">
@@ -55,11 +59,11 @@ const Login = () => {
           <Button
             disabled={isLoading}
             variant="primary"
-            size ="lg"
+            size="lg"
             type="submit"
-            className="login-button btn-dark mt-3"
+            className="register-button btn-dark mt-3"
           >
-            Continue
+            Sign Up
           </Button>
         </Form>
       </div>
@@ -67,4 +71,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

@@ -1,27 +1,35 @@
-import "./Register.css";
+import "../styles/Login.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { useState } from "react";
-import { useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../context/AuthProvider";
+import ErrorMessage from "../components/ErrorMessage";
+import LoadingDisplay from "../components/LoadingDisplay";
 
-const Register = () => {
+const Login = () => {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, attemptRegister } = useAuth();
+  const { isLoading, errorMessage, attemptLogin } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    attemptRegister(username, password);
+    attemptLogin(username, password);
 
     setUsername("");
     setPassword("");
   };
 
+  if (isLoading) {
+    return <LoadingDisplay />;
+  }
+
   return (
-    <div className="register-wrapper">
-      <div className="register-form">
-        <h1 className="mb-3">Register</h1>
+    <div className="login-wrapper">
+      <div className="login-form">
+        {errorMessage && <ErrorMessage />}
+        <h1 className="mb-3">Login</h1>
         <Form className="form" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
@@ -34,6 +42,7 @@ const Register = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+            <Form.Text className="text-dark ">Welcome to Nomp!</Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="password">
@@ -50,11 +59,11 @@ const Register = () => {
           <Button
             disabled={isLoading}
             variant="primary"
-            size="lg"
+            size ="lg"
             type="submit"
-            className="register-button btn-dark mt-3"
+            className="login-button btn-dark mt-3"
           >
-            Sign Up
+            Continue
           </Button>
         </Form>
       </div>
@@ -62,4 +71,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

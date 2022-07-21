@@ -15,12 +15,22 @@ const yelpAPI = axios.create({
 });
 
 router.get("/search", async (req, res) => {
-  const { term, location } = req.query;
-  const LIMIT = 50; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
+  const { location, term, budget: price } = req.query;
+  const searchParams = { location, term, price };
+  const LIMIT = 20; // Number of eateries returned by Yelp API (Default: 20, Maximum: 50)
+  let URL = `businesses/search?limit=${LIMIT}`;
+
+  // Check whether each parameter has a value, skip if empty
+  for (const property in searchParams) {
+    if (searchParams[property]) {
+      URL += `&${property}=${searchParams[property]}`;
+    }
+  }
+
   try {
-    const yelpResponse = await yelpAPI.get(
-      `/businesses/search?term=${term}&location=${location}_singapore&limit=${LIMIT}` //"singapore" added to URL to filter for SG only
-    );
+    console.log(URL);
+    const yelpResponse = await yelpAPI.get(URL);
+
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
     console.log("Error");

@@ -1,21 +1,19 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-
-import "./FindEatery.css";
+import Loader from "../components/Loader/Loader";
+import "../styles/Voting.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
-import BACKEND_URL from "../../config";
-import { useSocket } from "../../context/SocketProvider";
-import Loader from "../../components/Loader/Loader";
-import Eatery from "../../components/Eatery/Eatery";
-import Button from 'react-bootstrap/Button';
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSocket } from "../context/SocketProvider";
+import LoadingDisplay from "../components/LoadingDisplay";
+import { BACKEND_URL } from "../config";
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Eatery from "../../components/Eatery/Eatery";
 
-const FindEatery = () => {
-
+const Voting = () => {
   const controls = useAnimation();
 
   const [isAnimation, setIsAnimation] = useState(false);
@@ -24,17 +22,17 @@ const FindEatery = () => {
     setTimeout(() => setIsAnimation(false), 600);
   }
 
-   // findeaterypage variant
-   const pageVariants ={
+  // findeaterypage variant
+  const pageVariants = {
     //exit: {
     //  opacity: 0,
     //  transition: { duration : 0.5}
     //},
     exit: {
-      x: '-100vw',
-      transition: { ease: 'easeInOut', duration : 0.5 }
-    }
-  }
+      x: "-100vw",
+      transition: { ease: "easeInOut", duration: 0.5 },
+    },
+  };
 
   //fling left or right animation
   const animationVariants = {
@@ -43,22 +41,21 @@ const FindEatery = () => {
       y: 0,
     },
     flingleft: {
-      x: '-10vw',
+      x: "-10vw",
       transition: {
         duration: 0.5,
-        ease: 'easeInOut'
-      }
-    }
-  }
-
-  let { location, term } = useParams(); // location is required, term is optional
+        ease: "easeInOut",
+      },
+    },
+  };
+  const { location, searchTerm: term, budget } = useLocation().state; // location is required, term is optional
   const navigate = useNavigate();
+  const { socket } = useSocket();
+  const { name, groupId } = socket;
 
-  const { socket, groupId, name } = useSocket();
   const [eateries, setEateries] = useState(null);
   const [displayedEatery, setDisplayedEatery] = useState(null);
   const [eateryIndex, setEateryIndex] = useState(0);
-  // const [desiredEateries, setDesiredEateries] = useState([]);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
 
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
@@ -74,10 +71,9 @@ const FindEatery = () => {
     }
 
     async function fetchData() {
+      // console.log(location, term, budget);
       const response = await fetch(
-        `${BACKEND_URL}/eatery/search?location=${location}&term=${
-          term ? term : ""
-        }`
+        `${BACKEND_URL}/eatery/search?location=${location}&term=${term}&budget=${budget}`
       );
       const data = await response.json();
       if (data.error) {
@@ -107,8 +103,8 @@ const FindEatery = () => {
     // framer-motion rotate left
     controls.start({
       rotate: [0, -15, 0],
-      transition: {duration: 0.5}
-    })
+      transition: { duration: 0.5 },
+    });
     // remove buttons during animation
     noButtons();
     // setDesiredEateries((desiredList) => [...desiredList, displayedEatery]);
@@ -122,8 +118,8 @@ const FindEatery = () => {
     //framer-motion rotate right
     controls.start({
       rotate: [0, 15, 0],
-      transition: {duration: 0.5}
-    })
+      transition: { duration: 0.5 },
+    });
     // remove buttons during animation
     noButtons();
     getNextEatery();
@@ -150,12 +146,21 @@ const FindEatery = () => {
     );
 
   // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
-  if (!displayedEatery) {
-    return <h1> <Loader message="Loading"/> </h1>;
-  } else if (fetchErrorMessage) {
+
+  if (fetchErrorMessage) {
     return <h1>Error fetching eateries!</h1>;
+  } else if (!displayedEatery) {
+    return (
+      <h1>
+        <Loader message="Loading" />
+      </h1>
+    );
   } else if (isSearchComplete) {
-    return <h1><Loader message="Waiting for other members to complete search..." /> </h1>;
+    return (
+      <h1>
+        <Loader message="Waiting for other members to complete search..." />
+      </h1>
+    );
   } else {
     const {
       name,
@@ -219,24 +224,28 @@ const FindEatery = () => {
         </OverlayTrigger>
 
         <div className="buttons mt-5">
-          {!isAnimation && <Heart
-            className="want-button hover-effect"
-            onClick={addToList}
-            size={50}
-            color="#f14a59"
-            weight="fill"
-          />}
-          {!isAnimation && <X
-            className="skip-button hover-effect"
-            onClick={skip}
-            size={50}
-            color="#5e5e5e"
-            weight="bold"
-          />}{" "}
+          {!isAnimation && (
+            <Heart
+              className="want-button hover-effect"
+              onClick={addToList}
+              size={50}
+              color="#f14a59"
+              weight="fill"
+            />
+          )}
+          {!isAnimation && (
+            <X
+              className="skip-button hover-effect"
+              onClick={skip}
+              size={50}
+              color="#5e5e5e"
+              weight="bold"
+            />
+          )}{" "}
         </div>
       </div>
     );
   }
 };
 
-export default FindEatery;
+export default Voting;
