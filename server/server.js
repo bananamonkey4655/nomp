@@ -54,6 +54,7 @@ io.on("connection", (socket) => {
   );
 
   socket.on("try-join", (name, roomId, callback) => {
+    console.log("Attempting to join room...");
     const status = canUserJoinGroup({ name, roomId }, usersByRoomId);
     callback(status);
   });
@@ -63,11 +64,12 @@ io.on("connection", (socket) => {
 
     // Check if user already exists
     if (users && users.some((user) => user.nickname === name)) {
+      console.log("User already exists! Can't join room...");
       return { ok: false, error: "User already exists" };
     }
 
     //TODO: check if room has already started voting
-
+    console.log("Ok you can join the room!");
     return { ok: true };
   }
 
@@ -80,8 +82,11 @@ io.on("connection", (socket) => {
     // })(groupId);
 
     socket.join(groupId);
+    console.log(`${nickname} is joining room ${groupId}`);
 
     addMemberToMap({ name: nickname, roomId: groupId, isHost }, usersByRoomId);
+    console.log("MAP usersByRoomId:");
+    console.log(usersByRoomId);
 
     updateMembersOnClient(groupId, usersByRoomId);
     io.in(groupId).emit("chat:new-member", nickname);
@@ -110,8 +115,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("quit-group", () => {
-      console.log(`${nickname} quit ${groupId}`);
       console.log("--------------------------------------------------------");
+      console.log(`${nickname} quit ${groupId}`);
       io.in(groupId).emit("chat:leave-group", nickname);
       removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
       updateMembersOnClient(groupId, usersByRoomId);
@@ -121,8 +126,8 @@ io.on("connection", (socket) => {
 
     // Disconnect from server
     socket.on("disconnect", () => {
-      console.log(`Disconnected: ${socket.id}`);
       console.log("--------------------------------------------------------");
+      console.log(`Disconnected: ${socket.id}`);
       io.to(groupId).emit("chat:leave-group", nickname);
       removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
       updateMembersOnClient(groupId, usersByRoomId);

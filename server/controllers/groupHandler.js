@@ -11,6 +11,7 @@ module.exports = (io) => {
 
   // Given a new member, add to data structure
   const addMemberToMap = ({ name, roomId, isHost }, map) => {
+    console.log(`Adding ${name} to ${roomId} in the usersByRoomId map...`);
     const user = { nickname: name, isHost, done: false };
 
     if (!map.has(roomId)) {
@@ -30,13 +31,13 @@ module.exports = (io) => {
   };
 
   const updateMembersOnClient = (roomId, map) => {
-    console.log(`Updating members on client of ${roomId}:`);
+    console.log(`Updating the current users on client of ${roomId}:`);
     io.to(roomId).emit("update-members", map.get(roomId));
   };
 
   // Given a member, remove him from data structure
   const removeMemberFromMap = ({ name, roomId }, map) => {
-    console.log(`Removing member ${name} from map...`);
+    console.log(`Removing member ${name} from usersByRoomId map...`);
     if (map.has(roomId)) {
       const roomMembers = map.get(roomId);
       const updatedArray = roomMembers.filter((member) => {
@@ -46,12 +47,14 @@ module.exports = (io) => {
     }
   };
 
-  const deleteGroupIfEmpty = (roomId, map) => {
+  const deleteGroupIfEmpty = (roomId, usersByRoomId) => {
     console.log("Checking if group is empty for deletion:");
-    const roomSize = io.sockets.adapter.rooms.get(roomId)?.size;
+    // const roomSize = io.sockets.adapter.rooms.get(roomId)?.size;
+    const roomSize = usersByRoomId.get(roomId).length;
+    console.log(roomSize);
     if (!roomSize) {
       console.log("Deleting group since empty...");
-      map.delete(roomId);
+      usersByRoomId.delete(roomId);
     }
   };
 

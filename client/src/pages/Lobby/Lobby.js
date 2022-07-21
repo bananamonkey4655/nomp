@@ -39,7 +39,8 @@ function Lobby() {
     });
 
     return () => {
-      console.log("unmounting lobby");
+      socket.off("update-members");
+      socket.off("members-start-search");
     };
   }, [socket]);
 

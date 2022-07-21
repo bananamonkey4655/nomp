@@ -9,10 +9,19 @@ module.exports = (io) => {
 
     if (!votesByEatery.has(eateryId)) {
       votesByEatery.set(eateryId, 1);
+
+      /**Debugging */
+      console.log(eateriesByRoomId);
+      /**Debugging */
+
       return;
     }
     const curr = votesByEatery.get(eateryId);
     votesByEatery.set(eateryId, curr + 1);
+
+    /**Debugging */
+    console.log(eateriesByRoomId);
+    /**Debugging */
   };
 
   const changeMemberDoneStatus = ({ name, roomId }, map) => {
@@ -23,13 +32,20 @@ module.exports = (io) => {
     gameCompletedMember.done = true;
   };
 
-  const handleGameOver = (roomId, membersMap) => {
-    const isGameOver = (map, roomId) => {
-      const roomMembers = map.get(roomId);
-      console.log("Checking if game is over...");
-      console.log(roomMembers);
+  const handleGameOver = (roomId, usersByRoomId) => {
+    const isGameOver = (usersByRoomId, roomId) => {
+      const roomMembers = usersByRoomId.get(roomId);
+      const votesByEatery = eateriesByRoomId.get(roomId);
 
-      if (!roomMembers) {
+      /**Debugging */
+      console.log("Checking if game is over...");
+      console.log("MAP usersByRoomId:");
+      console.log(usersByRoomId);
+      console.log("MAP votesByEatery:");
+      console.log(votesByEatery);
+      /**Debugging */
+
+      if (!roomMembers || !votesByEatery) {
         return false;
       }
 
@@ -41,12 +57,18 @@ module.exports = (io) => {
       return true;
     };
 
-    if (!isGameOver(membersMap, roomId)) {
+    if (!isGameOver(usersByRoomId, roomId)) {
       return;
     }
 
-    console.log("Game is over");
     const votesByEatery = eateriesByRoomId.get(roomId);
+
+    /**Debugging */
+    console.log("Game is over");
+    console.log("MAP votesByEatery:");
+    console.log(votesByEatery);
+    /**Debugging */
+
     let max = 0;
     let highestVotedEatery = null;
 
@@ -57,10 +79,25 @@ module.exports = (io) => {
       }
     }
 
+    /**Debugging */
+    console.log("MAP votesByEatery:");
+    console.log(votesByEatery);
+    console.log(`Winner is ${highestVotedEatery} with count of ${max}`);
+    console.log("Emitting show results event...");
+    /**Debugging */
+
     io.in(roomId).emit("show-results", {
       eateryId: highestVotedEatery,
       count: max,
     });
+
+    //Cleanup votesByEatery map
+    eateriesByRoomId.delete(roomId);
+
+    /**Debugging */
+    console.log("Cleanup votesByEatery, eateriesByRoomId MAP:");
+    console.log(eateriesByRoomId);
+    /**Debugging */
   };
 
   return {

@@ -86,6 +86,10 @@ function Voting() {
     socket.on("show-results", ({ eateryId, count }) => {
       navigate("/gameover", { state: { eateryId, count } });
     });
+
+    return () => {
+      socket.off("show-results");
+    };
   }, []);
 
   // Check for whether search has been completed
