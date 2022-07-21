@@ -77,7 +77,7 @@ const ResultsPage = () => {
       </div>
     );
   }
-  return <h1> <Loader/> </h1>;
+  return <h1> <Loader message="Loading"/> </h1>;
 };
 
 export default ResultsPage;

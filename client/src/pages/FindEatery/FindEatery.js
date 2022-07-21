@@ -8,6 +8,11 @@ import { MapPin, Heart, X } from "phosphor-react";
 import BACKEND_URL from "../../config";
 import { useSocket } from "../../context/SocketProvider";
 import Loader from "../../components/Loader/Loader";
+import Eatery from "../../components/Eatery/Eatery";
+import Button from 'react-bootstrap/Button';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const FindEatery = () => {
 
@@ -57,6 +62,8 @@ const FindEatery = () => {
   const [isSearchComplete, setIsSearchComplete] = useState(false);
 
   const [fetchErrorMessage, setFetchErrorMessage] = useState("");
+
+  const [viewMoreDetails, setViewMoreDetails] = useState(false);
 
   useEffect(() => {
     function shuffle(array) {
@@ -132,6 +139,16 @@ const FindEatery = () => {
     }
   };
 
+    // for toggle button to view more details
+    const [toggle, setToggle] = useState(false);
+
+    // for rendering extra info about the toggle button
+    const renderInfo = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+        More information loaded. Longer loading time.
+      </Tooltip>
+    );
+
   // Render eatery information only when loaded, otherwise we get error from reading into field of undefined object
   if (!displayedEatery) {
     return <h1> <Loader message="Loading"/> </h1>;
@@ -149,12 +166,13 @@ const FindEatery = () => {
       location: place,
       display_phone,
       price,
+      id
     } = displayedEatery;
 
     return (
       <div className="wrapper">
         <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex}/${eateries.length} Restaurants Viewed`}</h1>
-        <motion.div variants={animationVariants} animate={controls} className="container mt-3">
+        {!viewMoreDetails && <motion.div variants={animationVariants} animate={controls} className="container mt-3">
           <img src={image_url} />
           <div className="imagebox-text">
             <div className="empty-space"></div>
@@ -176,7 +194,30 @@ const FindEatery = () => {
               <div></div>
             </section>
           </div>
-        </motion.div>
+        </motion.div>}
+
+        {viewMoreDetails && <Eatery key={id} id={id}/>}
+
+        <OverlayTrigger
+        placement="right"
+        delay={{ show: 250, hide: 400 }}
+        overlay={renderInfo}
+        >
+        <ToggleButton
+        className="my-3 fw-bold font-style"
+        id="toggle-check"
+        type="checkbox"
+        variant="outline-primary"
+        checked={toggle}
+        value="1"
+        onChange={(e) => {
+          setToggle(e.currentTarget.checked);
+          setViewMoreDetails(!viewMoreDetails);
+          }}>
+          Toggle Me to view more details
+        </ToggleButton>
+        </OverlayTrigger>
+
         <div className="buttons mt-5">
           {!isAnimation && <Heart
             className="want-button hover-effect"

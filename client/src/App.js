@@ -31,11 +31,11 @@ const App = () => {
         <main className="app-body">
         <AnimatePresence>
           <Routes location={location} key={location.key}>
-            <Route index element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+            <Route index element={ <Home /> } />
+            <Route path="/home" element={ <Home /> } />
+            <Route path="/login" element={ <Login /> } />
             <Route path="/register" element={<Register />} />
-            <Route element={<ProtectedRoute />}>
+            <Route location={location} key={location.key} element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/group" element={<Group />} />
               <Route path="/lobby" element={<Lobby />} />

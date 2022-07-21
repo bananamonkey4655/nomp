@@ -63,7 +63,7 @@ const GroupSettings = ({ isHost }) => {
               onChange={(e) => setLocation(e.target.value)}
               required
             />
-            <Button variant="secondary" size="lg" onClick={() => pasteAddress(geoLocation)} className="fw-bold shadow ms-3 get-location-button"> 
+            <Button variant="secondary" size="lg" onClick={() => pasteAddress(geoLocation)} className="shadow ms-3 get-location-button"> 
             Get Location 
             </Button>
           </div>

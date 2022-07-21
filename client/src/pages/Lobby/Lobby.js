@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
 import ChatBox from "../../components/ChatBox/ChatBox";
 import GroupSettings from "../../components/GroupSettings/GroupSettings";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { AlignLeftSimple, Users } from "phosphor-react";
 import "./Lobby.css";
@@ -50,8 +50,9 @@ const Lobby = () => {
   }, [groupMembers]);
 
   // TODO: change index
+  
   return groupMembers?.length ? (
-    <motion.div variants={pageVariants} initial="hidden" animate="visible" exit="exit" className="lobby-container">
+     <motion.div key={groupMembers} variants={pageVariants} initial="hidden" animate="visible" exit="exit" className="lobby-container">
       <section className="lobby-left">
         <div className="members">
           <div className="members-count-wrapper">
@@ -74,9 +75,9 @@ const Lobby = () => {
       <ChatBox name={name} />
     </motion.div>
   ) : (
-    <h1>
+    <motion.h1 key={groupMembers} variants={pageVariants} initial="hidden" animate="visible" exit="exit">
       <Loader message="Loading..."/>
-    </h1>
+    </motion.h1>
   );
 };
 
