@@ -16,7 +16,9 @@ function NavItem({ item, link, handleClick }) {
           isActive ? activeClassNames : defaultClassNames
         }
         onClick={() => {
-          handleClick();
+          if (handleClick) {
+            handleClick();
+          }
           quitGroup();
         }}
       >

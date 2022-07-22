@@ -30,8 +30,8 @@ main {
 }
 
 .box {
+  display: none;
   height: 100%;
-  display: flex;
   align-items: center;
 }
 
@@ -51,6 +51,7 @@ main {
 }
 
 .background {
+  display: none;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -58,4 +59,17 @@ main {
   height: 60vh;
   width: 45vw;
   background-color: lightcoral;
+}
+
+@media (min-width: 640px) {
+  .box {
+    display: flex;
+  }
+
+  .background {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
 }

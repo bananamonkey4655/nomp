@@ -3,13 +3,14 @@ import "./HamburgerMenu.css";
 import { slide as Menu } from "react-burger-menu";
 import NavItem from "components/Navbar/NavItem/NavItem";
 import { useAuth } from "context/AuthProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function HamburgerMenu() {
   const { token } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  //TODO: Find out why this works!! onStateChange??
+  //TODO: Find out why menu toggle doesnt work without onStateChange?
+  //State should be changed from passed down onClick function?
   const handleStateChange = (state) => {
     setIsMenuOpen(state.isOpen);
   };

@@ -1,4 +1,4 @@
-import "./Navbar.css";
+import styles from "./Navbar.module.css";
 
 import Logo from "components/Logo";
 import NavItem from "components/Navbar/NavItem/NavItem";
@@ -10,20 +10,24 @@ function Navbar() {
   const { token } = useAuth();
 
   return (
-    <nav className="navbar">
-      <div className="logo">
-        <Logo />
-        <h1 className="title">NOMP</h1>
-      </div>
-      <ul className="navlist">
-        <NavItem item="Home" link="/home" />
-        <NavItem item="I'm Hungry" link="/group" />
-        {!token && <NavItem item="Sign Up" link="/register" />}
-        {!token && <NavItem item="Log in" link="/login" />}
-        {token && <NavItem item="Sign Out" link="/signout" />}
-      </ul>
-      <HamburgerMenu />
-    </nav>
+    <header className={styles.header}>
+      <nav className={styles.navbar}>
+        <div className={styles.logo}>
+          <Logo />
+          <h1 className={styles.title}>NOMP</h1>
+        </div>
+        <ul className={styles.navlist}>
+          <NavItem item="Home" link="/home" />
+          <NavItem item="I'm Hungry" link="/group" />
+          {!token && <NavItem item="Sign Up" link="/register" />}
+          {!token && <NavItem item="Log in" link="/login" />}
+          {token && <NavItem item="Sign Out" link="/signout" />}
+        </ul>
+        <div className={styles.hamburger}>
+          <HamburgerMenu />
+        </div>
+      </nav>
+    </header>
   );
 }
 
