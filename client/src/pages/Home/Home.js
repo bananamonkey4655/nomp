@@ -84,6 +84,7 @@ function Home() {
       exit="exit"
       className={styles.container}
     >
+      <div className={styles.background} />
       <motion.section
         variants={parentVariants}
         initial="hidden"
