@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5e5e5;
+}
+
+.container {
+  font-family: "Inter", sans-serif;
+  height: 90%;
+  width: 90%;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  max-width: 600px;
+  position: relative;
+  /*svg*/
+  background-image: url("../../assets/bg/layered-waves-haikei-login.svg");
+  aspect-ratio: 960/300; /*experimental*/
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.password {
+  border: 1px solid rgb(255, 56, 92);
+}
+
+.error {
+  margin-top: 1rem;
+}
+
+.btn {
+  margin-top: 2rem;
+  width: 100%;
+  background-color: rgb(255, 56, 92);
+  border: none;
+}
+
+.btn:disabled {
+  background-color: #e5e5e5;
+  color: #78716c;
+  font-weight: 600;
+  border: none;
+}
+
+.btn:hover {
+  opacity: ;
+}
+
+.signup {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 0 2rem;
+}
+
+.link {
+  display: block;
+  font-weight: bold;
+  color: #ef4444;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+@media (min-width: 768px) {
+  .link {
+    display: inline-block;
+  }
+}

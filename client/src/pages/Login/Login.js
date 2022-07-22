@@ -1,4 +1,4 @@
-import "./Login.css";
+import styles from "./Login.module.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
@@ -7,8 +7,7 @@ import LoadingDisplay from "components/LoadingDisplay";
 
 import { useEffect, useState } from "react";
 import { useAuth } from "context/AuthProvider";
-import { useSocket } from "context/SocketProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const { token, isLoading, errorMessage, attemptLogin } = useAuth();
@@ -40,13 +39,12 @@ function Login() {
   const { username, password } = form;
 
   return (
-    <div className="login-wrapper">
-      <div className="login-form">
-        {errorMessage && <ErrorMessage />}
-        <h1 className="mb-3">Login</h1>
+    <section className={styles.wrapper}>
+      <div className={styles.container}>
+        <h1 className="mb-3">Sign in to your account</h1>
         <Form className="form" onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="username">
-            <Form.Label>Username</Form.Label>
+          <Form.Group className="mt-4" controlId="username">
+            <Form.Label className={styles.title}>Username</Form.Label>
             <Form.Control
               type="username"
               placeholder="Enter username"
@@ -56,12 +54,12 @@ function Login() {
               onChange={(e) => setForm({ ...form, username: e.target.value })}
               required
             />
-            <Form.Text className="text-dark ">Welcome to Nomp!</Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Password</Form.Label>
+          <Form.Group className="mt-3" controlId="password">
+            <Form.Label className={styles.title}>Password</Form.Label>
             <Form.Control
+              className={errorMessage ? styles.password : ""}
               type="password"
               placeholder="Password"
               maxLength="18"
@@ -69,19 +67,28 @@ function Login() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
             />
+            <div className={styles.error}>
+              <ErrorMessage message={errorMessage} />
+            </div>
           </Form.Group>
           <Button
-            disabled={isLoading}
+            disabled={isLoading || form.username == "" || form.password == ""}
             variant="primary"
             size="lg"
             type="submit"
-            className="login-button btn-dark mt-3"
+            className={styles.btn}
           >
             Continue
           </Button>
         </Form>
+        <p className={styles.signup}>
+          Don't have an account?
+          <Link className={styles.link} to="/register">
+            Sign up.
+          </Link>
+        </p>
       </div>
-    </div>
+    </section>
   );
 }
 
