@@ -53,9 +53,10 @@ function Group() {
             <input
               type="text"
               placeholder="Your name"
+              maxLength="20"
+              required
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              required
               className="mx-1 my-1 w-100"
             ></input>
           </label>
@@ -65,9 +66,10 @@ function Group() {
             <input
               type="text"
               placeholder="Input room ID"
+              maxLength="20"
+              required
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
-              required
               className="mx-1 my-1 w-100"
             ></input>
           </label>
