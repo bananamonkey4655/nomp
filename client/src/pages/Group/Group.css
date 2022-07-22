@@ -1,4 +1,3 @@
-
 .group-container {
   height: 100%;
   display: flex;
@@ -33,4 +32,12 @@ button {
 
 button:hover {
   opacity: 0.6;
+}
+
+input:valid {
+  border: 2px solid green;
+}
+
+input:invalid {
+  border: 2px solid red;
 }

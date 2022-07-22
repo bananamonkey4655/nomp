@@ -30,7 +30,7 @@ function Group() {
       return;
     }
 
-    socket.emit("try-join", name, room, (response) => {
+    socket.emit("try-join", { name, roomId: room }, (response) => {
       if (!response.ok) {
         console.log(response.error);
         //TODO: render error message
@@ -54,11 +54,12 @@ function Group() {
               type="text"
               placeholder="Your name"
               maxLength="20"
+              pattern="[a-zA-Z0-9\s]+"
               required
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               className="mx-1 my-1 w-100"
-            ></input>
+            />
           </label>
 
           <label>
@@ -71,7 +72,7 @@ function Group() {
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
               className="mx-1 my-1 w-100"
-            ></input>
+            />
           </label>
 
           <Button

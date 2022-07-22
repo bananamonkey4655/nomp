@@ -1,0 +1,27 @@
+li {
+  list-style: none;
+}
+
+.navlink {
+  color: snow;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+
+.navlink:hover {
+  color: black;
+}
+
+.activenav {
+  background-color: #fcd34d;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.mobile {
+  margin-bottom: 1rem;
+}

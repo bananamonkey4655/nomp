@@ -1,12 +1,19 @@
 module.exports = (io) => {
-  // Given array of users, return whether there is already a host.
-  function doesHostAlreadyExist(roomMembers) {
-    for (const member of roomMembers) {
-      if (member.isHost) {
-        return true;
-      }
+  function canUserJoinGroup(userDetails, usersByRoomId, roomInfoByRoomId) {
+    const { name, roomId } = userDetails;
+    const users = usersByRoomId.get(roomId);
+    const roomInfo = roomInfoByRoomId.get(roomId);
+
+    // Check if user already exists
+    if (users && users.some((user) => user.nickname === name)) {
+      return { ok: false, error: "User already exists" };
     }
-    return false;
+
+    if (roomInfo && roomInfo.status === "unavailable") {
+      return { ok: false, error: "Room currently in voting process" };
+    }
+
+    return { ok: true };
   }
 
   function changeHostIfNone(users) {
@@ -87,6 +94,7 @@ module.exports = (io) => {
   }
 
   return {
+    canUserJoinGroup,
     doesHostAlreadyExist,
     addMemberToMap,
     removeMemberFromMap,
@@ -95,3 +103,14 @@ module.exports = (io) => {
     createRoomInfo,
   };
 };
+
+// Helper functions:
+// Given array of users, return whether there is already a host.
+function doesHostAlreadyExist(roomMembers) {
+  for (const member of roomMembers) {
+    if (member.isHost) {
+      return true;
+    }
+  }
+  return false;
+}

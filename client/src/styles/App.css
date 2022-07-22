@@ -1,37 +1,15 @@
-/* html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+/* * {
+  outline: 1px solid red !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 } */
 
 #root {
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #f3f4f6;
-}
-
-.app-container {
-  min-height: 100%;
-  margin: 0;
-}
-
-.app-body {
-  padding: 1rem 2rem;
-  flex-grow: 1;
-  height: calc(100vh - 80px);
 }
 
 ul {

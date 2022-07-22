@@ -1,23 +1,51 @@
 @import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap");
 
-nav {
+.navbar {
+  background-color: #d42d2d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  padding-left: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-family: "Alfa Slab One", sans-serif;
+  color: snow;
+  font-size: 2rem;
+  margin-bottom: 0;
+  padding-left: 0.7rem;
+}
+
+.navlist {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  /* display: none; */
+}
+
+/* .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 100px;
   font-size: 1.05rem;
   background-color: #d42d2d;
-  /* background-color: #dc2626; */
   height: 80px;
   width: 100%;
 }
 
-.nav-logo {
+.logo {
   display: flex;
   align-items: center;
 }
 
-.nav-logo h1 {
+.logo h1 {
   padding-left: 10px;
   margin-bottom: 0;
   font-size: 45px;
@@ -25,7 +53,7 @@ nav {
   font-family: "Alfa Slab One", sans-serif;
 }
 
-.nav-logo img {
+.logo img {
   width: 50px;
   height: 50px;
 }
@@ -36,7 +64,7 @@ ul {
   align-items: center;
 }
 
-.navbar {
+.navlist {
   margin-bottom: 0;
 }
 
@@ -69,4 +97,4 @@ nav a {
 .navlink:hover {
   text-decoration: underline;
   color: white;
-}
+} */

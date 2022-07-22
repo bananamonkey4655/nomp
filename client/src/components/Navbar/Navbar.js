@@ -1,85 +1,28 @@
 import "./Navbar.css";
 
 import Logo from "components/Logo";
+import NavItem from "components/Navbar/NavItem/NavItem";
+import HamburgerMenu from "components/Navbar/HamburgerMenu/HamburgerMenu";
 
-import { NavLink } from "react-router-dom";
 import { useAuth } from "context/AuthProvider";
-import { useSocket } from "context/SocketProvider";
 
 function Navbar() {
-  const { token, handleLogout } = useAuth();
-  const { quitGroup } = useSocket();
+  const { token } = useAuth();
 
   return (
-    <nav>
-      <div className="nav-logo">
+    <nav className="navbar">
+      <div className="logo">
         <Logo />
-        <h1>NOMP</h1>
+        <h1 className="title">NOMP</h1>
       </div>
-      <ul className="navbar">
-        <li>
-          <NavLink
-            to="/home"
-            className={({ isActive }) => (isActive ? "activenav" : "navlink")}
-            onClick={quitGroup}
-          >
-            Home
-          </NavLink>
-        </li>
-        {/* <li>
-          {token && (
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) => (isActive ? "activenav" : "navlink")}
-              onClick={quitGroup}
-            >
-              Dashboard
-            </NavLink>
-          )}
-        </li> */}
-        <li>
-          <NavLink
-            to="/group"
-            className={({ isActive }) => (isActive ? "activenav" : "navlink")}
-            onClick={quitGroup}
-          >
-            I'm Hungry
-          </NavLink>
-        </li>
-        <li className="signup-link">
-          {!token && (
-            <NavLink
-              to="/register"
-              className={({ isActive }) => (isActive ? "activenav" : "navlink")}
-            >
-              Sign Up
-            </NavLink>
-          )}
-        </li>
-        <li>
-          {!token && (
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? "activenav" : "navlink")}
-            >
-              Log in
-            </NavLink>
-          )}
-        </li>
-        <li>
-          {token && (
-            <button
-              type="button"
-              onClick={() => {
-                handleLogout();
-                quitGroup();
-              }}
-            >
-              Sign Out
-            </button>
-          )}
-        </li>
+      <ul className="navlist">
+        <NavItem item="Home" link="/home" />
+        <NavItem item="I'm Hungry" link="/group" />
+        {!token && <NavItem item="Sign Up" link="/register" />}
+        {!token && <NavItem item="Log in" link="/login" />}
+        {token && <NavItem item="Sign Out" link="/signout" />}
       </ul>
+      <HamburgerMenu />
     </nav>
   );
 }
