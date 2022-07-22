@@ -13,15 +13,20 @@ function ChatBox({ name, groupId }) {
   const sendMyMessage = (e) => {
     e.preventDefault();
 
-    socket.emit("chat:send-message", { name, message: myMessage });
+    const message = myMessage.trim();
     setMyMessage("");
+
+    if (!message) {
+      return;
+    }
+    socket.emit("chat:send-message", { name, message });
   };
 
   const updateChat = (msg) => {
     setChatMessages((prev) => [...prev, msg]);
   };
 
-  // Auto scroll to bottom of chat
+  // Auto scroll to bottom of chat on new message
   useEffect(() => {
     if (messageEl) {
       messageEl.current.addEventListener("DOMNodeInserted", (event) => {
@@ -50,6 +55,7 @@ function ChatBox({ name, groupId }) {
       });
     });
 
+    // Turn off event listeners after dismounting
     return () => {
       socket.off("chat:new-member");
       socket.off("chat:new-message");
