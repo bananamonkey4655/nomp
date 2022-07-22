@@ -82,7 +82,7 @@ function Login() {
           </Button>
         </Form>
         <p className={styles.signup}>
-          Don't have an account?
+          <span>Don't have an account?</span>
           <Link className={styles.link} to="/register">
             Sign up.
           </Link>

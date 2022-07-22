@@ -48,16 +48,15 @@ router.post("/login", async (req, res) => {
   try {
     let user = await UserModel.findOne({ username });
     if (!user) {
-      return res
-        .status(400)
-        .json({ message: "Username or password incorrect " });
+      return res.status(400).json({ message: "User doesn't exist" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({ message: "Username or password incorrect" });
+      return res.status(400).json({
+        message:
+          "Sorry, your password was incorrect. Please double-check your password.",
+      });
     }
 
     const payload = { user: { id: user.id } };
