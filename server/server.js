@@ -35,17 +35,23 @@ app.get("/", (req, res) => {
 /***************** Websocket ******************/
 
 // TODO: organize into other folders
-const { addEateryVote, changeMemberDoneStatus, handleGameOver } =
-  require("./controllers/minigameHandler")(io);
+const {
+  handleVotingGameStart,
+  addEateryVote,
+  changeMemberDoneStatus,
+  handleGameOver,
+} = require("./controllers/minigameHandler")(io);
 const {
   doesHostAlreadyExist,
   addMemberToMap,
   removeMemberFromMap,
   updateMembersOnClient,
   deleteGroupIfEmpty,
+  createRoomInfo,
 } = require("./controllers/groupHandler")(io);
 
 const usersByRoomId = new Map();
+const roomInfoByRoomId = new Map();
 
 // Run when client connects
 io.on("connection", (socket) => {
@@ -62,10 +68,15 @@ io.on("connection", (socket) => {
 
   function canUserJoinGroup({ name, roomId }, usersByRoomId) {
     const users = usersByRoomId.get(roomId);
+    const roomInfo = roomInfoByRoomId.get(roomId);
 
     // Check if user already exists
     if (users && users.some((user) => user.nickname === name)) {
       return { ok: false, error: "User already exists" };
+    }
+
+    if (roomInfo && roomInfo.status === "unavailable") {
+      return { ok: false, error: "Room currently in voting process" };
     }
 
     //TODO: check if room has already started voting
@@ -98,6 +109,7 @@ io.on("connection", (socket) => {
     socket.join(groupId);
 
     addMemberToMap({ name: nickname, roomId: groupId, isHost }, usersByRoomId);
+    createRoomInfo(groupId, roomInfoByRoomId);
 
     updateMembersOnClient(groupId, usersByRoomId);
     io.in(groupId).emit("chat:new-member", nickname);
@@ -109,7 +121,7 @@ io.on("connection", (socket) => {
 
     // Listen for host to start voting game
     socket.on("host-start-search", (queryParameters) => {
-      io.in(groupId).emit("members-start-search", queryParameters);
+      handleVotingGameStart(groupId, roomInfoByRoomId, queryParameters);
     });
 
     // Increment vote count for a restaurant
@@ -121,7 +133,7 @@ io.on("connection", (socket) => {
         { name: nickname, roomId: groupId },
         usersByRoomId
       );
-      handleGameOver(groupId, usersByRoomId);
+      handleGameOver(groupId, usersByRoomId, roomInfoByRoomId);
     });
 
     function removeEventListeners(socket, listeners) {
@@ -138,7 +150,7 @@ io.on("connection", (socket) => {
       removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
       updateMembersOnClient(groupId, usersByRoomId);
       deleteGroupIfEmpty(groupId, usersByRoomId);
-      handleGameOver(groupId, usersByRoomId);
+      handleGameOver(groupId, usersByRoomId, roomInfoByRoomId);
       // io.in(socket.id).socketsLeave(groupId);
     });
 
@@ -148,7 +160,7 @@ io.on("connection", (socket) => {
       removeMemberFromMap({ name: nickname, roomId: groupId }, usersByRoomId);
       updateMembersOnClient(groupId, usersByRoomId);
       deleteGroupIfEmpty(groupId, usersByRoomId);
-      handleGameOver(groupId, usersByRoomId);
+      handleGameOver(groupId, usersByRoomId, roomInfoByRoomId);
     });
   });
 });

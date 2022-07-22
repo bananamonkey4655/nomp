@@ -1,6 +1,16 @@
 const eateriesByRoomId = new Map();
 
 module.exports = (io) => {
+  function handleVotingGameStart(roomId, roomInfoByRoomId, queryParameters) {
+    // Send to client start event
+    io.in(roomId).emit("members-start-search", queryParameters);
+
+    // Set room status to be "unavailable"
+    const roomInfo = roomInfoByRoomId.get(roomId);
+    console.log("Setting room to unavailable...");
+    roomInfoByRoomId.set(roomId, { ...roomInfo, status: "unavailable" });
+  }
+
   function addEateryVote({ eateryId, roomId }) {
     if (!eateriesByRoomId.has(roomId)) {
       eateriesByRoomId.set(roomId, new Map());
@@ -31,7 +41,7 @@ module.exports = (io) => {
     gameCompletedMember.done = true;
   }
 
-  function handleGameOver(roomId, usersByRoomId) {
+  function handleGameOver(roomId, usersByRoomId, roomInfoByRoomId) {
     const isGameOver = (usersByRoomId, roomId) => {
       const roomMembers = usersByRoomId.get(roomId);
       const votesByEatery = eateriesByRoomId.get(roomId);
@@ -51,6 +61,10 @@ module.exports = (io) => {
     if (!isGameOver(usersByRoomId, roomId)) {
       return;
     }
+
+    const roomInfo = roomInfoByRoomId.get(roomId);
+    console.log("Setting room back to available...");
+    roomInfoByRoomId.set(roomId, { ...roomInfo, status: "available" }); //maybe delete instead?
 
     const votesByEatery = eateriesByRoomId.get(roomId);
 
@@ -74,6 +88,7 @@ module.exports = (io) => {
   }
 
   return {
+    handleVotingGameStart,
     addEateryVote,
     changeMemberDoneStatus,
     handleGameOver,

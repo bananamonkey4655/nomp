@@ -26,7 +26,6 @@ const Eatery = (props) => {
         console.log(`${data.error.code}: ${data.error.description}`);
       } else {
         setEateryDetails(data);
-        console.log(data);
       }
     };
     fetchData(props.id);

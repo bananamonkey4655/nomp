@@ -23,6 +23,13 @@ module.exports = (io) => {
     users[0].isHost = true;
   }
 
+  function createRoomInfo(roomId, roomInfoByRoomId) {
+    if (!roomInfoByRoomId.has(roomId)) {
+      console.log("Setting room info...");
+      roomInfoByRoomId.set(roomId, { status: "available" });
+    }
+  }
+
   // Given a new member, add to data structure
   function addMemberToMap({ name, roomId, isHost }, usersByRoomId) {
     const user = { nickname: name, isHost, done: false };
@@ -85,5 +92,6 @@ module.exports = (io) => {
     removeMemberFromMap,
     updateMembersOnClient,
     deleteGroupIfEmpty,
+    createRoomInfo,
   };
 };
