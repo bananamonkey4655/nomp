@@ -79,50 +79,59 @@ function Home() {
   const navigate = useNavigate();
 
   return (
-    <motion.div
-      variants={pageVariants}
-      exit="exit"
-      className={styles.container}
-    >
-      <div className={styles.background} />
-      <motion.section
-        variants={parentVariants}
-        initial="hidden"
-        animate="visible"
+    <div className={styles.wrapper}>
+      <motion.div
+        variants={pageVariants}
+        exit="exit"
+        className={styles.container}
       >
-        <motion.h1 variants={childVariants} className={styles.title}>
-          Find food with friends!
-        </motion.h1>
-        <motion.p variants={childVariants} className={styles.description}>
-          Join a group, set your preferences and vote with your friends to find
-          a place to eat!
-        </motion.p>
-        <motion.div
-          variants={buttonVariants}
+        <motion.section
+          variants={parentVariants}
           initial="hidden"
           animate="visible"
-          whileHover="hover"
-          className="button-box"
+          className={styles.left}
         >
-          <button onClick={() => navigate("/group")} className={styles.button}>
-            Get Started
-          </button>
-        </motion.div>
-        <motion.div variants={childVariants}>
-          <img src={foodImage} className={styles.food} alt="A plate of food" />
-        </motion.div>
-        <div className="red-circle"></div>
-      </motion.section>
-      <div className={styles.box}>
-        <motion.img
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.25, duration: 0.25 }}
-          src={groupImage}
-          alt="Landing page image"
-        />
-      </div>
-    </motion.div>
+          <motion.h1 variants={childVariants} className={styles.title}>
+            Find food with friends!
+          </motion.h1>
+          <motion.p variants={childVariants} className={styles.description}>
+            Join a group, set your preferences and vote with your friends to
+            find a place to eat!
+          </motion.p>
+          <motion.div
+            variants={buttonVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
+            className={styles.buttonContainer}
+          >
+            <button
+              onClick={() => navigate("/group")}
+              className={styles.button}
+            >
+              Get Started
+            </button>
+          </motion.div>
+          <motion.div variants={childVariants} className={styles.foodContainer}>
+            <img
+              src={foodImage}
+              className={styles.food}
+              alt="A plate of food"
+            />
+          </motion.div>
+          <div className="red-circle"></div>
+        </motion.section>
+        <div className={styles.box}>
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.25, duration: 0.25 }}
+            src={groupImage}
+            alt="Landing page image"
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 }
 

@@ -1,42 +1,57 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-main {
-  flex: 1;
+.wrapper {
+  height: 100%;
+  aspect-ratio: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url("../../assets/bg/layered-waves-bg-home.svg");
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
   height: 100%;
-  padding: 0 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+  width: 100%;
+  max-width: 1700px;
 }
 
-.button {
-  padding: 8px 20px;
-  background-color: rgb(239, 159, 94);
-  border-radius: 0.5rem;
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 2rem;
+  gap: 0rem;
 }
 
 .title {
+  color: white;
   font-family: "Montserrat", sans-serif;
+  font-size: 3rem;
   font-weight: 600;
 }
 
 .description {
-  padding-right: 30%;
-  margin-bottom: 30px;
+  font-weight: bold;
+  padding: 0 2rem;
 }
 
-.box {
-  display: none;
-  height: 100%;
-  align-items: center;
+.buttonContainer {
+  margin-top: 1rem;
 }
 
-.box img {
-  z-index: 0;
+.button {
+  padding: 15px 30px;
+  background-color: rgb(239, 159, 94);
+  border-radius: 0.5rem;
 }
 
 .food {
@@ -50,7 +65,18 @@ main {
   height: 150px;
 }
 
-.background {
+.box {
+  display: none;
+  height: 100%;
+  align-items: center;
+}
+
+.box img {
+  height: 300px;
+  z-index: 0;
+}
+
+/* .background {
   display: none;
   position: absolute;
   bottom: 0;
@@ -59,17 +85,69 @@ main {
   height: 60vh;
   width: 45vw;
   background-color: lightcoral;
-}
+} */
 
 @media (min-width: 640px) {
-  .box {
-    display: flex;
+  .title {
+    font-size: 2rem;
   }
 
-  .background {
-    display: block;
+  .container {
+    padding: 0 2rem;
+  }
+
+  .left {
+    text-align: left;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .description {
+    padding: 0;
+    padding-right: 20%;
+  }
+
+  .buttonContainer {
+    margin-top: 0;
+  }
+
+  .box {
+    display: flex;
   }
 }
 
 @media (min-width: 768px) {
+  .container {
+    padding: 0 3rem;
+  }
+  .description {
+    padding-right: 40%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 5rem;
+  }
+  .title {
+    font-size: 3rem;
+  }
+  .box img {
+    height: 400px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .box img {
+    height: 500px;
+  }
+  .button {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .left {
+    gap: 1rem;
+  }
 }

@@ -19,7 +19,7 @@
   max-width: 600px;
   position: relative;
   /*svg*/
-  background-image: url("../../assets/bg/layered-waves-haikei-login.svg");
+  background-image: url("../../assets/bg/layered-waves-login.svg");
   aspect-ratio: 960/300; /*experimental*/
   background-repeat: no-repeat;
   background-position: center;
@@ -57,6 +57,13 @@
 .btn:active,
 .btn:focus {
   background-color: rgb(255, 56, 92);
+  opacity: 0.6;
+}
+
+.link:hover,
+.link:active,
+.link:focus {
+  color: rgb(255, 56, 92);
   opacity: 0.6;
 }
 
