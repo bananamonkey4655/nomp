@@ -26,13 +26,9 @@ function InviteLink() {
   };
 
   return (
-    <div className={styles.invite}>
-      <div>
-        Invite Link: <span className={styles.link}>{inviteLink}</span>
-      </div>
-
+    <div className={styles.btnContainer}>
       <button className={styles.btn} onClick={handleCopyClick}>
-        {isCopied ? "Copied!" : "Copy"}
+        {isCopied ? "Copied to clipboard!" : "Get Invite Link"}
       </button>
     </div>
   );

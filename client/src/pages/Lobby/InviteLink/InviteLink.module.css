@@ -1,9 +1,17 @@
 .btn {
   border-radius: 5px;
   background-color: inherit;
-  padding: 0.5rem 1rem;
+  padding: 2px;
 }
 
+.btnContainer {
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*
 .invite {
   padding: 0.5rem 1rem;
   border-radius: 1rem;
@@ -18,4 +26,4 @@
 .link {
   color: #2563eb;
   font-weight: 600;
-}
+} */

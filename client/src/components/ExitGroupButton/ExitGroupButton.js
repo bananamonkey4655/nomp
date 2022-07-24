@@ -1,4 +1,6 @@
 import styles from "./ExitGroupButton.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
@@ -14,7 +16,7 @@ function ExitGroupButton() {
 
   return (
     <button className={styles.btn} onClick={exitGroup}>
-      Exit Group
+      <FontAwesomeIcon icon={faDoorOpen} className={styles.exit} />
     </button>
   );
 }

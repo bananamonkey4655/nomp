@@ -1,5 +1,7 @@
-import "./Lobby.css";
-import { Users } from "phosphor-react";
+import styles from "./Lobby.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCrown } from "@fortawesome/free-solid-svg-icons";
 
 import ChatBox from "./ChatBox";
 import GroupSettings from "./GroupSettings";
@@ -48,7 +50,6 @@ function Lobby() {
 
   const user = groupMembers.find((member) => member.nickname === name);
 
-  // TODO: change index
   if (!groupMembers) {
     return (
       <h1>
@@ -59,29 +60,43 @@ function Lobby() {
 
   // TODO: make smaller components here
   return (
-    <div className="lobby-container">
-      <section className="lobby-left">
-        <div className="members">
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <div className={styles.btnGroup}>
+          {/* TODO: Fix issues with invite link <InviteLink /> */}
+          <h1 className={styles.title}>Room ID: {groupId}</h1>
           <ExitGroupButton />
-          <div className="members-count-wrapper">
-            <div className="members-count">
-              <Users size={30} />
-              <span>{groupMembers.length}</span>
-            </div>
+        </div>
+
+        <div className={styles.usersContainer}>
+          <div className={styles.usersCount}>
+            <FontAwesomeIcon icon={faUser} />
+            <span>{groupMembers.length}</span>
           </div>
-          <ul className="members-list">
+          <ul>
             {groupMembers.map((member, index) => (
-              <li key={index}>
-                {member.isHost ? member.nickname + " (Host)" : member.nickname}
+              <li className={styles.username} key={index}>
+                {member.isHost ? (
+                  <>
+                    <FontAwesomeIcon icon={faCrown} />
+                    <span>{member.nickname}</span>
+                  </>
+                ) : (
+                  member.nickname
+                )}
               </li>
             ))}
           </ul>
         </div>
-        <InviteLink />
-        <GroupSettings isHost={user?.isHost} />
-      </section>
 
-      <ChatBox name={name} groupId={groupId} />
+        <div className={styles.settingsContainer}>
+          <GroupSettings isHost={user?.isHost} />
+        </div>
+
+        <div className={styles.chatContainer}>
+          <ChatBox name={name} groupId={groupId} />
+        </div>
+      </div>
     </div>
   );
 }

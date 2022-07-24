@@ -1,3 +1,13 @@
+.exit {
+  height: 50px;
+  width: 50px;
+}
+
 .btn {
-  color: black;
+  border: none;
+  background-color: inherit;
+}
+
+.btn:hover {
+  background-color: red;
 }

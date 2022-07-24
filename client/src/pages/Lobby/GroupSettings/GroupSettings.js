@@ -1,4 +1,4 @@
-import "./GroupSettings.css";
+import styles from "./GroupSettings.module.css";
 import Button from "react-bootstrap/Button";
 
 import Loader from "components/Loader";
@@ -80,17 +80,15 @@ function GroupSettings({ isHost }) {
   const { location, query, coordinates, budget, radius } = form;
 
   return (
-    <div className="shadow group-settings-box d-flex flex-direction-column">
-      {isHost ? (
-        <form onSubmit={findEateries}>
-          <h2 className="fw-bold text-decoration-underline mt-3 group-settings-text">
-            Group Settings
-          </h2>
+    <div className={styles.container}>
+      {!isHost ? (
+        <Loader message="Waiting for host..." />
+      ) : (
+        <form onSubmit={findEateries} className={styles.form}>
+          <h2 className={styles.formTitle}>Group Settings</h2>
 
-          <div>
-            <label className="me-3 mt-5 fw-bold fs-5 group-settings-text">
-              Location
-            </label>
+          <div className={styles.formEntry}>
+            <label>Location</label>
             <input
               type="text"
               value={location}
@@ -98,25 +96,16 @@ function GroupSettings({ isHost }) {
               readOnly={coordinates}
               required
             />
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={getLocation}
-              className="fw-bold shadow ms-3 get-location-button"
-            >
-              Get Location
-            </Button>
-            <button onClick={allowLocationInput}>Remove coordinates</button>
+
+            {!coordinates ? (
+              <button onClick={getLocation}>Get Location</button>
+            ) : (
+              <button onClick={allowLocationInput}>X</button>
+            )}
           </div>
 
-          <div>
-            <h5>Coordinates: {JSON.stringify(coordinates)}</h5>
-          </div>
-
-          <div>
-            <label className="me-3 mt-3 fs-5 fw-bold group-settings-text">
-              Search
-            </label>
+          <div className={styles.formEntry}>
+            <label>Search</label>
             <input
               type="text"
               value={query}
@@ -124,9 +113,9 @@ function GroupSettings({ isHost }) {
             />
           </div>
 
-          <div>
-            <label>Budget</label>
-            <label>
+          <div className={styles.formEntry}>
+            <label className={styles.budgetLabel}>Budget</label>
+            <div className={styles.radioGroup}>
               <input
                 type="radio"
                 value="no-preference"
@@ -134,9 +123,9 @@ function GroupSettings({ isHost }) {
                 checked={isBudgetSelected("no-preference")}
                 onChange={handleRadioClick}
               />
-              No preference
-            </label>
-            <label>
+              <label>No preference</label>
+            </div>
+            <div className={styles.radioGroup}>
               <input
                 type="radio"
                 value="low-budget"
@@ -144,9 +133,9 @@ function GroupSettings({ isHost }) {
                 checked={isBudgetSelected("low-budget")}
                 onChange={handleRadioClick}
               />
-              $
-            </label>
-            <label>
+              <label>$</label>
+            </div>
+            <div className={styles.radioGroup}>
               <input
                 type="radio"
                 value="mid-budget"
@@ -154,9 +143,9 @@ function GroupSettings({ isHost }) {
                 checked={isBudgetSelected("mid-budget")}
                 onChange={handleRadioClick}
               />
-              $$
-            </label>
-            <label>
+              <label>$$</label>
+            </div>
+            <div className={styles.radioGroup}>
               <input
                 type="radio"
                 value="high-budget"
@@ -164,37 +153,33 @@ function GroupSettings({ isHost }) {
                 checked={isBudgetSelected("high-budget")}
                 onChange={handleRadioClick}
               />
-              $$$
-            </label>
+              <label>$$$</label>
+            </div>
           </div>
 
-          <div>
-            <label>
-              Radius (km)
-              <input
-                type="range"
-                value={radius}
-                onChange={handleRadiusChange}
-                min="0"
-                max="40"
-              />
-            </label>
-            <div>{radius}</div>
+          <div className={styles.formEntry}>
+            <label>Distance from</label>
+            <input
+              type="range"
+              value={radius}
+              onChange={handleRadiusChange}
+              min="0"
+              max="40"
+              className={styles.range}
+            />
+            <div>{radius} km</div>
           </div>
 
           <Button
             type="submit"
             variant="primary"
             size="lg"
-            className="mt-5 fw-bold"
+            className="fw-bold"
+            disabled={!location ? true : false}
           >
             Start Deciding
           </Button>
         </form>
-      ) : (
-        <h1>
-          <Loader message="Waiting for host..." />
-        </h1>
       )}
     </div>
   );

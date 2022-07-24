@@ -1,0 +1,60 @@
+.container {
+  background-color: #fed7aa;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.formTitle {
+  align-self: center;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.formEntry {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 5px;
+}
+
+.formEntry label {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.formEntry input {
+  flex-grow: 1;
+}
+
+.budgetLabel {
+  padding-right: 20px;
+}
+
+.radioGroup {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: lowercase;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 10px 20px;
+  }
+  .formEntry {
+    font-size: 1rem;
+  }
+}
