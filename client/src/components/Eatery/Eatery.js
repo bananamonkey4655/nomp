@@ -62,26 +62,6 @@ const Eatery = (props) => {
       </Tooltip>
     );
 
-    /** function calculatePrice(price) {
-          const budget = price.length;
-          //const budget = JSON.stringify(price)
-          if (budget === 1) {
-            return 5;
-          }
-          else if (budget === 2) {
-            return 15;
-          }
-          else if (budget === 3) {
-            return 50;
-          }
-          else if (budget === 4) {
-            return 80;
-          }
-          else {
-            return null;
-          }
-        } */
-
     return (
       <div className="more-details-wrapper d-flex flex-column">
         <h1 className="eatery-title fw-bold">{name}</h1>
@@ -154,7 +134,7 @@ const Eatery = (props) => {
             <ListGroup variant="flush">
               {hours !== undefined ? (
                 hours[0]?.open?.slice(0, 7).map((day, index) => (
-                  <ListGroup.Item>
+                  <ListGroup.Item className="border-1">
                     {index === 0 ? <div> Monday </div> : <></>}
                     {index === 1 ? <div> Tuesday </div> : <></>}
                     {index === 2 ? <div> Wednesday </div> : <></>}

@@ -40,11 +40,11 @@ function Register() {
   const { username, password } = form;
 
   return (
-    <div className="register-wrapper">
-      <div className="register-form">
-        <h1 className="mb-3">Register</h1>
+    <div className="register-wrapper d-flex justify-content-center">
+      <div className="register-form d-flex flex-column w-50">
+        <h1 className="my-3 mx-3 text-center">Register</h1>
         <Form className="form" onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="username">
+          <Form.Group className="mx-3 my-3" controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
               type="username"
@@ -57,7 +57,7 @@ function Register() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="password">
+          <Form.Group className="mx-3 my-3" controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -73,7 +73,7 @@ function Register() {
             variant="primary"
             size="lg"
             type="submit"
-            className="register-button btn-dark mt-3"
+            className="register-button btn-dark mx-3 my-3"
           >
             Sign Up
           </Button>

@@ -5,7 +5,8 @@ import foodImage from "assets/bg/food_img_4.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion} from "framer-motion";
+import Button from "react-bootstrap/esm/Button";
 
 function Home() {
   // framer-motion variants
@@ -17,8 +18,8 @@ function Home() {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.25,
-        staggerChildren: 0.5,
+        duration: 0.75,
+        staggerChildren: 0.75,
       },
     },
   };
@@ -40,7 +41,7 @@ function Home() {
   const pageVariants = {
     exit: {
       opacity: 0,
-      transition: { duration: 0.25 },
+      transition: { duration: 1 },
     },
     //exit: {
     //  x: '-100vw',
@@ -56,7 +57,7 @@ function Home() {
       transition: {
         // delay as button will not use childVariant but still has to appear in order
         delay: 1,
-        duration: 0.25,
+        duration: 0.5,
       },
     },
     hover: {
@@ -64,7 +65,7 @@ function Home() {
       textShadow: "0px 0px 8px rgb(255,255,255)",
       boxShadow: "0px 0px 8px rgb(255,255,255)",
       transition: {
-        duration: 0.25,
+        duration: 0.5,
         repeat: Infinity,
         repeatType: "reverse",
       },
@@ -103,14 +104,14 @@ function Home() {
             initial="hidden"
             animate="visible"
             whileHover="hover"
-            className={styles.buttonContainer}
           >
-            <button
+            <Button
+              size="lg"
               onClick={() => navigate("/group")}
               className={styles.button}
             >
               Get Started
-            </button>
+            </Button>
           </motion.div>
           <motion.div variants={childVariants} className={styles.foodContainer}>
             <img
@@ -125,7 +126,7 @@ function Home() {
           <motion.img
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.25, duration: 0.25 }}
+            transition={{ delay: 0.25, duration: 0.5 }}
             src={groupImage}
             alt="Landing page image"
           />

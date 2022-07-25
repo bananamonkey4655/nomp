@@ -27,7 +27,7 @@ function App() {
       <SocketProvider>
         <Navbar />
         <main className="app-body">
-          {/* <AnimatePresence> */}
+          <AnimatePresence exitBeforeEnter>
           <Routes location={location} key={location.key}>
             <Route index element={<Home />} />
             <Route path="/home" element={<Home />} />
@@ -44,7 +44,7 @@ function App() {
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Routes>
-          {/* </AnimatePresence> */}
+          </AnimatePresence>
         </main>
       </SocketProvider>
     </AuthProvider>
