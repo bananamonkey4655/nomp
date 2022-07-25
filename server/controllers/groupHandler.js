@@ -6,11 +6,17 @@ module.exports = (io) => {
 
     // Check if user already exists
     if (users && users.some((user) => user.nickname === name)) {
-      return { ok: false, error: "User already exists" };
+      return {
+        ok: false,
+        error: "Username already taken by someone else in the room!",
+      };
     }
 
     if (roomInfo && roomInfo.status === "unavailable") {
-      return { ok: false, error: "Room currently in voting process" };
+      return {
+        ok: false,
+        error: "Room currently in voting process. You shall not pass.",
+      };
     }
 
     return { ok: true };

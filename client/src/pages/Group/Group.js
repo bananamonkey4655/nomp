@@ -4,6 +4,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
+import ErrorMessage from "components/ErrorMessage";
 
 function Group() {
   const { socket } = useSocket();
@@ -12,6 +13,7 @@ function Group() {
 
   const [nickname, setNickname] = useState("");
   const [roomName, setRoomName] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (groupInviteId) {
@@ -33,7 +35,7 @@ function Group() {
     socket.emit("try-join", { name, roomId: room }, (response) => {
       if (!response.ok) {
         console.log(response.error);
-        //TODO: render error message
+        setError(response.error);
       } else {
         socket.name = name;
         socket.groupId = room;
@@ -74,6 +76,8 @@ function Group() {
               className="mx-1 my-1 w-100"
             />
           </label>
+
+          {error && <ErrorMessage message={error} />}
 
           <Button
             variant="danger"
