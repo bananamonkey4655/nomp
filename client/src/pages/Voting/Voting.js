@@ -132,7 +132,9 @@ function Voting() {
             <strong>{`${eateryIndex + 1}/${eateries.length}`}</strong>
             <span>Restaurants Viewed</span>
           </h1>
-          <div className={styles.sidebarContent}></div>
+          <div className={styles.sidebarContent}>
+            <MemberDetails />
+          </div>
           <ExitGroupButton />
         </div>
 
@@ -219,6 +221,37 @@ function Voting() {
         </div>
       </div>
     </div>
+  );
+}
+
+function MemberDetails() {
+  const { socket } = useSocket();
+  const [groupStatus, setGroupStatus] = useState(null);
+
+  useEffect(() => {
+    socket.on("update-members", (members) => {
+      setGroupStatus(members);
+      console.log(members);
+    });
+
+    return () => {
+      socket.off("update-members");
+    };
+  }, []);
+
+  if (!groupStatus) {
+    return <Loader message="Voting In Progress" />;
+  }
+
+  return (
+    <ul>
+      {groupStatus.map(({ nickname, done }) => (
+        <li key={nickname}>
+          {nickname}
+          {!done ? " is still voting" : " has finished voting"}
+        </li>
+      ))}
+    </ul>
   );
 }
 

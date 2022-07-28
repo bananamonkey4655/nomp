@@ -71,7 +71,12 @@ module.exports = (io, socket) => {
     });
 
     // Increment vote count for a restaurant
-    socket.on("increment-eatery-vote", addEateryVote);
+    socket.on("increment-eatery-vote", (voteDetails) => {
+      const { eateryId, roomId } = voteDetails;
+      addEateryVote(voteDetails);
+      const users = usersByRoomId.get(roomId);
+      io.to(roomId).emit("update-members", users);
+    });
 
     // End voting game when completed
     socket.on("user-voting-complete", () => {
@@ -79,6 +84,9 @@ module.exports = (io, socket) => {
         { name: nickname, roomId: groupId },
         usersByRoomId
       );
+      const users = usersByRoomId.get(groupId);
+      console.log(users);
+      io.to(groupId).emit("update-members", users);
       handleGameOver(groupId, usersByRoomId, roomInfoByRoomId);
     });
 

@@ -69,7 +69,6 @@ module.exports = (io) => {
     }
     const users = usersByRoomId.get(roomId);
     changeHostIfNone(users);
-    console.log(users);
     console.log(
       `There are: ${
         io.sockets.adapter.rooms.get(roomId)?.size

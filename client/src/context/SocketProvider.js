@@ -20,6 +20,10 @@ function SocketProvider({ children }) {
     }
     const mySocket = io(BACKEND_URL);
     setSocket(mySocket);
+
+    return () => {
+      mySocket.close();
+    };
   }, []);
 
   const value = {
