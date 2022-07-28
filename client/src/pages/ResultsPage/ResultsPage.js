@@ -11,7 +11,6 @@ import { useSocket } from "context/SocketProvider";
 import { BACKEND_URL } from "config";
 
 function ResultsPage() {
-  const { quitGroup } = useSocket();
   const location = useLocation();
   const { eateryId, count } = location.state;
 

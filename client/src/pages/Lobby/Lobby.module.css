@@ -70,6 +70,7 @@
 
 .chatContainer {
   display: none;
+  height: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -95,7 +96,6 @@
   .chatContainer {
     grid-area: chat;
     display: block;
-    height: 100%;
   }
 }
 

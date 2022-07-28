@@ -5,7 +5,7 @@ import foodImage from "assets/bg/food_img_4.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
-import { motion} from "framer-motion";
+import { motion } from "framer-motion";
 import Button from "react-bootstrap/esm/Button";
 
 function Home() {
@@ -39,10 +39,10 @@ function Home() {
 
   // homepage variant
   const pageVariants = {
-    exit: {
-      opacity: 0,
-      transition: { duration: 1 },
-    },
+    // exit: {
+    //   opacity: 0,
+    //   transition: { duration: 1 },
+    // },
     //exit: {
     //  x: '-100vw',
     //  transition: { ease: 'easeInOut' }
