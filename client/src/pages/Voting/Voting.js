@@ -1,8 +1,7 @@
-import "./Voting.css";
+import styles from "./Voting.module.css";
 import { MapPin, Heart, X } from "phosphor-react";
 
 import Loader from "components/Loader";
-import LoadingDisplay from "components/LoadingDisplay";
 import ReviewStars from "components/ReviewStars";
 import ExitGroupButton from "components/ExitGroupButton";
 import Eatery from "../../components/Eatery/Eatery";
@@ -13,46 +12,10 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSocket } from "context/SocketProvider";
-// import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import shuffleArray from "utils/shuffleArray";
 import { BACKEND_URL } from "config";
 
 function Voting() {
-  // const controls = useAnimation();
-
-  // const [isAnimation, setIsAnimation] = useState(false);
-  // function noButtons() {
-  //   setIsAnimation(true);
-  //   setTimeout(() => setIsAnimation(false), 600);
-  // }
-
-  // // findeaterypage variant
-  // const pageVariants = {
-  //   //exit: {
-  //   //  opacity: 0,
-  //   //  transition: { duration : 0.5}
-  //   //},
-  //   exit: {
-  //     x: "-100vw",
-  //     transition: { ease: "easeInOut", duration: 0 },
-  //   },
-  // };
-
-  // //fling left or right animation
-  // const animationVariants = {
-  //   initial: {
-  //     x: 0,
-  //     y: 0,
-  //   },
-  //   flingleft: {
-  //     x: "-10vw",
-  //     transition: {
-  //       duration: 0,
-  //       ease: "easeInOut",
-  //     },
-  //   },
-  // };
-
   const navigate = useNavigate();
   const { socket } = useSocket();
   const { name, groupId } = socket;
@@ -62,8 +25,8 @@ function Voting() {
   const [eateryIndex, setEateryIndex] = useState(0);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
   const [error, setError] = useState("");
+
   const [viewMoreDetails, setViewMoreDetails] = useState(false);
-  // for toggle button to view more details
   const [toggle, setToggle] = useState(false);
 
   // for rendering extra info about the toggle button
@@ -119,13 +82,6 @@ function Voting() {
   }, [eateryIndex]);
 
   const addEateryToDesired = () => {
-    // framer-motion rotate left
-    // controls.start({
-    //   rotate: [0, 0, 0],
-    //   transition: { duration: 0 },
-    // });
-    // // remove buttons during animation
-    // noButtons();
     socket.emit("increment-eatery-vote", {
       eateryId: eateries[eateryIndex].id,
       roomId: groupId,
@@ -134,13 +90,6 @@ function Voting() {
   };
 
   const skipEatery = () => {
-    //framer-motion rotate right
-    // controls.start({
-    //   rotate: [0, 0, 0],
-    //   transition: { duration: 0 },
-    // });
-    // remove buttons during animation
-    // noButtons();
     setEateryIndex((prev) => prev + 1);
   };
 
@@ -165,93 +114,109 @@ function Voting() {
   }
 
   const {
-    name: restaurant_name,
-    rating,
-    review_count,
     categories,
+    distance,
+    id,
     image_url,
     location: place,
-    display_phone,
+    name: restaurant_name,
     price,
-    id,
+    rating,
   } = displayedEatery;
 
   return (
-    <div className="wrapper">
-      <ExitGroupButton />
-      <h1 className="text-restaurants fw-bold fs-1">{`${eateryIndex + 1}/${
-        eateries.length
-      } Restaurants Viewed`}</h1>
-      {!viewMoreDetails && (
-        <div
-          // variants={animationVariants}
-          // animate={controls}
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <div className={styles.sidebar}>
+          <h1 className={styles.viewCount}>
+            <strong>{`${eateryIndex + 1}/${eateries.length}`}</strong>
+            <span>Restaurants Viewed</span>
+          </h1>
+          <div className={styles.sidebarContent}></div>
+          <ExitGroupButton />
+        </div>
 
-          className="container mt-3"
-        >
-          <img className="container-img" src={image_url} />
-          <div className="imagebox-text">
-            <div className="empty-space"></div>
-            <h1>{restaurant_name}</h1>
-            <h5>
-              {categories
-                .reduce((acc, curr) => acc + ", " + curr.title, "")
-                .substring(1)}
-            </h5>
-            <section>
-              <ReviewStars rating={rating} />
-              <div>{price}</div>
-              <div className="address">
-                <MapPin size={20} />
-                <span>{place.address1}</span>
-              </div>
-              <div></div>
-            </section>
+        <div className={styles.mainContent}>
+          {viewMoreDetails ? (
+            <Eatery key={id} id={id} />
+          ) : (
+            <div className={styles.restaurantContainer}>
+              <div
+                className={styles.imageContainer}
+                style={{ backgroundImage: `url(${image_url})` }}
+              />
+              <article className={styles.restaurantInfo}>
+                <div className={styles.space}></div>
+                <h1>{restaurant_name}</h1>
+
+                <section className={styles.description}>
+                  <ReviewStars rating={rating} />
+                  <div>
+                    <span>{price}</span>
+                    <span>
+                      &#183;
+                      {categories
+                        .reduce((acc, curr) => acc + ", " + curr.title, "")
+                        .substring(1)}
+                    </span>
+                  </div>
+                  <div className={styles.address}>
+                    <MapPin size={20} />
+                    <span>{place.address1}</span>
+                    {distance && (
+                      <span> &#183; {Math.round(distance / 1000)} km away</span>
+                    )}
+                  </div>
+                </section>
+              </article>
+            </div>
+          )}
+
+          <div className={styles.buttons}>
+            <div className={styles.toggleGroup}>
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 400 }}
+                overlay={renderInfo}
+              >
+                <ToggleButton
+                  className="my-3 fw-bold font-style"
+                  id="toggle-check"
+                  type="checkbox"
+                  variant="outline-primary"
+                  checked={toggle}
+                  value="1"
+                  onChange={(e) => {
+                    setToggle(e.currentTarget.checked);
+                    setViewMoreDetails(!viewMoreDetails);
+                  }}
+                >
+                  Toggle Me to view more details
+                </ToggleButton>
+              </OverlayTrigger>
+            </div>
+            <div className={styles.voteBtnGroup}>
+              <button>
+                <Heart
+                  className="want-button hover-effect"
+                  onClick={addEateryToDesired}
+                  size={50}
+                  color="#f14a59"
+                  weight="fill"
+                />
+              </button>
+              <button>
+                <X
+                  className="skip-button hover-effect"
+                  onClick={skipEatery}
+                  size={50}
+                  color="#5e5e5e"
+                  weight="bold"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      )}
-
-      {viewMoreDetails && <Eatery key={id} id={id} />}
-
-      <OverlayTrigger
-        placement="right"
-        delay={{ show: 250, hide: 400 }}
-        overlay={renderInfo}
-      >
-        <ToggleButton
-          className="my-3 fw-bold font-style"
-          id="toggle-check"
-          type="checkbox"
-          variant="outline-primary"
-          checked={toggle}
-          value="1"
-          onChange={(e) => {
-            setToggle(e.currentTarget.checked);
-            setViewMoreDetails(!viewMoreDetails);
-          }}
-        >
-          Toggle Me to view more details
-        </ToggleButton>
-      </OverlayTrigger>
-      <div className="buttons mt-5">
-        {/* {!isAnimation && ( */}
-        <Heart
-          className="want-button hover-effect"
-          onClick={addEateryToDesired}
-          size={50}
-          color="#f14a59"
-          weight="fill"
-        />
-        {/* )} */}
-        {/* {!isAnimation && ( */}
-        <X
-          className="skip-button hover-effect"
-          onClick={skipEatery}
-          size={50}
-          color="#5e5e5e"
-          weight="bold"
-        />
-        {/* )}{" "} */}
       </div>
     </div>
   );
