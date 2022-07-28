@@ -98,19 +98,11 @@ function Voting() {
   }
 
   if (isSearchComplete) {
-    return (
-      <h1>
-        <Loader message="Waiting for other members to complete search..." />
-      </h1>
-    );
+    return <Loader message="Waiting for other members to complete search..." />;
   }
 
   if (!displayedEatery) {
-    return (
-      <h1>
-        <Loader message="Loading" />
-      </h1>
-    );
+    return <Loader message="Fetching restaurants..." />;
   }
 
   const {
@@ -231,7 +223,6 @@ function MemberDetails() {
   useEffect(() => {
     socket.on("update-members", (members) => {
       setGroupStatus(members);
-      console.log(members);
     });
 
     return () => {

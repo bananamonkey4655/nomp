@@ -20,7 +20,7 @@ function AuthProvider({ children }) {
       const token = await authenticateUser("register", username, password);
       setToken(token);
       if (token) {
-        navigate("/dashboard");
+        navigate("/group");
       }
     } catch (err) {
       setErrorMessage("Failure to connect to server :(");

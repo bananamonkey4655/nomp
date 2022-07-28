@@ -34,7 +34,6 @@ function Group() {
 
     socket.emit("try-join", { name, roomId: room }, (response) => {
       if (!response.ok) {
-        console.log(response.error);
         setError(response.error);
       } else {
         socket.name = name;

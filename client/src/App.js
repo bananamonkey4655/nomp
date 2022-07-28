@@ -34,7 +34,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
+              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
               <Route path="/group" element={<Group />} />
               <Route path="/group/:groupInviteId" element={<Group />} />
               <Route path="/lobby" element={<Lobby />} />
