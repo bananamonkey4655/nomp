@@ -10,7 +10,7 @@ function Logout() {
 
   useEffect(() => {
     handleLogout();
-    navigate("/home");
+    navigate("/");
   }, []);
 
   return <LoadingDisplay />;

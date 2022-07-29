@@ -20,6 +20,7 @@ function AuthProvider({ children }) {
       const token = await authenticateUser("register", username, password);
       setToken(token);
       if (token) {
+        setErrorMessage("");
         navigate("/group");
       }
     } catch (err) {
@@ -33,6 +34,7 @@ function AuthProvider({ children }) {
       const token = await authenticateUser("login", username, password);
       setToken(token);
       if (token) {
+        setErrorMessage("");
         // Send user back to page where they were after logging in
         const origin = location.state?.from?.pathname || "/group";
         navigate(origin);

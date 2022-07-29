@@ -21,7 +21,7 @@ function Login() {
   // If already logged in, send back to home page
   useEffect(() => {
     if (token) {
-      navigate("/home");
+      navigate("/");
     }
   }, []);
 

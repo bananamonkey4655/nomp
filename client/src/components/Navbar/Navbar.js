@@ -5,6 +5,7 @@ import NavItem from "components/Navbar/NavItem/NavItem";
 import HamburgerMenu from "components/Navbar/HamburgerMenu/HamburgerMenu";
 
 import { useAuth } from "context/AuthProvider";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const { token } = useAuth();
@@ -12,12 +13,12 @@ function Navbar() {
   return (
     <header className={styles.header}>
       <nav className={styles.navbar}>
-        <div className={styles.logo}>
+        <Link to="/" className={styles.logo}>
           <Logo />
           <h1 className={styles.title}>NOMP</h1>
-        </div>
+        </Link>
         <ul className={styles.navlist}>
-          <NavItem item="Home" link="/home" />
+          <NavItem item="Home" link="/" />
           <NavItem item="I'm Hungry" link="/group" />
           {!token && <NavItem item="Sign Up" link="/register" />}
           {!token && <NavItem item="Log in" link="/login" />}

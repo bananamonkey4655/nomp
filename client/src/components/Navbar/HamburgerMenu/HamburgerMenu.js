@@ -26,7 +26,7 @@ function HamburgerMenu() {
       right
       width={"100%"}
     >
-      <NavItem item="Home" link="/home" handleClick={closeMenu} />
+      <NavItem item="Home" link="/" handleClick={closeMenu} />
       <NavItem item="I'm Hungry" link="/group" handleClick={closeMenu} />
       {!token && (
         <NavItem item="Sign Up" link="/register" handleClick={closeMenu} />
