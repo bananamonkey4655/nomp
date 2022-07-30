@@ -60,11 +60,11 @@ router.get("/search", async (req, res) => {
   try {
     const yelpResponse = await yelpAPI.get(URL);
     if (yelpResponse.data.total == 0) {
-      throw "No restaurants with given restrictions found!";
+      throw "No restaurants with given restrictions found!"; //TODO: Change to res.status(404).end()
     }
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(500).json({ error });
   }
 });
 
@@ -76,7 +76,7 @@ router.get("/match", async (req, res) => {
     const yelpResponse = await yelpAPI.get(`businesses/${id}`);
     return res.status(200).json(yelpResponse.data);
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(500).json({ error });
   }
 });
 

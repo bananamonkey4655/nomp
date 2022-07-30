@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const UserModel = require("../models/user");
+const User = require("../models/user");
 
 // Middleware for protected API routes (ensure request from client has valid JWT)
 const protect = async (req, res, next) => {

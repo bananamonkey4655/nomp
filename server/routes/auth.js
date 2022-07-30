@@ -2,28 +2,28 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const UserModel = require("../models/user");
+const User = require("../models/user");
 
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    let user = await UserModel.findOne({ username });
-    if (user) {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    user = new UserModel({
+    const user = new User({
       username,
       password,
     });
 
-    const salt = await bcrypt.genSalt(10);
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
     user.password = await bcrypt.hash(password, salt);
     await user.save();
 
     const payload = { user: { id: user.id } };
-
     // Generate JWT
     jwt.sign(
       payload,
@@ -46,13 +46,13 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    let user = await UserModel.findOne({ username });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: "User doesn't exist" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
       return res.status(400).json({
         message:
           "Sorry, your password was incorrect. Please double-check your password.",

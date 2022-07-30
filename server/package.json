@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "devstart": "nodemon server.js"
+    "devstart": "nodemon server.js",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "socket.io": "^4.5.1"
   },
   "devDependencies": {
+    "eslint": "^8.20.0",
     "nodemon": "^2.0.16"
   }
 }

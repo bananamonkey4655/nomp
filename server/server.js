@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 
+require("dotenv").config();
+
 const cors = require("cors");
 const db = require("./config/database");
 const FRONTEND_URL = require("./config/config");
@@ -11,8 +13,6 @@ const eatery = require("./routes/eatery");
 const geolocation = require("./routes/geolocation");
 const user = require("./routes/user");
 const socketHandler = require("./socket");
-
-require("dotenv").config();
 
 // Middleware
 app.use(cors());
