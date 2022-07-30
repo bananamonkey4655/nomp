@@ -11,12 +11,17 @@ import { useAuth } from "context/AuthProvider";
 
 function Register() {
   const navigate = useNavigate();
-  const { token, isLoading, errorMessage, attemptRegister } = useAuth();
+  const { token, isLoading, errorMessage, setErrorMessage, attemptRegister } =
+    useAuth();
 
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [setErrorMessage]);
 
   // If already logged in, send back to home page
   useEffect(() => {

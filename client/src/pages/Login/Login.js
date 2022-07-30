@@ -10,13 +10,18 @@ import { useAuth } from "context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
-  const { token, isLoading, errorMessage, attemptLogin } = useAuth();
+  const { token, isLoading, errorMessage, setErrorMessage, attemptLogin } =
+    useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [setErrorMessage]);
 
   // If already logged in, send back to home page
   useEffect(() => {
