@@ -1,4 +1,4 @@
-import "./Register.css";
+import styles from "./Register.module.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
@@ -6,9 +6,8 @@ import ErrorMessage from "components/ErrorMessage";
 import LoadingDisplay from "components/LoadingDisplay";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "context/AuthProvider";
-import { useSocket } from "context/SocketProvider";
 
 function Register() {
   const navigate = useNavigate();
@@ -24,10 +23,11 @@ function Register() {
     if (token) {
       navigate("/");
     }
-  }, []);
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     attemptRegister(form);
 
     setForm({ username: "", password: "" });
@@ -40,12 +40,12 @@ function Register() {
   const { username, password } = form;
 
   return (
-    <div className="register-wrapper d-flex justify-content-center">
-      <div className="register-form d-flex flex-column w-50">
-        <h1 className="my-3 mx-3 text-center">Register</h1>
+    <section className={styles.wrapper}>
+      <div className={styles.container}>
+        <h1 className="mb-3">Register an account</h1>
         <Form className="form" onSubmit={handleSubmit}>
-          <Form.Group className="mx-3 my-3" controlId="username">
-            <Form.Label>Username</Form.Label>
+          <Form.Group className="mt-4" controlId="username">
+            <Form.Label className={styles.title}>Username</Form.Label>
             <Form.Control
               type="username"
               placeholder="Enter username"
@@ -57,9 +57,10 @@ function Register() {
             />
           </Form.Group>
 
-          <Form.Group className="mx-3 my-3" controlId="password">
-            <Form.Label>Password</Form.Label>
+          <Form.Group className="mt-3" controlId="password">
+            <Form.Label className={styles.title}>Password</Form.Label>
             <Form.Control
+              className={errorMessage ? styles.password : ""}
               type="password"
               placeholder="Password"
               maxLength="18"
@@ -67,19 +68,28 @@ function Register() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
             />
+            <div className={styles.error}>
+              <ErrorMessage message={errorMessage} />
+            </div>
           </Form.Group>
           <Button
-            disabled={isLoading}
+            disabled={isLoading || form.username === "" || form.password === ""}
             variant="primary"
             size="lg"
             type="submit"
-            className="register-button btn-dark mx-3 my-3"
+            className={styles.btn}
           >
-            Sign Up
+            Continue
           </Button>
         </Form>
+        <p className={styles.signup}>
+          <span>Already have an account?</span>
+          <Link className={styles.link} to="/login">
+            Log in.
+          </Link>
+        </p>
       </div>
-    </div>
+    </section>
   );
 }
 

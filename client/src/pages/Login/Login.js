@@ -23,12 +23,13 @@ function Login() {
     if (token) {
       navigate("/");
     }
-  }, []);
+  }, [token, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     attemptLogin(form);
+
     setForm({ username: "", password: "" });
   };
 
@@ -72,7 +73,7 @@ function Login() {
             </div>
           </Form.Group>
           <Button
-            disabled={isLoading || form.username == "" || form.password == ""}
+            disabled={isLoading || form.username === "" || form.password === ""}
             variant="primary"
             size="lg"
             type="submit"
