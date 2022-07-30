@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "config";
 
@@ -15,13 +15,19 @@ function AuthProvider({ children }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    }
+  }, [token]);
+
   const attemptRegister = async ({ username, password }) => {
     try {
       const token = await authenticateUser("register", username, password);
-      setToken(token);
       if (token) {
         setErrorMessage("");
-        navigate("/group");
+        navigate("/login");
       }
     } catch (err) {
       setErrorMessage("Failure to connect to server :(");
@@ -34,6 +40,7 @@ function AuthProvider({ children }) {
       const token = await authenticateUser("login", username, password);
       setToken(token);
       if (token) {
+        window.localStorage.setItem("token", token);
         setErrorMessage("");
         // Send user back to page where they were after logging in
         const origin = location.state?.from?.pathname || "/group";
