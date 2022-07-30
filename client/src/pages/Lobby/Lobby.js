@@ -37,7 +37,7 @@ function Lobby() {
     });
 
     socket.on("members-start-search", (queryParameters) => {
-      navigate(`/voting`, {
+      navigate("/voting", {
         state: queryParameters,
       }); //TODO: call yelp api once only and store eateries
     });
