@@ -15,12 +15,13 @@ function AuthProvider({ children }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  //Check for local storage token
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setToken(token);
     }
-  }, [token]);
+  }, []);
 
   const attemptRegister = async ({ username, password }) => {
     try {
