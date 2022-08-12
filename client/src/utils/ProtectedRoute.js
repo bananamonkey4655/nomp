@@ -1,7 +1,6 @@
 // Nest all authentication protected routes under this component
-
 import { Navigate, useLocation, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthProvider";
+import { useAuth } from "context/AuthProvider";
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();

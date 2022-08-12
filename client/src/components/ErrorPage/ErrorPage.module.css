@@ -1,0 +1,27 @@
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ea4a4a;
+  padding: 10px;
+}
+
+.error::before {
+  content: "⚠️";
+}
+
+.error::after {
+  content: "⚠️";
+}
+
+.return::after {
+  content: "🔙";
+}

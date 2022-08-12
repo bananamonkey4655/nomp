@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const { protect } = require("../middleware/protect");
 require("dotenv").config();
 
 // Configure axios calls on this particular instance to use these settings
@@ -26,7 +27,7 @@ const mapBudgetToPrice = (budget) => {
 };
 
 /* Endpoint for searching restaurants with given filters set */
-router.get("/search", async (req, res) => {
+router.get("/search", protect, async (req, res) => {
   let {
     location,
     query: term,

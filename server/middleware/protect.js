@@ -24,7 +24,7 @@ const protect = async (req, res, next) => {
 
       next();
     } catch (err) {
-      res.status(401).json({ message: "Server error" });
+      res.status(401).json({ message: "401 Unauthorized" });
     }
   }
 };

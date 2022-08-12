@@ -76,6 +76,7 @@ function AuthProvider({ children }) {
 
   const handleLogout = () => {
     setToken(null);
+    window.localStorage.removeItem("token");
   };
 
   const value = {

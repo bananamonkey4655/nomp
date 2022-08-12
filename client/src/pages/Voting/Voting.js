@@ -4,20 +4,30 @@ import { MapPin, Heart, X } from "phosphor-react";
 import Loader from "components/Loader";
 import ReviewStars from "components/ReviewStars";
 import ExitGroupButton from "components/ExitGroupButton";
-import Eatery from "../../components/Eatery/Eatery";
+import Eatery from "components/Eatery/Eatery";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import ErrorPage from "components/ErrorPage/ErrorPage";
 
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "context/AuthProvider";
 import { useSocket } from "context/SocketProvider";
-import shuffleArray from "utils/shuffleArray";
+// import shuffleArray from "utils/shuffleArray";
 import { BACKEND_URL } from "config";
+
+// for rendering extra info about the toggle button
+const renderInfo = (props) => (
+  <Tooltip id="button-tooltip" {...props}>
+    More information loaded. Longer loading time.
+  </Tooltip>
+);
 
 function Voting() {
   const navigate = useNavigate();
   const { socket } = useSocket();
+  const { token } = useAuth();
   const { name, groupId } = socket;
   const { location, query, budget, coordinates, radius } = useLocation().state; // location is required field
 
@@ -28,13 +38,6 @@ function Voting() {
 
   const [viewMoreDetails, setViewMoreDetails] = useState(false);
   const [toggle, setToggle] = useState(false);
-
-  // for rendering extra info about the toggle button
-  const renderInfo = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      More information loaded. Longer loading time.
-    </Tooltip>
-  );
 
   const displayedEatery = eateries?.[eateryIndex];
 
@@ -47,11 +50,13 @@ function Voting() {
         URL += `&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
       }
 
-      const response = await fetch(URL);
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+
+      const response = await fetch(URL, config);
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error);
+        setError(data.message);
         return;
       }
       // const shuffledRestaurants = shuffleArray(data.businesses);
@@ -59,7 +64,9 @@ function Voting() {
     }
 
     fetchData();
+  }, []);
 
+  useEffect(() => {
     socket.on("show-results", ({ eateryId, count }) => {
       navigate("/gameover", { state: { eateryId, count } });
     });
@@ -67,7 +74,7 @@ function Voting() {
     return () => {
       socket.off("show-results");
     };
-  }, []);
+  }, [socket]);
 
   // Check for whether search has been completed
   useEffect(() => {
@@ -94,7 +101,7 @@ function Voting() {
   };
 
   if (error) {
-    return <h1>{error}</h1>;
+    return <ErrorPage error={error} />;
   }
 
   if (isSearchComplete) {

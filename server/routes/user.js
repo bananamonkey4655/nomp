@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { protect } = require("../middleware/authMiddleware");
+const { protect } = require("../middleware/protect");
 const User = require("../models/user");
 
 router.get("/info", protect, async (req, res) => {
