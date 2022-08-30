@@ -41,6 +41,7 @@ function GroupSettings({ isHost }) {
 
   const getLocation = async () => {
     if (!geoLocation.loaded) {
+      console.log("no geo");
       return;
     }
 
@@ -48,15 +49,17 @@ function GroupSettings({ isHost }) {
       `${BACKEND_URL}/geolocation/get?lat=${geoLocation.coordinates.latitude}&lng=${geoLocation.coordinates.longitude}`
     );
     const data = await response.json();
+    console.log(data);
 
-    if (data.error) {
+    if (!response.ok) {
+      console.log("Error");
       setFetchErrorMessage(`${data.error.code}: ${data.error.description}`);
       return;
     }
 
     setForm({
       ...form,
-      location: data.results[1].formatted_address,
+      location: data.results[1]?.formatted_address ?? "Error, please try again",
       coordinates: geoLocation.coordinates,
     });
   };
